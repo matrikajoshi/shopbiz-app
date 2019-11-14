@@ -20,7 +20,7 @@ go to shopbiz directory - $ cd shopbiz
 
 To set up mysql 
 create database shopbiz in mysql 
-change database properties in application.properties
+add mysql login info to database properties in application.properties
 
 
 Run as spring-boot application - mvn spring-boot:run
