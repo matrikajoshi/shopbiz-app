@@ -1,0 +1,41 @@
+import {Component, Output, EventEmitter, OnInit, OnDestroy} from "@angular/core";
+import { Subscription } from 'rxjs';
+
+import { ShoppingCartService } from '../services/shopping-cart.service';
+import { AuthService } from '../services/auth.service';
+
+@Component({
+  selector: 'app-header',
+  templateUrl: './header.component.html',
+  styleUrls: ['./header.component.css']
+})
+export class HeaderComponent implements OnInit, OnDestroy {
+
+  @Output() featureSelected = new EventEmitter<string>();
+  isAuthenticated = false;
+  private userSub: Subscription;
+  title = 'Shop-n-Top';
+  collapsed = true;
+
+  constructor(
+    private authService: AuthService,
+    public shoppingCartService: ShoppingCartService
+  ) {}
+
+  ngOnInit(): void {
+    this.userSub = this.authService.user.subscribe(user => {
+      this.isAuthenticated = !!user;
+      console.log("user1", !user);
+      console.log("user2", !!user);
+    });
+  }
+
+
+  onLogout() {
+    this.authService.logout();
+  }
+
+  ngOnDestroy() {
+    this.userSub.unsubscribe();
+  }
+}

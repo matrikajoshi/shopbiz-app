@@ -1,0 +1,27 @@
+@import '@angular/material/prebuilt-themes/deeppurple-amber.css';
+
+mat-card img{
+  object-fit: cover; /*this makes de image in src fit to the size of specified below*/
+  width: 100%; /* Here you can use wherever you want to specify the width and also the height of the <img>*/
+  /* height: 80%; */
+  max-width: fit-content;
+}
+
+.example-header-image {
+  /* background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg'); */
+  /* background-size: cover; */
+}
+
+ .product-card {
+  max-width: 100%;
+  min-width: 350px
+}
+
+
+
+mat-grid-tile {
+  background: #fff;
+  color: rgba(0,0,0,.87);
+}
+
+

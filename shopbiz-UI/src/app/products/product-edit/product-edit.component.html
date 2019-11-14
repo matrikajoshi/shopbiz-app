@@ -1,0 +1,75 @@
+<div class="container">
+  <div class="row">
+    <div class="col-xs-12 col-sm-10 col-md-8 col-sm-offset-1 col-md-offset-2">
+      <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input
+            id="name"
+            formControlName="name"
+            type="text"
+            class="form-control"
+            required>
+        </div>
+        <div class="form-group">
+          <label for="sku">SKU</label>
+          <input
+            id="sku"
+            formControlName="sku"
+            type="text"
+            class="form-control">
+        </div>
+        <div class="form-group">
+          <label for="price">Price</label>
+          <input
+            id="price"
+            formControlName="price"
+            type="number"
+            class="form-control">
+        </div>
+        <div class="form-group">
+          <label for="description">Description</label>
+          <textarea
+            id="description"
+            formControlName="description"
+            rows="5"
+            type="text"
+            class="form-control"></textarea>
+        </div>
+        <div class="form-group">
+          <label for="category">Category</label>
+          <input
+            id="category"
+            formControlName="category"
+            type="text"
+            class="form-control">
+        </div>
+        <div *ngIf="product && product.image">
+          <br />
+          <img src="{{ baseURL }}images/{{ product.image }}" width="100px">
+        </div>
+        <div class="form-group">
+          <label for="image">Change File: </label>
+          <input
+            type="file"
+            id="image"
+            formControlName="image"
+            (change)="onFileChange($event)"
+            class="form-control"
+            >
+        </div>
+        <input type="hidden" formControlName="id">
+        <button
+          type="submit"
+          class="btn btn-primary"
+          [disabled]="productForm.invalid">
+          Submit
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+<div *ngIf="product">
+  <p>{{ productForm.value | json }} {{ productForm.status | json }}</p>
+</div>
+

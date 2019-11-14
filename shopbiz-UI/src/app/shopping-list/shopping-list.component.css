@@ -1,0 +1,9 @@
+.button-row button,
+.button-row a {
+  margin-right: 15px;
+}
+
+.mat-button.mat-success,
+.mat-stroked-button.mat-success {
+    color: #155724;
+}

@@ -1,0 +1,30 @@
+<h3 align="center" class="display-4 mb-5">{{title}}</h3>
+<div *ngIf="shoppingList" class="row card-deck text-center">
+  <div *ngFor="let product of shoppingList.products" class="col-lg-4 ">
+    <div class="card mb-4"  >
+      <img height="50%" class="card-img-top" src="{{ baseURL }}images/{{ product.image }}" alt="{{product.name}}">
+      <div class="card-body">
+        <h4 class="card-title ">{{product.name}}</h4>
+        <div class="text-left">
+          <p class="card-test"><strong>Description: </strong>{{product.description}}</p>
+          <p class="card-text"><strong>Price: </strong>{{product.price | currency}}</p>
+        </div>
+        <br>
+        <div class="button-row">
+          <button
+            type="submit"
+            mat-raised-button color="accent"
+            (click)="addToCart(product)"
+            >Add to Cart
+          </button>
+          <button
+              mat-flat-button color="success"
+              type="button"
+              (click)="removeFromList(product)"
+              >Delete
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

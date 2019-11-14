@@ -1,0 +1,66 @@
+<div class="container"
+     fxLayout="row wrap"
+     fxLayout.sm="column"
+     fxLayout.xs="column"
+     fxLayoutAlign.gt-md="space-around center"
+     fxLayoutGap="10px"
+     fxLayoutGap.xs="0">
+
+  <div *ngIf="product" class="row text-center justify-content-center">
+    <div class="card mb-4">
+
+      <h4>{{product.name | uppercase}} Details</h4>
+      <div>
+        <img src="{{ baseURL }}images/{{ product.image }}" alt="{{product.name}}">
+      </div>
+
+      <div class="card-text">
+        <p lass="card-test">
+          <strong>Description: </strong>{{product.description}}
+        </p>
+      </div>
+      <div class="text-left">
+        <p class="card-text">
+          <strong><span>SKU: </span>{{product.sku}}</strong>
+        </p>
+        <p class="card-text">
+          <strong><span>Price:  </span></strong>
+          <label id="price"> {{product.price | currency}}</label>
+        </p>
+        <label class="card-text">
+          <strong>Quantity: </strong>
+          <span class="padding-5"></span>
+          <input [(ngModel)]=quantity
+            type="number"
+            name="quantity"
+            required
+            min="1"
+          >
+        </label>
+
+        <!-- <p class="card-text">
+          <label for="quantity">Quantity</label>
+          <span class="padding-5">
+            <input name="quantity" type="number" min="1" [(ngModel)]=quantity required>
+          </span>
+        </p> -->
+        <p class="card-text"><strong>Subtotal: </strong>
+          <label id="subtotal">{{quantity * product?.price | currency}}</label>
+        </p>
+      </div>
+      <div class="button-row card-footer">
+        <button mat-stroked-button color="accent" (click)="goBack()">Go Back</button>
+        <button mat-raised-button color="primary" (click)="onAddToShoppingCart()">Add to cart</button>
+
+        <a placement="top" mdbTooltip="Add to Wishlist" container="body" (click)="onAddToShoppingList()">
+            <i class="fa fa-heart fa-2x"></i>
+        </a>
+
+        <a *ngIf="authService.isAdmin()"
+          mat-flat-button color="success"
+          [routerLink]="['/product-edit', product.id]">Edit
+        </a>
+      </div>
+  </div>
+</div>
+

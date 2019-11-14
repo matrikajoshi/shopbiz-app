@@ -1,0 +1,60 @@
+<h1 align="center" class="display-4 mb-5">My Cart</h1>
+<!--Cart Detail Table-->
+<table *ngIf="shoppingCart" class="table table-striped text-center">
+    <thead>
+    <tr>
+        <th scope="col">Photo</th>
+        <th scope="col">Name</th>
+        <th scope="col">Price</th>
+        <th scope="col">Quantity</th>
+        <th scope="col">Subtotal</th>
+        <th scope="col">Action</th>
+    </tr>
+    </thead>
+    <tbody>
+
+    <tr *ngFor="let cartItem of shoppingCart.cartItems">
+        <th class="align-middle" scope="row">
+            <a routerLink="/products/{{cartItem.product.id}}">
+              <img height="100px"
+                  src="{{ baseURL }}images/{{cartItem.product.image}}"
+                  alt="{{cartItem.product.name}}">
+            </a>
+        </th>
+        <td class="align-middle"><a
+                routerLink="/products/{{cartItem.product.id}}">{{cartItem.product.name}}</a></td>
+        <td class="align-middle">{{cartItem.product.price | currency}}</td>
+
+        <td class="align-middle">
+            <a (click)="minusOne(cartItem)"><i class="fa fa-minus"></i></a>
+            <input min="1" id="{{cartItem.product.id}}"
+                   [max]=10
+                   [(ngModel)]="cartItem.quantity"
+                   (change)="onChange(cartItem)"
+                   size="5"
+                   type="number"
+                   required
+                   name='count'>
+            <a (click)="addOne(cartItem)"> <i class="fa fa-plus"></i></a>
+        </td>
+
+        <td class="align-middle">{{cartItem.product.price * cartItem.quantity|currency}}</td>
+        <td class="align-middle">
+            <a (click)="remove(cartItem)" routerLink="./">Remove</a>
+        </td>
+
+    </tr>
+
+    </tbody>
+</table>
+
+<div class="row" *ngIf="shoppingCart?.cartItems?.length > 0; else empty">
+    <h5 style="display: inline;">Total: {{total | currency}}</h5>
+    <button (click)="checkout()" mat-raised-button color="primary">Checkout</button>
+</div>
+<ng-template #empty>
+    <h4 class="text-muted text-center">You do not have any items in shopping cart</h4>
+</ng-template>
+
+
+

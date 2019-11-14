@@ -1,0 +1,17 @@
+<div class="container">
+  <h3>Top Products</h3>
+  <div class="grid grid-pad">
+    <a *ngFor="let product of products" class="col-1-4"
+        routerLink="/products/{{product.id}}">
+      <div class="module hero">
+        <h4>{{product.id}}-{{product.name}}</h4>
+      </div>
+    </a>
+  </div>
+  <div class="row">
+    <button
+      *ngIf="authService.isAdmin()"
+      class="btn btn-primary"
+      routerLink="/products-add/">Add Product</button>
+  </div>
+</div>

@@ -1,0 +1,14 @@
+.padding-5 {
+    padding-right: 0;
+    padding-left: 10px;
+}
+
+.button-row button,
+.button-row a {
+  margin-right: 8px;
+}
+
+.card-footer a .fa-heart {
+  margin-left: 10px;
+  color: var(--navBackground) !important;
+}

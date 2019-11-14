@@ -1,0 +1,39 @@
+<div fxFlex fxLayout="column" fxLayoutGap="10px" *ngIf="products">
+  <mat-grid-list cols="2" rowHeight="2:1" [gutterSize]="'10px'">
+    <mat-grid-tile  *ngFor="let product of products; let i = index">
+        <a
+        [routerLink]="['/products', product.id]"
+        href="#"
+        fragment="loading"
+        >
+        <mat-card class="product-card" fxFlex="100">
+              <mat-card-header>
+
+                <mat-card-title>{{product.name | uppercase}}</mat-card-title>
+                <!-- <mat-card-subtitle>By Seller</mat-card-subtitle> -->
+              </mat-card-header>
+              <!-- <img mat-card-image src="{{ baseURL }}images/{{ product.image }}" alt="{{product.name}}"> -->
+              <mat-card-content>
+                <!-- <img mat-card-image src="{{ baseURL }}images/{{ product.image }}" alt="{{product.name}}"> -->
+                <img height="200px" src="{{ baseURL }}images/{{ product.image }}" alt={{product.name}}>
+              </mat-card-content>
+              <mat-card-actions>
+                <span class="card-text"><strong>Price: </strong>{{product.price | currency}}</span>
+                <!-- <button mat-button>LIKE</button>
+                <button mat-button>SHARE</button> -->
+                <div fxFlex></div>
+                <a
+                mat-flat-button color="primary"
+                [routerLink]="['/products', product.id]">
+                View Details
+                </a>
+              </mat-card-actions>
+
+            </mat-card>
+          </a>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </div>
+  <div [hidden]="products">
+    <mat-spinner></mat-spinner><h4>Loading . . . Please Wait</h4>
+  </div>

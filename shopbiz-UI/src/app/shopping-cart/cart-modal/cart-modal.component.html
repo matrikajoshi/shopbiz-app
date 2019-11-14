@@ -1,0 +1,10 @@
+<div mat-dialog-content fxLayout="row" fxLayoutAlign="center center">
+  <p>You have successfully updated your cart.</p>
+</div>
+<div mat-dialog-actions fxLayout="row" fxLayoutAlign="space-around center">
+    <a mat-flat-button color="accent" (click)="onNoClick()" [routerLink]="['/cart']">Go To Cart
+      </a>
+      <a mat-flat-button color="primary" (click)="onNoClick()" [routerLink]="['/products']">Continue Shopping
+      </a>
+</div>
+

@@ -1,0 +1,64 @@
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" (click)="collapsed = !collapsed">
+        <span class="icon-bar" *ngFor="let iconBar of [1, 2, 3]"></span>
+      </button>
+        <a routerLink="/" class="navbar-brand">{{ title }}</a>
+    </div>
+
+    <div class="navbar-collapse" [class.collapse]="collapsed" (window:resize)="collapsed = true">
+      <ul class="nav navbar-nav">
+        <li routerLinkActive="active" *ngIf="!isAuthenticated">
+          <a routerLink="/auth">Sign In</a>
+        </li>
+        <li routerLinkActive="active" *ngIf="isAuthenticated">
+          <a routerLink="/shopping-list">Shopping List</a>
+        </li>
+        <li>
+          <a [routerLink]="['/dashboard']" routerLinkActive="router-link-active" >Offers</a>
+        </li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+          <li>
+            <a class="nav-item nav-link" routerLink="/cart">
+              <i class="fa fa-shopping-cart">
+                  <span *ngIf="shoppingCartService.navbarCartCount > 0"
+                    class="mt-10 cartCount">
+                    {{shoppingCartService.navbarCartCount}}
+                  </span>
+              </i>
+              Cart
+            </a>
+          </li>
+
+          <!-- <li class="dropdown" appDropdown *ngIf="isAuthenticated">
+            <a style="cursor: pointer;" class="dropdown-toggle" role="button"
+              >Manage <span class="caret"></span
+            ></a>
+            <ul class="dropdown-menu">
+              <li>
+                <a style="cursor: pointer;" (click)="onSaveData()">Your Orders</a>
+              </li>
+              <li>
+                <a style="cursor: pointer;" (click)="onFetchData()">Create a Wish List</a>
+              </li>
+            </ul>
+          </li> -->
+          <li *ngIf="isAuthenticated">
+            <a style="cursor: pointer;" (click)="onLogout()">Logout</a>
+          </li>
+
+        <!-- <li class="dropdown" *ngIf="isAuthenticated">
+          <div class="btn-group">
+            <a href="#" class="dropdown-toggle" role="button">Manage <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="#">Your Orders</a> </li>
+              <li><a href="#">Create a Wish List</a></li>
+            </ul>
+          </div>
+        </li> -->
+      </ul>
+    </div>
+  </div>
+</nav>
