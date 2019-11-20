@@ -21,7 +21,7 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
     private shoppingListService: ShoppingListService,
     private shoppingCartService: ShoppingCartService,
     private router: Router,
-    @Inject("BaseURL") private baseURL
+    @Inject("BaseURL")  public baseURL
   ) {}
 
   ngOnInit() {

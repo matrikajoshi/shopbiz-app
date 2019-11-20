@@ -1,10 +1,13 @@
 package self.edu.shopbiz.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -26,6 +29,7 @@ public class User {
 
     private String password;
 
+    @Size(min=2, message="Name should have at least 2 characters")
     private String userName;
 
     @CreationTimestamp

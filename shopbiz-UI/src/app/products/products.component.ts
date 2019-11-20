@@ -1,8 +1,9 @@
 import { Component, OnInit, Inject } from '@angular/core';
 
-import { ProductService } from '../services/product.service';
+import { ProductService, PageableProducts } from '../services/product.service';
 import { Product } from '../models/product';
 import { AuthService } from '../services/auth.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-products',
@@ -19,7 +20,7 @@ export class ProductsComponent implements OnInit {
   constructor(
     private productService: ProductService,
     authService: AuthService,
-    @Inject('BaseURL') private baseURL
+    @Inject('BaseURL') public baseURL
   ) {
     this.authService = authService;
   }
@@ -31,8 +32,8 @@ export class ProductsComponent implements OnInit {
 
   getProducts(): void {
     this.productService.getProducts()
-      .subscribe(products => this.products = products);
-	}
+      .subscribe((resp: PageableProducts) => this.products = resp.content);
+  }
 
   add(name: string): void {
     name = name.trim();

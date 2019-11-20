@@ -1,12 +1,11 @@
-import {Injectable} from "@angular/core";
+import {Injectable, Inject} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
 import {HttpErrorResponse} from "@angular/common/http";
 import {Router} from "@angular/router";
-import {BehaviorSubject, throwError} from "rxjs";
+import {BehaviorSubject, throwError, Observable} from "rxjs";
 import {catchError, tap} from "rxjs/internal/operators";
 
 import { User } from '../models/user';
-import {baseURL} from "../shared/baseurl";
 
 export interface AuthResponseData {
   kind: string;
@@ -25,10 +24,13 @@ export class AuthService {
   loggedInUser: User;
   private tokenExpirationTimer: any;
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    @Inject("BaseURL") private baseURL) {}
 
   signup(email: string, password: string) {
-    const signupUrl = `${baseURL}users/signup`;
+    const signupUrl = `${this.baseURL}users/signup`;
     return this.http
       .post<AuthResponseData>(signupUrl, {
         email: email,
@@ -49,8 +51,8 @@ export class AuthService {
       );
   }
 
-  login(email: string, password: string) {
-    const loginUrl = `${baseURL}login`;
+  login(email: string, password: string): Observable<AuthResponseData> {
+    const loginUrl = `${this.baseURL}login`;
     return this.http
       .post<AuthResponseData>(loginUrl, {
         email: email,
@@ -155,7 +157,7 @@ export class AuthService {
   isAdmin() {
     if (this.loggedInUser) {
       // console.log("roles: " + this.loggedInUser.roles);
-      return this.loggedInUser.roles.includes("ROLE_ADD_PRODUCT");
+      return this.loggedInUser.roles.includes("ROLE_MANAGE_PRODUCT");
     }
   }
 }

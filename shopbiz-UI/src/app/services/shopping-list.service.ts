@@ -2,12 +2,12 @@ import { Injectable } from '@angular/core';
 import {Product} from '../models/product';
 import {HttpHeaders} from '@angular/common/http';
 
-import {baseURL} from '../shared/baseurl';
 import {MessageService} from './message.service';
 import {HttpClient} from '@angular/common/http';
 import {tap} from 'rxjs/internal/operators';
 import {ShoppingList} from '../models/shoppingList';
 import {Observable, Subject, of} from 'rxjs';
+import { baseURL } from 'src/environments/environment';
 
 
 const httpOptions = {

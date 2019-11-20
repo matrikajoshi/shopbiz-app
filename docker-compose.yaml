@@ -1,0 +1,37 @@
+version: '3'
+services:
+  shopbiz-ui:
+    container_name: shopbiz-UI
+    build: ./shopbiz-UI
+    ports:
+      - "80:80"
+    depends_on:
+      - shopbiz
+  shopbiz:
+    container_name: shopbiz
+    restart: always
+    build: ./shopbiz
+    working_dir: /shopbiz
+    volumes:
+      - ./shopbiz:/shopbiz
+      - ~/.m2:/root/.m2
+    ports:
+      - "8080:8080"
+    command: mvn clean spring-boot:run -Dspring-boot.run.profiles=docker
+    depends_on:
+      - mp-mysql
+  mp-mysql:
+    container_name: mp-mysql
+    image: mysql/mysql-server:5.7
+    environment:
+      MYSQL_DATABASE: shopbiz
+      MYSQL_ROOT_PASSWORD: taco
+      MYSQL_ROOT_HOST: '%'
+    volumes:
+      - db-data:/var/lib/mysql
+    # ports:
+    #   - "3306:3306"
+    restart: always
+
+volumes:
+  db-data:

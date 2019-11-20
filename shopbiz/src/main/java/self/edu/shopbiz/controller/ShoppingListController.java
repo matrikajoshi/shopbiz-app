@@ -1,11 +1,12 @@
 package self.edu.shopbiz.controller;
 
-
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import io.swagger.annotations.Api;
 import self.edu.shopbiz.dto.ShoppingListDto;
 import self.edu.shopbiz.model.Product;
 import self.edu.shopbiz.model.ShoppingList;
@@ -21,6 +22,7 @@ import java.util.stream.Collectors;
  */
 
 @RestController
+@Api(tags = {"Shopping List"})
 public class ShoppingListController {
 
     private ShoppingListService shoppingListService;
@@ -61,30 +63,6 @@ public class ShoppingListController {
         return shoppingList;
     }
 
-    @PostMapping(path="/shoppingList/{shoppingListId}")
-    public ShoppingList addProductToShoppingListWithId(@RequestBody Product product,
-                                                 @PathVariable("shoppingListId") Integer id){
-        //TODO get userId from session
-        int userId = 1;
-        ShoppingList shoppingList = shoppingListService.addProductByShoppingListId(id, product);
-
-        return shoppingList;
-    }
-
-    @GetMapping(path="/shoppingLists")
-    public List<ShoppingListDto> getAllShoppingList(){
-        Integer userId = SecurityUtil.getLoggedInUserId();
-        List<ShoppingList> shoppingLists = shoppingListService.getAllShoppingList(userId);
-//        List<ShoppingListDto> shoppingListDTOS = new ArrayList<>();
-//        for(ShoppingList shoppingList: shoppingLists){
-//            ShoppingListDto shoppingListDTO = convertToDTO(shoppingList);
-//            shoppingListDTOS.add(shoppingListDTO);
-//        }
-//        return shoppingListDTOS;
-        return shoppingLists.stream()
-                .map(shoppingList -> convertToDTO(shoppingList))
-                .collect(Collectors.toList());
-    }
 
     private ShoppingListDto convertToDTO(ShoppingList shoppingList){
         ShoppingListDto shoppingListDto = modelMapper.map(shoppingList, ShoppingListDto.class);

@@ -53,6 +53,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         web.ignoring()
                 .antMatchers(HttpMethod.GET, "/products/**")
                 .antMatchers( "/images/**", "/error/**", "/error", SIGN_UP_URL, "/resources/**", "/static/**", "/public/**", "/webui/**",
+                        "/swagger-ui/**", "/swagger-resources/**", "/api-docs", "/api-docs/**",
                         "/h2-console/**", "/actuator/health");
     }
 

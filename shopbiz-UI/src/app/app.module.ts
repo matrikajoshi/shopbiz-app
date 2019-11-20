@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import {FileSelectDirective} from 'ng2-file-upload';
+import { FileUploadModule } from 'ng2-file-upload';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -18,10 +18,12 @@ import { ProductEditComponent } from './products/product-edit/product-edit.compo
 import { ShoppingCartComponent } from './shopping-cart/shopping-cart.component';
 import { OrdersComponent } from './orders/orders.component';
 import { CartModalComponent } from './shopping-cart/cart-modal/cart-modal.component';
-import { baseURL } from './shared/baseurl';
 import { ShoppingListService } from './services/shopping-list.service';
 import { AuthInterceptorService } from './auth/auth.interceptor.service';
 import { MessagesComponent } from './messages/messages.component';
+import { baseURL } from 'src/environments/environment';
+import { DropdownDirective } from './shared/dropdown.directive';
+
 import {
   MatToolbarModule,
   MatListModule,
@@ -36,7 +38,7 @@ import {
   MatSlideToggleModule,
   MatProgressSpinnerModule,
   MatIconModule
-} from "@angular/material";
+} from '@angular/material';
 import { CookieService } from 'ngx-cookie-service';
 
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
@@ -44,10 +46,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
 
+
 @NgModule({
   declarations: [
     AppComponent,
-    FileSelectDirective,
     ProductsComponent,
     MessagesComponent,
     ProductDetailComponent,
@@ -60,11 +62,13 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     LoadingSpinnerComponent,
     ShoppingCartComponent,
     OrdersComponent,
-    CartModalComponent
+    CartModalComponent,
+    DropdownDirective
   ],
   imports: [
     BrowserModule,
     FormsModule,
+    FileUploadModule,
     ReactiveFormsModule,
     AppRoutingModule,
     MatToolbarModule,

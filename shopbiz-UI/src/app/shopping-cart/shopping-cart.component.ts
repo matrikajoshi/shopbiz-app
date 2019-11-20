@@ -26,10 +26,10 @@ export class ShoppingCartComponent
   sub: Subscription;
 
   constructor(private messageService: MessageService,
-    private router: Router,
-    private shoppingCartService: ShoppingCartService,
-    private authService: AuthService,
-    @Inject('BaseURL') private baseURL) {
+              private router: Router,
+              private shoppingCartService: ShoppingCartService,
+              private authService: AuthService,
+              @Inject('BaseURL') public baseURL) {
       this.userSubscription = this.authService.user.subscribe(user => (this.currentUser = user));
   }
 

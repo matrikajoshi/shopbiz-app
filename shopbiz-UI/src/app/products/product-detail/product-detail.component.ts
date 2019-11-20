@@ -45,7 +45,7 @@ export class ProductDetailComponent implements OnInit {
               private shoppingCartService: ShoppingCartService,
               private messageService: MessageService,
               public authService: AuthService,
-              @Inject('BaseURL') private baseURL) {
+              @Inject('BaseURL') public baseURL) {
     this.createForm();
   }
 

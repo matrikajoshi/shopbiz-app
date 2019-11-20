@@ -1,4 +1,4 @@
-@import '@angular/material/prebuilt-themes/deeppurple-amber.css';
+/* @import '@angular/material/prebuilt-themes/deeppurple-amber.css'; */
 
 mat-card img{
   object-fit: cover; /*this makes de image in src fit to the size of specified below*/

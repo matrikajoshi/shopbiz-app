@@ -3,6 +3,7 @@ package self.edu.shopbiz.model;
 import javax.persistence.*;
 import java.util.Collection;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,11 +13,9 @@ import static javax.persistence.GenerationType.IDENTITY;
  * Created by mpjoshi on 10/18/19.
  */
 
-
+@Data
 @Entity
 @Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"NAME"})})
-@Getter
-@Setter
 public class Permission {
 
     @Id

@@ -4,13 +4,13 @@ import { tap, catchError } from 'rxjs/operators';
 import { CookieService } from 'ngx-cookie-service';
 
 import { MessageService } from './message.service';
-import {baseURL} from '../shared/baseurl';
 import { CartItem } from '../models/cartItem';
 import { ShoppingCart } from '../models/shopping-cart';
 import { Observable, of, BehaviorSubject } from 'rxjs';
 import { User } from '../models/user';
 import { Router } from '@angular/router';
 import { AuthService } from './auth.service';
+import { baseURL } from 'src/environments/environment';
 
 const httpOptions = {
   headers: new HttpHeaders({'Content-Type': 'application/json'})
@@ -100,8 +100,8 @@ export class ShoppingCartService {
       this.cookieService.set('cart', JSON.stringify(this.localCart));
       return of(this.localCart);
     } else {
-      const url = `${this.url}/addItem`;
-      return this.http.post<ShoppingCart>(this.url, cartItem, httpOptions).pipe(
+      const url = `${this.url}/cartItem`;
+      return this.http.post<ShoppingCart>(url, cartItem, httpOptions).pipe(
         tap((shoppingCart: ShoppingCart) => {
           this.navbarCartCount = shoppingCart.cartItems.length;
           this.log(
@@ -114,7 +114,7 @@ export class ShoppingCartService {
 
   update(cartItem) {
     if (this.currentUser) {
-      const url = `${this.url}/${cartItem.id}`;
+      const url = `${this.url}/cartItem/${cartItem.id}`;
       return this.http.put<CartItem>(url, cartItem.quantity)
       .pipe(
         tap(item => console.log('Updated cart item quantity to: ' + item.quantity))
@@ -133,7 +133,7 @@ export class ShoppingCartService {
       this.calculateLocalCartProdCounts();
       return of(this.localCart);
     } else {
-      const url = `${this.url}/${cartItem.id}`;
+      const url = `${this.url}/cartItem/${cartItem.id}`;
       return this.http.delete<ShoppingCart>(url, httpOptions).pipe(
         tap(cart => this.navbarCartCount = cart.cartItems.length)
       );

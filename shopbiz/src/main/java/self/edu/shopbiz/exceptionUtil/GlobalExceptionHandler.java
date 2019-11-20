@@ -15,13 +15,9 @@ import java.util.List;
 import java.util.Map;
 
 /*
-@ControllerAdvice tells your spring application that this class will do the exception handling for your application.
-@RestController will make it a controller and let this class render the response.
-Use @ExceptionHandler annotation to define the class of Exception it will catch. (A Base class will catch all the Inherited and extended classes)
+@ControllerAdvice - interceptor of exceptions thrown by methods annotated with @RequestMapping
 */
-
 @ControllerAdvice
-//@RestController
 public class GlobalExceptionHandler {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());

@@ -5,8 +5,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 import self.edu.shopbiz.model.Product;
 
-import java.util.Optional;
-
 /**
  * Created by mpjoshi on 10/11/19.
  */
@@ -20,4 +18,6 @@ public interface ProductService {
     Product save(MultipartFile multipartImage, Product product) throws Exception;
 
     Product save(Product product);
+
+    void deleteProduct(Long productId);
 }

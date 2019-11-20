@@ -2,9 +2,13 @@ package self.edu.shopbiz.controller;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+
+import io.swagger.annotations.Api;
+import self.edu.shopbiz.exceptionUtil.ResourceNotFoundException;
 import self.edu.shopbiz.model.User;
 import self.edu.shopbiz.repository.UserRepository;
 
+import javax.annotation.security.RolesAllowed;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,6 +18,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/users")
+@Api(tags = {"Users"})
 public class UserController {
 
     private UserRepository userRepository;
@@ -37,17 +42,18 @@ public class UserController {
         return "OK";
     }
 
-    //TO DO add security
-    @GetMapping(path="/all")
+    @GetMapping
+    @RolesAllowed("MANAGE_PRODUCT")
     public @ResponseBody List<User> getAllUsers() {
         List<User> customers = userRepository.findAll();
         return customers;
     }
 
     @GetMapping("/{id}")
-    public @ResponseBody Optional<User> getCustomerById(@PathVariable("id") Integer id){
+    @RolesAllowed("MANAGE_PRODUCT")
+    public @ResponseBody User getCustomerById(@PathVariable("id") Integer id){
         Optional<User> customerOptional = userRepository.findById(id);
-        return customerOptional;
+        return customerOptional.orElseThrow(ResourceNotFoundException::new);
     }
 
 

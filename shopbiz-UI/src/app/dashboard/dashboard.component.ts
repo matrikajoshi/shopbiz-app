@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 
 import { Product } from '../models/product';
-import { ProductService }  from '../services/product.service';
+import { ProductService, PageableProducts } from '../services/product.service';
 import { AuthService } from '../services/auth.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-dashboard',
@@ -22,8 +23,11 @@ export class DashboardComponent implements OnInit {
   }
 
   getProducts(): void {
-    this.productService.getProducts()
-      .subscribe(products => this.products = products.slice(0, 4));
+    let pageProdObs: Observable<PageableProducts>;
+    pageProdObs = this.productService.getProducts();
+
+    pageProdObs.subscribe(
+        (resData: PageableProducts) => this.products = resData.content.slice(0, 4));
   }
 
 }

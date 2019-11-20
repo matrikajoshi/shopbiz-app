@@ -21,7 +21,7 @@ export class ProductEditComponent implements OnInit {
               private productService: ProductService,
               private shoppingListService: ShoppingListService,
               private formBuilder: FormBuilder,
-              @Inject('BaseURL') private baseURL) { }
+              @Inject('BaseURL') public baseURL) { }
 
   ngOnInit() {
 

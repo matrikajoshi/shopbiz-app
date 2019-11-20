@@ -1,10 +1,11 @@
 package self.edu.shopbiz.controller;
 
-
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+
+import io.swagger.annotations.Api;
 import self.edu.shopbiz.dto.CartItemDto;
 import self.edu.shopbiz.model.CartItem;
 import self.edu.shopbiz.model.ShoppingCart;
@@ -16,6 +17,7 @@ import self.edu.shopbiz.util.SecurityUtil;
 
 
 @RestController()
+@Api(tags = {"Shopping Cart"})
 public class ShoppingCartController {
 
     private static final String SHOPPING_CART = "shoppingCart";
@@ -49,7 +51,7 @@ public class ShoppingCartController {
     }
 
 
-    @PostMapping(path = "/shoppingCart")
+    @PostMapping(path = "/shoppingCart/cartItem")
     public ShoppingCart createShoppingCart(@RequestBody CartItemDto cartItemDto) {
         Authentication authentication = SecurityUtil.getAuthentication();
         MyUserPrincipal myUserPrincipal = (MyUserPrincipal) authentication.getPrincipal();
@@ -62,25 +64,25 @@ public class ShoppingCartController {
     }
 
 
+//
+//    @PutMapping(path="/shoppingCart/addItem")
+//    public ShoppingCart addProductToShoppingCart(@RequestBody CartItem cartItem){
+//        MyUserPrincipal myUserPrincipal = SecurityUtil.getLoggedInUser();
+//        Integer userId = myUserPrincipal.getUser().getId();
+//        ShoppingCart shoppingCart = shoppingCartService.getShoppingCartByCustomerId(userId)
+//                .orElseGet(() -> new ShoppingCart());
+//        shoppingCart = shoppingCartService.addCartItemToShoppingCart(myUserPrincipal, cartItem, shoppingCart);
+//        return shoppingCart;
+//    }
 
-    @PutMapping(path="/shoppingCart/addItem")
-    public ShoppingCart addProductToShoppingCart(@RequestBody CartItem cartItem){
-        MyUserPrincipal myUserPrincipal = SecurityUtil.getLoggedInUser();
-        Integer userId = myUserPrincipal.getUser().getId();
-        ShoppingCart shoppingCart = shoppingCartService.getShoppingCartByCustomerId(userId)
-                .orElseGet(() -> new ShoppingCart());
-        shoppingCart = shoppingCartService.addCartItemToShoppingCart(myUserPrincipal, cartItem, shoppingCart);
-        return shoppingCart;
-    }
-
-    @PutMapping(path = "/shoppingCart/{cartItemId}")
+    @PutMapping(path = "/shoppingCart/cartItem/{cartItemId}")
     public CartItem updateCartItemQuantity(@PathVariable("cartItemId") Integer cartItemId,
                                                @RequestBody Integer itemCount) {
         CartItem cartItem = shoppingCartService.updateCartItem(cartItemId, itemCount);
         return cartItem;
     }
 
-    @DeleteMapping(path="/shoppingCart/{cartItemId}")
+    @DeleteMapping(path="/shoppingCart/cartItem/{cartItemId}")
     public ShoppingCart deleteShoppingCartItem(@PathVariable("cartItemId") Integer cartItemId){
         //to do check authentication / authorization
         MyUserPrincipal loggedInUser = SecurityUtil.getLoggedInUser();

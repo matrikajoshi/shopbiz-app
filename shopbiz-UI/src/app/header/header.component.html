@@ -10,10 +10,10 @@
     <div class="navbar-collapse" [class.collapse]="collapsed" (window:resize)="collapsed = true">
       <ul class="nav navbar-nav">
         <li routerLinkActive="active" *ngIf="!isAuthenticated">
-          <a routerLink="/auth">Sign In</a>
+          <a routerLink="/auth">Log In / Sign Up</a>
         </li>
         <li routerLinkActive="active" *ngIf="isAuthenticated">
-          <a routerLink="/shopping-list">Shopping List</a>
+          <a routerLink="/shopping-list">Wish List</a>
         </li>
         <li>
           <a [routerLink]="['/dashboard']" routerLinkActive="router-link-active" >Offers</a>
@@ -54,7 +54,7 @@
             <a href="#" class="dropdown-toggle" role="button">Manage <span class="caret"></span></a>
             <ul class="dropdown-menu">
               <li><a href="#">Your Orders</a> </li>
-              <li><a href="#">Create a Wish List</a></li>
+              <li><a href="#">Your profile</a></li>
             </ul>
           </div>
         </li> -->

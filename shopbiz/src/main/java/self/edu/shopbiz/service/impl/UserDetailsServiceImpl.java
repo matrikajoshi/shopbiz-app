@@ -50,26 +50,30 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     public Set<SimpleGrantedAuthority> getUserPermission(User user){
 
-        Set<SimpleGrantedAuthority> authorities = user.getRoles()
-                .stream()
-                .flatMap(role -> role.getPermissions()
-                        .stream()
-                        .map(permission ->
-                                new SimpleGrantedAuthority(permission.getName())))
-                .collect(Collectors.toSet());
+//        Set<SimpleGrantedAuthority> authorities = user.getRoles()
+//                .stream()
+//                .flatMap((Role role) -> role.getPermissions()
+//                        .stream()
+//                        .map(permission ->
+//                                new SimpleGrantedAuthority(permission.getName())))
+//                .collect(Collectors.toSet());
+
+
+        Set<SimpleGrantedAuthority> authorities = new HashSet<>();
+        for (Role role : user.getRoles()) {
+            Set<SimpleGrantedAuthority> grantedAuthorities = role.getPermissions()
+                    .stream()
+                    .map(
+                    permission ->
+                            new SimpleGrantedAuthority(permission.getName()))
+                    .collect(Collectors.toSet());
+            authorities.addAll(grantedAuthorities);
+        }
+
 
         return authorities;
 
-        /**
-         * Set<SimpleGrantedAuthority> authorities = new HashSet<>();
-         for(Role role: user.getRoles()){
-         Set<SimpleGrantedAuthority> grantedAuthorities = role.getPermissions().stream().map(
-         permission ->
-         new SimpleGrantedAuthority(permission.getName()))
-         .collect(Collectors.toSet());
-         authorities.addAll(grantedAuthorities);
-         }
-         */
+
     }
 
 

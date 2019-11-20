@@ -16,13 +16,12 @@ import self.edu.shopbiz.repository.CategoryRepository;
 import self.edu.shopbiz.repository.ProductRepository;
 import self.edu.shopbiz.service.ProductService;
 
+import javax.transaction.Transactional;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.time.Instant;
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 /**
  * Created by mpjoshi on 10/11/19.
@@ -96,6 +95,13 @@ public class ProductServiceImpl implements ProductService{
 //        product.setLastUpdated(LocalDateTime.now());
         Product savedProduct = productRepository.save(product);
         return savedProduct;
+    }
+
+    @Override
+    @Transactional
+    public void deleteProduct(Long productId) {
+        Product productById = this.findProductById(productId);
+        productRepository.delete(productById);
     }
 
 }

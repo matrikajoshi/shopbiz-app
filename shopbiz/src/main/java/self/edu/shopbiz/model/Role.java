@@ -33,8 +33,7 @@ public class Role {
                     name = "role_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(
                     name = "permission_id", referencedColumnName = "id"))
-    @Getter
-    @Setter
+
     private Collection<Permission> permissions;
 
 }
