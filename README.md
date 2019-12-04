@@ -40,7 +40,7 @@ HAL browser will list available REST API endpoints.
 ### To run frontend with Angular CLI and NodeJS
 - navigate to shopbiz-UI
 ```
-$ cd shopbiz-UI
+$ cd shopbiz-ui
 $ npm install
 $ ng serve
 ```
