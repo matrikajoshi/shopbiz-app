@@ -25,7 +25,7 @@ Set up mysql
 
 Navigate to shopbiz directory
 
- -```$ cd shopbiz```
+ -```$ cd shopbiz-api```
  
 Run as spring-boot application 
 
