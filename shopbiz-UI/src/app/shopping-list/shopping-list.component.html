@@ -2,7 +2,7 @@
 <div *ngIf="shoppingList?.products?.length > 0; else empty" class="row card-deck text-center">
   <div *ngFor="let product of shoppingList.products" class="col-lg-4 ">
     <div class="card mb-4"  >
-      <img height="50%" class="card-img-top" src="{{ baseURL }}images/{{ product.image }}" alt="{{product.name}}">
+      <img height="50%" class="card-img-top" src="{{ baseURL }}images/{{ product.imageUrl }}" alt="{{product.name}}">
       <div class="card-body">
         <h4 class="card-title ">{{product.name}}</h4>
         <div class="text-left">

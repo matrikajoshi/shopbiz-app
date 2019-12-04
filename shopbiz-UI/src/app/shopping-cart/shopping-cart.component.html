@@ -17,7 +17,7 @@
         <th class="align-middle" scope="row">
             <a routerLink="/products/{{cartItem.product.id}}">
               <img height="100px"
-                  src="{{ baseURL }}images/{{cartItem.product.image}}"
+                  src="{{ baseURL }}images/{{cartItem.product.imageUrl}}"
                   alt="{{cartItem.product.name}}">
             </a>
         </th>
@@ -47,7 +47,7 @@
 
     </tbody>
 </table>
-
+<!-- length of 0 is false, to check -->
 <div class="row" *ngIf="shoppingCart?.cartItems?.length > 0">
     <h5 style="display: inline;">Total: {{total | currency}}</h5>
     <button (click)="checkout()" mat-raised-button color="primary">Checkout</button>

@@ -17,7 +17,7 @@ const httpOptions = {
 };
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root' // {providedIn: 'root'} - no need to declare in appModule
 })
 export class ShoppingCartService {
   shoppingCartInOrder = new EventEmitter<ShoppingCart>();
@@ -64,13 +64,20 @@ export class ShoppingCartService {
         return this.http.get<ShoppingCart>(this.url)
         .pipe(
           tap(cart => {
-            this.navbarCartCount = cart.cartItems.length;
+            // this.navbarCartCount = cart.cartItems.length;
+
+            this.navbarCartCount = cart.cartItems.reduce(
+              (accumalatedQuantity, cartItem) =>
+                accumalatedQuantity + cartItem.quantity,
+              0
+            );
             this.log('fetched shopping cart with items: ' + cart.cartItems.length);
           }),
           catchError(_ => new Observable<ShoppingCart>())
         );
       }
     } else {
+      // can use reduce method of javascript
       this.navbarCartCount = localShoppingCart.cartItems.length;
       return of(localShoppingCart);
     }
@@ -131,6 +138,7 @@ export class ShoppingCartService {
         this.localCart.cartItems.splice(index, 1);
       }
       this.calculateLocalCartProdCounts();
+      this.cookieService.set('cart', JSON.stringify(this.localCart));
       return of(this.localCart);
     } else {
       const url = `${this.url}/cartItem/${cartItem.id}`;
@@ -164,6 +172,11 @@ export class ShoppingCartService {
   // returning products count in local cart
   calculateLocalCartProdCounts() {
     this.navbarCartCount = this.localCart.cartItems.length;
+  }
+
+  getShoppingCartNavBarCount() {
+    //console.log("updating nav bar count after refresh");
+    this.getCart();
   }
 
   private log(message: string) {

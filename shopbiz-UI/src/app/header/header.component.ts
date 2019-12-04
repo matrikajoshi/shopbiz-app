@@ -3,6 +3,8 @@ import { Subscription } from 'rxjs';
 
 import { ShoppingCartService } from '../services/shopping-cart.service';
 import { AuthService } from '../services/auth.service';
+// import { ShoppingIcon } from '../../assets/shopping-bag.svg';
+// import  * as ShoppingIcon   from 'raw-loader!../../assets/shopping-bag.svg';
 
 @Component({
   selector: 'app-header',

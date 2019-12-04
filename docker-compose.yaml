@@ -1,19 +1,19 @@
 version: '3'
 services:
   shopbiz-ui:
-    container_name: shopbiz-UI
-    build: ./shopbiz-UI
+    container_name: shopbiz-ui
+    build: ./shopbiz-ui
     ports:
       - "80:80"
     depends_on:
       - shopbiz
   shopbiz:
-    container_name: shopbiz
+    container_name: shopbiz-api
     restart: always
-    build: ./shopbiz
-    working_dir: /shopbiz
+    build: ./shopbiz-api
+    working_dir: /shopbiz-api
     volumes:
-      - ./shopbiz:/shopbiz
+      - ./shopbiz-api:/shopbiz-api
       - ~/.m2:/root/.m2
     ports:
       - "8080:8080"

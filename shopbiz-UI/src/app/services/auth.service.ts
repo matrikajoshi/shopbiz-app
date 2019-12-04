@@ -17,7 +17,7 @@ export interface AuthResponseData {
   roles: string[];
   registered?: boolean;
 }
-
+// service within another service
 @Injectable({ providedIn: "root" })
 export class AuthService {
   user = new BehaviorSubject<User>(null);
@@ -34,8 +34,7 @@ export class AuthService {
     return this.http
       .post<AuthResponseData>(signupUrl, {
         email: email,
-        password: password,
-        returnSecureToken: true
+        password: password
       })
       .pipe(
         catchError(this.handleError),
@@ -56,8 +55,7 @@ export class AuthService {
     return this.http
       .post<AuthResponseData>(loginUrl, {
         email: email,
-        password: password,
-        returnSecureToken: true
+        password: password
       })
       .pipe(
         catchError(this.handleError),

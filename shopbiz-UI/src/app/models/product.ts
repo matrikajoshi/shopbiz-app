@@ -7,7 +7,7 @@ export class Product {
   category: string;
   featured: boolean;
   description: string;
-  image: string;
+  imageUrl: string;
   price: number;
   active: boolean;
   lastUpdated: string;

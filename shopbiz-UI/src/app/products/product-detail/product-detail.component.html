@@ -1,3 +1,4 @@
+<link href="https://fonts.googleapis.com/css?family=Poiret+One&display=swap" rel="stylesheet">
 <div class="container"
      fxLayout="row wrap"
      fxLayout.sm="column"
@@ -9,13 +10,13 @@
   <div *ngIf="product" class="row text-center justify-content-center">
     <div class="card mb-4">
 
-      <h4>{{product.name | uppercase}} Details</h4>
+      <h4 class="productLabel">{{product.name | uppercase}}</h4>
       <div>
-        <img src="{{ baseURL }}images/{{ product.image }}" alt="{{product.name}}">
+        <img src="{{ baseURL }}images/{{ product.imageUrl }}" alt="{{product.name}}">
       </div>
 
       <div class="card-text">
-        <p lass="card-test">
+        <p class="card-desc">
           <strong>Description: </strong>{{product.description}}
         </p>
       </div>

@@ -10,9 +10,9 @@ import { debounceTime, switchMap } from 'rxjs/operators';
 import { AuthService } from '../services/auth.service';
 
 @Component({
-  selector: "app-shopping-cart",
-  templateUrl: "./shopping-cart.component.html",
-  styleUrls: ["./shopping-cart.component.css"]
+  selector: 'app-shopping-cart',
+  templateUrl: './shopping-cart.component.html',
+  styleUrls: ['./shopping-cart.component.css']
 })
 export class ShoppingCartComponent
   implements OnInit, OnDestroy, AfterContentChecked {
@@ -36,7 +36,7 @@ export class ShoppingCartComponent
   ngOnInit() {
     this.shoppingCartService.getCart().subscribe(shoppingCart => {
       this.shoppingCart = shoppingCart;
-      console.log("shoppig cart items: " + this.shoppingCart.cartItems.length);
+      console.log('shoppig cart items: ' + this.shoppingCart.cartItems.length);
     });
 
     this.sub = this.updatedCartItem.pipe(
@@ -88,7 +88,7 @@ export class ShoppingCartComponent
         this.shoppingCart.cartItems = this.shoppingCart.cartItems
           .filter(e => e.product.id !== cartItem.product.id);
       },
-      _ => this.messageService.add("Removing Product failed"));
+      _ => this.messageService.add('Removing Product failed'));
   }
 
   checkout() {

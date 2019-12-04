@@ -44,9 +44,9 @@
             type="text"
             class="form-control">
         </div>
-        <div *ngIf="product && product.image">
+        <div *ngIf="product && product.imageUrl">
           <br />
-          <img src="{{ baseURL }}images/{{ product.image }}" width="100px">
+          <img src="{{ baseURL }}images/{{ product.imageUrl }}" width="100px">
         </div>
         <div class="form-group">
           <label for="image">Change File: </label>

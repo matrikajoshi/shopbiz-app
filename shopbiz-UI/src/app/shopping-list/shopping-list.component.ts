@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, Inject } from '@angular/core';
-import {ShoppingList} from "../models/shoppingList";
-import {ShoppingListService} from "../services/shopping-list.service";
+import {ShoppingList} from '../models/shoppingList';
+import {ShoppingListService} from '../services/shopping-list.service';
 import { Subscription } from 'rxjs';
 import { ShoppingCartService } from '../services/shopping-cart.service';
 import { CartItem } from '../models/cartItem';
@@ -8,9 +8,9 @@ import { Product } from '../models/product';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: "app-shopping-list",
-  templateUrl: "./shopping-list.component.html",
-  styleUrls: ["./shopping-list.component.css"]
+  selector: 'app-shopping-list',
+  templateUrl: './shopping-list.component.html',
+  styleUrls: ['./shopping-list.component.css']
 })
 export class ShoppingListComponent implements OnInit, OnDestroy {
   subscription: Subscription;
@@ -21,7 +21,7 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
     private shoppingListService: ShoppingListService,
     private shoppingCartService: ShoppingCartService,
     private router: Router,
-    @Inject("BaseURL")  public baseURL
+    @Inject('BaseURL')  public baseURL
   ) {}
 
   ngOnInit() {
@@ -43,9 +43,9 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
 
   private setTitle() {
     if (this.shoppingList) {
-      this.title = this.shoppingList.customerName + "'s Shopping List";
+      this.title = this.shoppingList.customerName + '\'s Shopping List';
     } else {
-      this.title = "You don't have any products in Shopping List";
+      this.title = 'You don\'t have any products in Shopping List';
     }
   }
 
@@ -58,7 +58,7 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
       sl => {
         this.shoppingList = sl;
       },
-      _ => console.log("Removing from shopping list failed")
+      _ => console.log('Removing from shopping list failed')
     );
   }
 
@@ -66,11 +66,11 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
     const item = new CartItem(product, 1);
     this.shoppingCartService.addItemToShoppingCart(item).subscribe(
       cart => {
-        console.log("Product added to cart");
+        console.log('Product added to cart');
         this.removeFromList(product);
-        this.router.navigateByUrl("/cart");
+        this.router.navigateByUrl('/cart');
       },
-      _ => console.log("Adding to cart failed")
+      _ => console.log('Adding to cart failed')
     );
   }
 }

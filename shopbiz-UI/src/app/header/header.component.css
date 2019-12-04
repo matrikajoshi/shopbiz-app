@@ -1,4 +1,32 @@
+a {
+  font-family: 'Open Sans Condensed';
+}
 .cartCount {
   color: red;
   font-size: medium;
+}
+
+.cart-icon {
+  width: 45px;
+  height: 45px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 5px 5px 5px 5px;
+  /* padding-top: 5px;
+  padding-bottom: 5px; */
+}
+
+.shopping-icon {
+  width: 30px;
+  height: 30px;
+}
+
+.item-count {
+  position: absolute;
+  font-size: 15px;
+  font-weight: bold;
+  bottom: 10px;
 }

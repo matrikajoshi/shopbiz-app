@@ -12,7 +12,8 @@ import { OrdersComponent } from './orders/orders.component';
 
 
 const routes: Routes = [
-  { path: '', redirectTo: '/products', pathMatch: 'full' },
+  { path: '', redirectTo: '/shop', pathMatch: 'full' },
+  { path: 'shop', component: ProductsComponent },
   { path: 'dashboard', component: DashboardComponent },
   { path: 'products/:id', component: ProductDetailComponent },
   { path: 'products', component: ProductsComponent },

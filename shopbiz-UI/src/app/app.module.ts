@@ -90,7 +90,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     HttpClientModule
   ],
   providers: [
-    // service within another service
+    // same service instance for all D.I.
     CookieService,
     {provide: 'BaseURL', useValue: baseURL},
     ShoppingListService,

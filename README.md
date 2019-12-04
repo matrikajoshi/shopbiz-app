@@ -7,20 +7,21 @@
 - Docker
 
 ### Features:
-1. CRUD operations on product, shopping cart, shopping list and creating order
-2. Adding product to shopping cart without logging into application
-3. User authentication  and access control with Json Web Token
-4. Admin role can add/update/delete products
-5. Spring actuator to check /health endpoint
-6. App uses h2 in memory database for testing and mysql database while app is running
-7. Swagger for API documentation
-
+1. User authentication  and access control with Json Web Token 
+2. Spring actuator to monitor API usage including /health endpoint
+3. Swagger for API documentation
+4. Spring Boot based Restful API including HATEOAS, Validation, Exception Handling
+5. App uses h2 in memory database for testing and mysql database while app is running
+6. Adding product to shopping cart without logging into application
+7. CRUD operations on product, shopping cart, shopping list and creating order
+8. Admin role can add/update/delete products
 
 ## Build and Deploy
 ### To run the backend application with maven installed:
 Set up mysql 
  - create database 'shopbiz' in mysql 
  - update mysql credentials in application.properties located at src/main/resources
+ - All tables will be created and intial data will be imported automatically from data.sql file by Spring Boot
 
 Navigate to shopbiz directory
 
@@ -46,15 +47,11 @@ $ ng serve
 Frontend will be running at http://localhost:4200
 
 ## Deploy Using Docker
-- Build frontend with command
-```$xslt
-$ cd shopbiz-UI
-$ ng build --prod
-```
 - Run docker compose from project root
  
   -```$ docker-compose up --build```
 - This will deploy whole application where UI is served from ngnix server,  backend API redirected with nginx proxy and MySQL with persistent volume to store data after removing mysql container and creating new one.
+- Navigate to http://localhost to view running app
 
 ### To login 
  - Customer role 

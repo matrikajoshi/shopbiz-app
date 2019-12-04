@@ -20,7 +20,7 @@
         </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-          <li>
+          <!-- <li>
             <a class="nav-item nav-link" routerLink="/cart">
               <i class="fa fa-shopping-cart">
                   <span *ngIf="shoppingCartService.navbarCartCount > 0"
@@ -29,6 +29,13 @@
                   </span>
               </i>
               Cart
+            </a>
+          </li> -->
+          <li >
+            <a class="nav-item nav-link cart-icon" routerLink="/cart">
+                <img class='shopping-icon' src="assets/shopping-bag.svg">
+                <span *ngIf="shoppingCartService.navbarCartCount > 0"
+                class='item-count'>{{shoppingCartService.navbarCartCount}}</span>
             </a>
           </li>
 
