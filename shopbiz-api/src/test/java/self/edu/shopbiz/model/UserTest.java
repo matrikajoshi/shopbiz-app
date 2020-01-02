@@ -3,7 +3,7 @@ package self.edu.shopbiz.model;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.io.IOException;
@@ -11,7 +11,8 @@ import java.util.Arrays;
 import java.util.Collections;
 
 import static org.hamcrest.CoreMatchers.containsString;
-import static org.junit.Assert.*;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Created by mpjoshi on 11/24/19.
@@ -57,15 +58,22 @@ public class UserTest {
 
     }
 
-    @Test(expected = JsonMappingException.class)
+    @Test
     public void givenBidirectionRelation_whenUsingJacksonReferenceAnnotation_thenException() throws IOException {
-        String jsonUserStr = "{\"email\":\"ab@c.com\", \"password\":\"password\"}";
 
-        User creds = new ObjectMapper().readValue(jsonUserStr, User.class);
-        assertEquals("ab@c.com", creds.getEmail());
-        assertEquals("password", creds.getPassword());
+        String jsonUserStr = "{\"email\":\"ab@c.com\", \"password\":\"password\"}";
+//        User creds = new ObjectMapper().readValue(jsonUserStr, User.class);
+//        assertEquals("ab@c.com", creds.getEmail());
+//        assertEquals("password", creds.getPassword());
+
+        Exception exception = assertThrows(JsonMappingException.class, () -> {
+            new ObjectMapper().readValue(jsonUserStr, User.class);
+        });
+
+        assertTrue(exception.getMessage().contains("Cannot handle managed/back reference"));
 
     }
+
 
     //random test
     @Test

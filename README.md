@@ -38,7 +38,7 @@ In browser navigate to http://localhost:8080/shopbiz/
 HAL browser will list available REST API endpoints.
 
 ### To run frontend with Angular CLI and NodeJS
-- navigate to shopbiz-UI
+- navigate to shopbiz-ui
 ```
 $ cd shopbiz-ui
 $ npm install
@@ -50,7 +50,7 @@ Frontend will be running at http://localhost:4200
 - Run docker compose from project root
  
   -```$ docker-compose up --build```
-- This will deploy whole application where UI is served from ngnix server,  backend API redirected with nginx proxy and MySQL with persistent volume to store data after removing mysql container and creating new one.
+- This will deploy whole application where nginx will serve UI and redirect to backend using proxy and mysql container will be running with persistent volume to store data across container lifecycle.
 - Navigate to http://localhost to view running app
 
 ### To login 

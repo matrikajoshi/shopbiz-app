@@ -1,30 +1,25 @@
 package self.edu.shopbiz.repository;
 
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.junit4.SpringRunner;
-
-
-import self.edu.shopbiz.ShopbizApplication;
 import self.edu.shopbiz.model.*;
 
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.util.Optional;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 
 /**
  * Created by mpjoshi on 10/10/19.
  */
 
-@RunWith(SpringRunner.class)
-@SpringBootTest(classes = ShopbizApplication.class)
+
+@SpringBootTest
 public class OrderRepositoryTest {
 
     @Autowired

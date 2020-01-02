@@ -1,0 +1,16 @@
+server:
+  port: 8081
+
+spring:
+    application:
+        name: coupon-service
+    data:
+      mongodb:
+        host: localhost
+        port: 27017
+        database: coupondb
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
