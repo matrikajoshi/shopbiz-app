@@ -10,8 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
 
-import io.swagger.annotations.Api;
-
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
@@ -21,7 +19,6 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/error")
-@Api(tags = {"Error"})
 public class SimpleErrorController implements ErrorController {
 
     private final ErrorAttributes errorAttributes;

@@ -2,16 +2,18 @@ package self.edu.shopbiz.dto;
 
 import self.edu.shopbiz.model.Product;
 
+import java.math.BigDecimal;
+
 /**
  * Created by mpjoshi on 11/12/19.
  */
 
-public class CartItemDto {
+public class CartItemDTO {
 
     private Integer id;
     private Product product;
     private Integer quantity;
-    private Double totalPrice;
+    private BigDecimal totalPrice;
 
     public Integer getId() {
         return id;
@@ -37,11 +39,11 @@ public class CartItemDto {
         this.quantity = quantity;
     }
 
-    public Double getTotalPrice() {
+    public BigDecimal getTotalPrice() {
         return totalPrice;
     }
 
-    public void setTotalPrice(Double totalPrice) {
+    public void setTotalPrice(BigDecimal totalPrice) {
         this.totalPrice = totalPrice;
     }
 }

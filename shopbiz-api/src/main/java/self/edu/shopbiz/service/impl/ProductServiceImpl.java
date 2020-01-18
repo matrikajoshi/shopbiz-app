@@ -2,7 +2,6 @@ package self.edu.shopbiz.service.impl;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -40,7 +39,6 @@ public class ProductServiceImpl implements ProductService{
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
 
-    //@Autowired
     public ProductServiceImpl(ProductRepository productRepository, CategoryRepository categoryRepository){
         this.categoryRepository = categoryRepository;
         this.productRepository = productRepository;
@@ -78,7 +76,7 @@ public class ProductServiceImpl implements ProductService{
         Category category1 = categoryRepository.save(category);
         product.setCategory(category1);
         product.setImageUrl(multipartImage.getOriginalFilename());
-        product.setLastUpdated(LocalDateTime.now());
+        product.setUpdatedAt(LocalDateTime.now());
         Product savedProduct = productRepository.save(product);
         return savedProduct;
     }

@@ -1,12 +1,14 @@
 package self.edu.shopbiz.controller;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
-import io.swagger.annotations.Api;
-import self.edu.shopbiz.dto.CartItemDto;
+import self.edu.shopbiz.dto.CartItemDTO;
+import self.edu.shopbiz.dto.ShoppingCartDTO;
 import self.edu.shopbiz.model.CartItem;
 import self.edu.shopbiz.model.ShoppingCart;
 import self.edu.shopbiz.security.MyUserPrincipal;
@@ -17,7 +19,7 @@ import self.edu.shopbiz.util.SecurityUtil;
 
 
 @RestController()
-@Api(tags = {"Shopping Cart"})
+@Tag(name ="Shopping Cart")
 public class ShoppingCartController {
 
     private static final String SHOPPING_CART = "shoppingCart";
@@ -39,20 +41,20 @@ public class ShoppingCartController {
         this.shoppingCartService = shoppingCartService;
         this.userService = userService;
         this.modelMapper = modelMapper;
+        this.modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.LOOSE);
     }
 
     @GetMapping(path="/shoppingCart")
-    public ShoppingCart getShoppingCart(Authentication authentication){
+    public ShoppingCartDTO getShoppingCart(Authentication authentication){
         MyUserPrincipal userDetails = (MyUserPrincipal) authentication.getPrincipal();
         ShoppingCart shoppingCart = shoppingCartService.getShoppingCartByCustomerId(userDetails.getUser().getId())
                 .orElseGet(() -> new ShoppingCart());
 
-        return shoppingCart;
+        return convertToDTO(shoppingCart);
     }
 
-
-    @PostMapping(path = "/shoppingCart/cartItem")
-    public ShoppingCart createShoppingCart(@RequestBody CartItemDto cartItemDto) {
+    @PostMapping(path = "/shoppingCart")
+    public ShoppingCartDTO createShoppingCart(@RequestBody CartItemDTO cartItemDto) {
         Authentication authentication = SecurityUtil.getAuthentication();
         MyUserPrincipal myUserPrincipal = (MyUserPrincipal) authentication.getPrincipal();
         Integer userId = myUserPrincipal.getUser().getId();
@@ -60,29 +62,17 @@ public class ShoppingCartController {
                 .orElseGet(() -> new ShoppingCart());
         CartItem cartItem = convertToEntity(cartItemDto);
         ShoppingCart cartItemToShoppingCart = shoppingCartService.addCartItemToShoppingCart(myUserPrincipal, cartItem, shoppingCart);
-        return cartItemToShoppingCart;
+        return convertToDTO(shoppingCart);
     }
 
-
-//
-//    @PutMapping(path="/shoppingCart/addItem")
-//    public ShoppingCart addProductToShoppingCart(@RequestBody CartItem cartItem){
-//        MyUserPrincipal myUserPrincipal = SecurityUtil.getLoggedInUser();
-//        Integer userId = myUserPrincipal.getUser().getId();
-//        ShoppingCart shoppingCart = shoppingCartService.getShoppingCartByCustomerId(userId)
-//                .orElseGet(() -> new ShoppingCart());
-//        shoppingCart = shoppingCartService.addCartItemToShoppingCart(myUserPrincipal, cartItem, shoppingCart);
-//        return shoppingCart;
-//    }
-
-    @PutMapping(path = "/shoppingCart/cartItem/{cartItemId}")
+    @PutMapping(path = "/shoppingCart/{cartItemId}")
     public CartItem updateCartItemQuantity(@PathVariable("cartItemId") Integer cartItemId,
                                                @RequestBody Integer itemCount) {
         CartItem cartItem = shoppingCartService.updateCartItem(cartItemId, itemCount);
         return cartItem;
     }
 
-    @DeleteMapping(path="/shoppingCart/cartItem/{cartItemId}")
+    @DeleteMapping(path="/shoppingCart/{cartItemId}")
     public ShoppingCart deleteShoppingCartItem(@PathVariable("cartItemId") Integer cartItemId){
         //to do check authentication / authorization
         MyUserPrincipal loggedInUser = SecurityUtil.getLoggedInUser();
@@ -90,9 +80,14 @@ public class ShoppingCartController {
         return shoppingCart1;
     }
 
-    private CartItem convertToEntity(CartItemDto cartItemDto) {
+    private CartItem convertToEntity(CartItemDTO cartItemDto) {
         CartItem cartItem = modelMapper.map(cartItemDto, CartItem.class);
         return cartItem;
+    }
+
+    public ShoppingCartDTO convertToDTO(ShoppingCart shoppingCart) {
+        ShoppingCartDTO shoppingCartDTO = modelMapper.map(shoppingCart, ShoppingCartDTO.class);
+        return shoppingCartDTO;
     }
 
 

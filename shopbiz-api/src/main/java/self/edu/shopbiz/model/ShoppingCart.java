@@ -24,12 +24,11 @@ public class ShoppingCart {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
-    @JsonIgnore
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="customer_id")
     private User user;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "shoppingCart")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "shoppingCart")
     private Set<CartItem> cartItems = new HashSet<>();
 
     @CreationTimestamp
@@ -37,7 +36,6 @@ public class ShoppingCart {
 
     @UpdateTimestamp
     private LocalDateTime updatedAt;
-
 
     public Long getId() {
         return id;

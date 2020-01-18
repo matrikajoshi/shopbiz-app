@@ -17,13 +17,13 @@ import java.util.Optional;
 @Repository("shoppingListRepository")
 public interface ShoppingListRepository extends JpaRepository<ShoppingList, Integer>{
 
-    Optional<ShoppingList> findByUser(User user);
+    Optional<ShoppingList> findByCustomer(User user);
 
-    @Query(value = "SELECT sl from ShoppingList sl where sl.user.id = :customerId")
-    public List<ShoppingList> findByCustomerId(@Param("customerId") Integer customerId);
+    @Query(value = "SELECT sl from ShoppingList sl where sl.customer.id = :customerId")
+    List<ShoppingList> findByCustomerId(@Param("customerId") Integer customerId);
 
-    @Query(value = "SELECT sl from ShoppingList sl where sl.name = :name AND sl.user.id = :customerId")
-    public Optional<ShoppingList> findByCustomerIdAndName(
+    @Query(value = "SELECT sl from ShoppingList sl where sl.name = :name AND sl.customer.id = :customerId")
+    Optional<ShoppingList> findByCustomerIdAndName(
             @Param("name") String name,
             @Param("customerId") Integer customerId);
 

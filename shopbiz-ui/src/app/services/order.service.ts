@@ -14,7 +14,7 @@ import { baseURL } from 'src/environments/environment';
 })
 export class OrderService {
 
-  private url = `${baseURL}order`;
+  private url = `${baseURL}orders`;
 
   constructor(private http: HttpClient,
     private messageService: MessageService,

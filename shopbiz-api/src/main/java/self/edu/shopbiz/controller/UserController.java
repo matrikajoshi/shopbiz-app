@@ -1,16 +1,11 @@
 package self.edu.shopbiz.controller;
 
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
-
-import org.springframework.hateoas.Resource;
-import org.springframework.hateoas.mvc.ControllerLinkBuilder;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-
-import io.swagger.annotations.Api;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import self.edu.shopbiz.exceptionUtil.EmailNotUniqueException;
 import self.edu.shopbiz.exceptionUtil.ResourceNotFoundException;
@@ -23,6 +18,9 @@ import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 
 /**
  * Created by mpjoshi on 10/15/19.
@@ -30,7 +28,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/users")
-@Api(tags = {"Users"})
+@Tag(name="Users")
 public class UserController {
 
     private UserRepository userRepository;
@@ -68,21 +66,15 @@ public class UserController {
 
     @GetMapping("/{id}")
     @RolesAllowed("MANAGE_PRODUCT")
-    public Resource<User> getCustomerById(@PathVariable("id") Integer id) {
+    public ResponseEntity<EntityModel<User>> getCustomerById(@PathVariable Integer id) {
 
-        Optional<User> customerOptional = userRepository.findById(id);
+        return userRepository.findById(id)
+                .map(user -> new EntityModel<>(user,
+                        linkTo(methodOn(UserController.class).getCustomerById(user.getId())).withSelfRel(),
+                        linkTo(methodOn(UserController.class).getAllUsers()).withRel("customers") ))
+                .map(ResponseEntity::ok)
+                .orElseThrow(ResourceNotFoundException::new);
 
-        User user = customerOptional.orElseThrow(ResourceNotFoundException::new);
-
-        //HATEOAS
-        Resource<User> resource = new Resource<User>(user);
-
-        ControllerLinkBuilder linkTo =
-                linkTo(methodOn(this.getClass()).getAllUsers());
-
-        resource.add(linkTo.withRel("all-users"));
-
-        return resource;
     }
 
 

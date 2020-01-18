@@ -1,30 +1,30 @@
 package self.edu.shopbiz.repository;
 
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.junit4.SpringRunner;
-
-
-import self.edu.shopbiz.ShopbizApplication;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import self.edu.shopbiz.model.*;
 
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 
 /**
  * Created by mpjoshi on 10/10/19.
  */
 
-@RunWith(SpringRunner.class)
-@SpringBootTest(classes = ShopbizApplication.class)
+
+@ExtendWith(SpringExtension.class)
+@DataJpaTest
 public class OrderRepositoryTest {
 
     @Autowired
@@ -50,21 +50,23 @@ public class OrderRepositoryTest {
     @Transactional
     public void testAddOrder(){
         User user = userRepository.findById(1).get();
-        Order saveOrder = new Order();
-        saveOrder.setUser(user);
-        saveOrder.setTotalAmount(BigDecimal.valueOf(0));
+        Order order = new Order();
+        order.setUser(user);
+        order.setTotalAmount(BigDecimal.valueOf(10));
         ShoppingCart cart = getShoppingCart();
         cart.getCartItems().forEach((cartItem -> {
             OrderItem orderItem = new OrderItem();
-            orderItem.setCartItem(cartItem);
-            saveOrder.setTotalAmount(saveOrder.getTotalAmount().add(cartItem.getTotalPrice()));
-            saveOrder.getOrderItems().add(orderItem);
+            orderItem.setProduct(cartItem.getProduct());
+            orderItem.setOrderedQuantities(cartItem.getQuantity());
+            orderItem.setOrder(order);
+            order.setTotalAmount(order.getTotalAmount().add(cartItem.getTotalPrice()));
+            order.getOrderItems().add(orderItem);
         }));
-        orderItemRepository.saveAll(saveOrder.getOrderItems());
-        orderRepository.save(saveOrder);
-        Optional<Order> orderOptional = orderRepository.findByUser(user);
-        assertTrue(orderOptional.isPresent());
-        assertEquals(1, orderOptional.get().getOrderItems().size());
+        //orderItemRepository.saveAll(order.getOrderItems());
+        orderRepository.save(order);
+        List<Order> orders = orderRepository.findByUser(user);
+        assertTrue(orders.size() > 0);
+        assertEquals(1, orders.get(0).getOrderItems().size());
     }
 
     ShoppingCart getShoppingCart(){

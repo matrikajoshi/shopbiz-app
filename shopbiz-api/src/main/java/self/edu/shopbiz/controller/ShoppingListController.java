@@ -1,71 +1,68 @@
 package self.edu.shopbiz.controller;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
-import io.swagger.annotations.Api;
-import self.edu.shopbiz.dto.ShoppingListDto;
+import self.edu.shopbiz.dto.ShoppingListDTO;
 import self.edu.shopbiz.model.Product;
 import self.edu.shopbiz.model.ShoppingList;
 import self.edu.shopbiz.security.MyUserPrincipal;
 import self.edu.shopbiz.service.ShoppingListService;
 import self.edu.shopbiz.util.SecurityUtil;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 /**
  * Created by mpjoshi on 9/29/19.
  */
 
 @RestController
-@Api(tags = {"Shopping List"})
+@RequestMapping(path = "/shoppingList")
+@Tag(name="Shopping List")
 public class ShoppingListController {
 
-    private ShoppingListService shoppingListService;
+    private final ShoppingListService shoppingListService;
+
+    private final ModelMapper modelMapper;
 
     @Autowired
-    private ModelMapper modelMapper;
-
-    @Autowired
-    public ShoppingListController(ShoppingListService shoppingListService) {
+    public ShoppingListController(ShoppingListService shoppingListService, ModelMapper modelMapper) {
         this.shoppingListService = shoppingListService;
+        this.modelMapper = modelMapper;
     }
 
-    @GetMapping(path="/shoppingList")
+    @GetMapping
     @PreAuthorize(value = "hasAnyRole('ORDER_CREATE')")
-    public ShoppingListDto getDefaultShoppingList() {
+    public ShoppingListDTO getDefaultShoppingList() {
         MyUserPrincipal loggedInUser = SecurityUtil.getLoggedInUser();
         ShoppingList shoppingListByUserId = shoppingListService.getShoppingListByUserId(loggedInUser.getUser().getId());
         if (null == shoppingListByUserId) {
             shoppingListByUserId = new ShoppingList();
-            shoppingListByUserId.setUser(loggedInUser.getUser());
+            shoppingListByUserId.setCustomer(loggedInUser.getUser());
         }
-        ShoppingListDto shoppingListDto = convertToDTO(shoppingListByUserId);
+        ShoppingListDTO shoppingListDto = convertToDTO(shoppingListByUserId);
+        return shoppingListDto;
+    }
+
+    @PostMapping
+    public ShoppingListDTO addProductToShoppingList(@RequestBody Product product ) {
+        MyUserPrincipal loggedInUser = SecurityUtil.getLoggedInUser();
+        ShoppingList shoppingList = shoppingListService.addProductByUserId(loggedInUser.getUser(), product);
+        ShoppingListDTO shoppingListDto = convertToDTO(shoppingList);
+        return shoppingListDto;
+    }
+
+    @PutMapping(path = "/removeProduct")
+    public ShoppingListDTO removeProductFromShoppingList(@RequestBody Product product ) {
+        Integer userId = SecurityUtil.getLoggedInUserId();
+        ShoppingList shoppingList = shoppingListService.removeProductByUserId(userId, product);
+        ShoppingListDTO shoppingListDto = convertToDTO(shoppingList);
         return shoppingListDto;
     }
 
 
-    @PutMapping(path = "/shoppingList/addProduct")
-    public ShoppingList addProductToShoppingList(@RequestBody Product product ) {
-        MyUserPrincipal loggedInUser = SecurityUtil.getLoggedInUser();
-        ShoppingList shoppingList = shoppingListService.addProductByUserId(loggedInUser.getUser(), product);
-        return shoppingList;
-    }
-
-    @PutMapping(path = "/shoppingList/removeProduct")
-    public ShoppingList removeProductFromShoppingList(@RequestBody Product product ) {
-        Integer userId = SecurityUtil.getLoggedInUserId();
-        ShoppingList shoppingList = shoppingListService.removeProductByUserId(userId, product);
-        return shoppingList;
-    }
-
-
-    private ShoppingListDto convertToDTO(ShoppingList shoppingList){
-        ShoppingListDto shoppingListDto = modelMapper.map(shoppingList, ShoppingListDto.class);
+    private ShoppingListDTO convertToDTO(ShoppingList shoppingList){
+        ShoppingListDTO shoppingListDto = modelMapper.map(shoppingList, ShoppingListDTO.class);
         return shoppingListDto;
     }
 
