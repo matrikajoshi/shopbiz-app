@@ -32,7 +32,7 @@ public class Permission {
     //Bi-directional ManyToMany relationship
     //With mappedBy attribute column will not be created in the table
     @ManyToMany(mappedBy = "permissions")
-    @JsonBackReference(value="permissions") // for json infinite recursion problem
+    //@JsonBackReference(value="permissions") // for json infinite recursion problem
     private List<Role> roles;
 
     public Long getId() {

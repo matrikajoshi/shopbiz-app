@@ -16,8 +16,9 @@
 	<description>Shopbiz API application</description>
 
 	<properties>
-		<docker.image.prefix>mpjoshi</docker.image.prefix>
 		<java.version>1.8</java.version>
+		<docker.image.prefix>mpjoshi</docker.image.prefix>
+		<springdoc.version>1.2.22</springdoc.version>
 		<spring-cloud.version>Hoxton.SR1</spring-cloud.version>
 	</properties>
 
@@ -54,10 +55,10 @@
 			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
 
-		<dependency>
-			<groupId>org.springframework.data</groupId>
-			<artifactId>spring-data-rest-hal-browser</artifactId>
-		</dependency>
+<!--		<dependency>-->
+<!--			<groupId>org.springframework.data</groupId>-->
+<!--			<artifactId>spring-data-rest-hal-browser</artifactId>-->
+<!--		</dependency>-->
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -79,6 +80,7 @@
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
+			<optional>true</optional>
 		</dependency>
 
 		<!-- Manually Added  -->
@@ -136,16 +138,11 @@
 			<version>2.3.5</version>
 		</dependency>
 
+		<!-- SpringDoc -->
 		<dependency>
-			<groupId>io.springfox</groupId>
-			<artifactId>springfox-swagger2</artifactId>
-			<version>2.9.2</version>
-		</dependency>
-			<!--2.6.1-->
-		<dependency>
-			<groupId>io.springfox</groupId>
-			<artifactId>springfox-swagger-ui</artifactId>
-			<version>2.9.2</version>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-ui</artifactId>
+			<version>${springdoc.version}</version>
 		</dependency>
 		<!--<dependency>-->
 			<!--<groupId>pl.project13.maven</groupId>-->
@@ -188,13 +185,46 @@
 				<groupId>pl.project13.maven</groupId>
 				<artifactId>git-commit-id-plugin</artifactId>
 			</plugin>
+<!--			<plugin>-->
+<!--				<groupId>org.apache.maven.plugins</groupId>-->
+<!--				<artifactId>maven-compiler-plugin</artifactId>-->
+<!--				<version>3.6.0</version>-->
+<!--				<configuration>-->
+<!--					<source>1.8</source>-->
+<!--					<target>1.8</target>-->
+<!--					<annotationProcessorPaths>-->
+<!--						<path>-->
+<!--							<groupId>org.projectlombok</groupId>-->
+<!--							<artifactId>lombok</artifactId>-->
+<!--							<version>1.16.12</version>-->
+<!--						</path>-->
+<!--					</annotationProcessorPaths>-->
+<!--				</configuration>-->
+<!--			</plugin>-->
+
+<!--			<plugin>-->
+<!--				<groupId>pl.project13.maven</groupId>-->
+<!--				<artifactId>git-commit-id-plugin</artifactId>-->
+<!--			</plugin>-->
 			<!-- tag::plugin[] -->
+			<!-- Docker -->
             <plugin>
 				<groupId>com.spotify</groupId>
 				<artifactId>dockerfile-maven-plugin</artifactId>
-				<version>1.4.9</version>
+				<version>1.4.13</version>
+				<executions>
+					<execution>
+						<id>default</id>
+						<goals>
+							<goal>build</goal>
+							<goal>push</goal>
+						</goals>
+					</execution>
+				</executions>
 				<configuration>
 					<repository>${docker.image.prefix}/${project.artifactId}</repository>
+					<tag>${project.version}</tag>
+					<skipDockerInfo>true</skipDockerInfo>
 				</configuration>
 			</plugin>
 			<!-- end::plugin[] -->
@@ -218,20 +248,24 @@
 									<version>${project.version}</version>
 								</artifactItem>
 							</artifactItems>
+							<outputDirectory>
+								${project.build.directory}/dependency
+								<!-- or: ${project.basedir}/wherever/you/want/it -->
+							</outputDirectory>
 						</configuration>
 					</execution>
 				</executions>
 			</plugin>
 			<!-- end::unpack[] -->
-<!--			<plugin>-->
-<!--				<groupId>org.apache.maven.plugins</groupId>-->
-<!--				<artifactId>maven-surefire-plugin</artifactId>-->
-<!--				<configuration>-->
-<!--					<forkCount>3</forkCount>-->
-<!--					<reuseForks>true</reuseForks>-->
-<!--					<argLine>-Xmx1024m</argLine>-->
-<!--				</configuration>-->
-<!--			</plugin>-->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<forkCount>3</forkCount>
+					<reuseForks>true</reuseForks>
+					<argLine>-Xmx1024m -XX:MaxPermSize=256m</argLine>
+				</configuration>
+			</plugin>
 
 		</plugins>
 	</build>

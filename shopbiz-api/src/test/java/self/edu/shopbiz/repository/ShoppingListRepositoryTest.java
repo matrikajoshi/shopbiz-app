@@ -1,11 +1,14 @@
 package self.edu.shopbiz.repository;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import self.edu.shopbiz.ShopbizApplication;
 import self.edu.shopbiz.model.ShoppingList;
 
@@ -19,7 +22,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 
 
-@SpringBootTest(classes = ShopbizApplication.class)
+@ExtendWith(SpringExtension.class)
+@DataJpaTest
 public class ShoppingListRepositoryTest {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -38,7 +42,7 @@ public class ShoppingListRepositoryTest {
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     public void saveShoppingListTest() {
         ShoppingList shoppingList = new ShoppingList();
-        shoppingList.setUser(userRepository.findById(1).get());
+        shoppingList.setCustomer(userRepository.findById(1).get());
         shoppingList.setName("test");
         shoppingListRepository.save(shoppingList);
         logger.info("Shopping List -> {} ", shoppingListRepository.findAll());

@@ -32,7 +32,7 @@ export class OrdersComponent implements OnInit {
       .subscribe((cart: ShoppingCart) => {
         this.log("Got cart items: " + cart.cartItems.length);
         cart.cartItems.forEach((cartItem) => {
-          this.orderItems.push(new OrderItem(cartItem));
+          this.orderItems.push(new OrderItem(cartItem.product, cartItem.quantity));
           this.total += cartItem.totalPrice;
         });
     });

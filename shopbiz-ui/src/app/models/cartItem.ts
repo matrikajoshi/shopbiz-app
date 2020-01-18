@@ -9,5 +9,5 @@ export class CartItem {
     constructor(product: Product, quantity: number) {
       this.product = product;
       this.quantity = quantity;
-  }
+    }
 }

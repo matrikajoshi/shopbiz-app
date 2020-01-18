@@ -1,6 +1,8 @@
 package self.edu.shopbiz.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -13,7 +15,9 @@ import java.time.LocalDateTime;
  * Created by mpjoshi on 10/9/19.
  */
 
-
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 public class Product {
 
@@ -47,92 +51,25 @@ public class Product {
     @Column(name="is_active")
     private Boolean active;
 
-    // TO DO add available quantity in stock
+    private Integer availableQuantities;
 
     @CreationTimestamp
-    private LocalDateTime createdDate;
+    private LocalDateTime createdAt;
 
-    @Column(name="last_updated")
     @UpdateTimestamp
-    private LocalDateTime lastUpdated;
+    private LocalDateTime updatedAt;
 
-    public Long getId() {
-        return id;
-    }
 
-    public void setId(Long id) {
+    public Product(Long id, @NotNull(message = "Product name is required.")
+                            @Size(min = 2, message = "Name should have at least 2 characters") String name,
+                   String sku,
+                   @Positive BigDecimal price, String description, Integer availableQuantities) {
         this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
         this.name = name;
-    }
-
-    public String getSku() {
-        return sku;
-    }
-
-    public void setSku(String sku) {
         this.sku = sku;
-    }
-
-    public Category getCategory() {
-        return category;
-    }
-
-    public void setCategory(Category category) {
-        this.category = category;
-    }
-
-    public Boolean getFeatured() {
-        return featured;
-    }
-
-    public void setFeatured(Boolean featured) {
-        this.featured = featured;
-    }
-
-    public BigDecimal getPrice() {
-        return price;
-    }
-
-    public void setPrice(BigDecimal price) {
         this.price = price;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
         this.description = description;
+        this.availableQuantities = availableQuantities;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
-
-    public Boolean getActive() {
-        return active;
-    }
-
-    public void setActive(Boolean active) {
-        this.active = active;
-    }
-
-    public LocalDateTime getLastUpdated() {
-        return lastUpdated;
-    }
-
-    public void setLastUpdated(LocalDateTime lastUpdated) {
-        this.lastUpdated = lastUpdated;
-    }
 }

@@ -1,5 +1,8 @@
 package self.edu.shopbiz.model;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 
@@ -9,7 +12,8 @@ import static javax.persistence.GenerationType.IDENTITY;
  * Created by mpjoshi on 10/10/19.
  */
 
-
+@Data
+@NoArgsConstructor
 @Entity
 public class CartItem {
 
@@ -17,46 +21,15 @@ public class CartItem {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
-    @ManyToOne //eager by default
+    @ManyToOne
     private Product product;
 
+    //to do - fix back reference
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "shopping_cart_id")
     private ShoppingCart shoppingCart;
 
     private int quantity;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Product getProduct() {
-        return product;
-    }
-
-    public void setProduct(Product product) {
-        this.product = product;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
-
-    public ShoppingCart getShoppingCart() {
-        return shoppingCart;
-    }
-
-    public void setShoppingCart(ShoppingCart shoppingCart) {
-        this.shoppingCart = shoppingCart;
-    }
 
     @Transient
     public BigDecimal getTotalPrice() {

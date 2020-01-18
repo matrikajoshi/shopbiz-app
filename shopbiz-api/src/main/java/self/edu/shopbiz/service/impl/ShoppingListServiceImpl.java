@@ -57,7 +57,7 @@ public class ShoppingListServiceImpl implements ShoppingListService {
             shoppingList = byCustomerId.get(0);
         }
         shoppingList.getProducts().add(product);
-        shoppingList.setUser(user);
+        shoppingList.setCustomer(user);
         ShoppingList save = shoppingListRepository.save(shoppingList);
         return save;
     }
@@ -74,9 +74,6 @@ public class ShoppingListServiceImpl implements ShoppingListService {
         ShoppingList save = shoppingListRepository.save(shoppingList);
         return save;
     }
-
-
-
 
     @Override
     public ShoppingList getShoppingList(Integer id){

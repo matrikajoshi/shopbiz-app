@@ -1,6 +1,6 @@
 package self.edu.shopbiz.controller;
 
-import io.swagger.annotations.Api;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +28,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 @RequestMapping("/users")
-@Api(tags = {"Users"})
+@Tag(name="Users")
 public class UserController {
 
     private UserRepository userRepository;

@@ -107,7 +107,7 @@ export class ShoppingCartService {
       this.cookieService.set('cart', JSON.stringify(this.localCart));
       return of(this.localCart);
     } else {
-      const url = `${this.url}/cartItem`;
+      const url = `${this.url}`;
       return this.http.post<ShoppingCart>(url, cartItem, httpOptions).pipe(
         tap((shoppingCart: ShoppingCart) => {
           this.navbarCartCount = shoppingCart.cartItems.length;
@@ -121,7 +121,7 @@ export class ShoppingCartService {
 
   update(cartItem) {
     if (this.currentUser) {
-      const url = `${this.url}/cartItem/${cartItem.id}`;
+      const url = `${this.url}/${cartItem.id}`;
       return this.http.put<CartItem>(url, cartItem.quantity)
       .pipe(
         tap(item => console.log('Updated cart item quantity to: ' + item.quantity))
@@ -141,7 +141,7 @@ export class ShoppingCartService {
       this.cookieService.set('cart', JSON.stringify(this.localCart));
       return of(this.localCart);
     } else {
-      const url = `${this.url}/cartItem/${cartItem.id}`;
+      const url = `${this.url}/${cartItem.id}`;
       return this.http.delete<ShoppingCart>(url, httpOptions).pipe(
         tap(cart => this.navbarCartCount = cart.cartItems.length)
       );

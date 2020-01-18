@@ -31,9 +31,9 @@ export class ShoppingListService {
   }
 
   addProductToShoppingList(product: Product): Observable<ShoppingList> {
-    const url = `${baseURL}shoppingList/addProduct`;
+    const url = `${baseURL}shoppingList`;
 
-    return this.http.put<ShoppingList>(url, product, httpOptions)
+    return this.http.post<ShoppingList>(url, product, httpOptions)
       .pipe(
         tap((shoppingList: ShoppingList) => {
           this.shoppingList = shoppingList;
