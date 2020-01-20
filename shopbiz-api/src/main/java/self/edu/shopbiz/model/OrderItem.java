@@ -1,5 +1,6 @@
 package self.edu.shopbiz.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -26,8 +27,8 @@ public class OrderItem {
 
     private Integer orderedQuantities;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "order_id")
     private Order order;
 
     private BigDecimal extPrice;

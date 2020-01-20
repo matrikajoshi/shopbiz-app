@@ -3,6 +3,7 @@ package self.edu.shopbiz.model;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.util.ReflectionTestUtils;
 
@@ -23,6 +24,7 @@ public class UserTest {
 
 
     @Test
+    @Disabled
     public void givenBidirectionRelation_whenUsingJacksonReferenceAnnotation_thenCorrect()
             throws JsonProcessingException {
         User user = new User();
@@ -59,6 +61,7 @@ public class UserTest {
     }
 
     @Test
+    @Disabled
     public void givenBidirectionRelation_whenUsingJacksonReferenceAnnotation_thenException() throws IOException {
 
         String jsonUserStr = "{\"email\":\"ab@c.com\", \"password\":\"password\"}";

@@ -1,6 +1,7 @@
 package self.edu.shopbiz.controller;
 
 import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -15,8 +16,10 @@ import self.edu.shopbiz.security.MyUserPrincipal;
 import self.edu.shopbiz.service.OrderService;
 
 import javax.annotation.security.RolesAllowed;
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by mpjoshi on 11/7/19.
@@ -33,11 +36,12 @@ public class OrderController {
     public OrderController(OrderService orderService, ModelMapper modelMapper) {
         this.orderService = orderService;
         this.modelMapper = modelMapper;
+        this.modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.LOOSE);
     }
 
 
     @GetMapping
-    public List<Order> getOrders(Authentication authentication) {
+    public List<OrderDTO> getOrders(Authentication authentication) {
         List<Order> orders;
         MyUserPrincipal userDetails = (MyUserPrincipal) authentication.getPrincipal();
         if (userDetails.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMINISTRATOR"))) {
@@ -45,7 +49,7 @@ public class OrderController {
         } else {
             orders = orderService.getOrdersForUser(userDetails.getUser());
         }
-        return orders;
+        return orders.stream().map(order -> convertToDTO(order)).collect(Collectors.toList());
     }
 
     @GetMapping(path = "/{id}")
@@ -62,8 +66,8 @@ public class OrderController {
 
     @PostMapping
     @RolesAllowed("ORDER_CREATE")
-    public OrderDTO createOrder(@RequestBody List<OrderItemDTO> orderItemDTOS) {
-        List<OrderItem> orderItems = getOrderItems(orderItemDTOS);
+    public OrderDTO createOrder(@Valid @RequestBody List<OrderItemDTO> orderItemDTOs) {
+        List<OrderItem> orderItems = getOrderItems(orderItemDTOs);
         Order order = orderService.createOrder(orderItems);
         return convertToDTO(order);
     }
