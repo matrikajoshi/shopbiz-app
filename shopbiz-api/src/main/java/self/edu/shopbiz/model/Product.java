@@ -45,13 +45,14 @@ public class Product {
 
     private String description;
 
-    @Column
+    @Column(name="image_path")
     private String imageUrl;
 
     @Column(name="is_active")
     private Boolean active;
 
     private Integer availableQuantities;
+
 
     @CreationTimestamp
     private LocalDateTime createdAt;
