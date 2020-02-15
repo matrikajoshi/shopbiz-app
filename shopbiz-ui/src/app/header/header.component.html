@@ -10,7 +10,7 @@
     <div class="navbar-collapse" [class.collapse]="collapsed" (window:resize)="collapsed = true">
       <ul class="nav navbar-nav">
         <li routerLinkActive="active" *ngIf="!isAuthenticated">
-          <a routerLink="/auth">Log In / Sign Up</a>
+          <a routerLink="/login">Sign in</a>
         </li>
         <li routerLinkActive="active" *ngIf="isAuthenticated">
           <a routerLink="/shopping-list">Wish List</a>

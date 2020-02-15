@@ -26,7 +26,19 @@ public class Category {
 
     private String description;
 
+    public Category() {}
+
+    public Category(String name) {
+        this.name = name;
+    }
+
     public Category(String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
+
+    public Category(Integer id, String name, String description) {
+        this.id = id;
         this.name = name;
         this.description = description;
     }
@@ -55,9 +67,4 @@ public class Category {
         this.description = description;
     }
 
-    public Category() {}
-
-    public Category(String name) {
-        this.name = name;
-    }
 }

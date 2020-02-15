@@ -18,7 +18,7 @@ import java.util.List;
 //(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/categories")
-public class CategoryContoller {
+public class CategoryController {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 

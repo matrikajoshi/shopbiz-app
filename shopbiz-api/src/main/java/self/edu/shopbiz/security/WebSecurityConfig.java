@@ -25,7 +25,6 @@ import static self.edu.shopbiz.security.SecurityConstants.SIGN_UP_URL;
 
 @Configuration
 @EnableWebSecurity
-//@Order(1)
 @EnableGlobalMethodSecurity(jsr250Enabled = true, prePostEnabled = true, securedEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 

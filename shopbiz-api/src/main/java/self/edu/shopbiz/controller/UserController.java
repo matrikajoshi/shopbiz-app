@@ -1,12 +1,14 @@
 package self.edu.shopbiz.controller;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.modelmapper.ModelMapper;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import self.edu.shopbiz.dto.UserDTO;
 import self.edu.shopbiz.exceptionUtil.EmailNotUniqueException;
 import self.edu.shopbiz.exceptionUtil.ResourceNotFoundException;
 import self.edu.shopbiz.model.User;
@@ -33,21 +35,25 @@ public class UserController {
 
     private UserRepository userRepository;
     private BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final ModelMapper modelMapper;
 
     public UserController(UserRepository applicationUserRepository,
-                          BCryptPasswordEncoder bCryptPasswordEncoder) {
+                          BCryptPasswordEncoder bCryptPasswordEncoder,
+                          ModelMapper modelMapper) {
         this.userRepository = applicationUserRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.modelMapper = modelMapper;
     }
 
+    @CrossOrigin(origins = "*")
     @PostMapping("/signup")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Object> signUp(@Valid @RequestBody User user) throws Exception {
-        Optional<User> userOptional = this.userRepository.findByEmail(user.getEmail());
+    public ResponseEntity<Object> signUp(@Valid @RequestBody UserDTO userDTO) throws Exception {
+        Optional<User> userOptional = this.userRepository.findByEmail(userDTO.getEmail());
         if (userOptional.isPresent()) {
             throw new EmailNotUniqueException("User with this Email already exists");
         }
-
+        User user = convertToEntity(userDTO);
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         User savedUser = userRepository.save(user);
         URI location = ServletUriComponentsBuilder
@@ -77,5 +83,8 @@ public class UserController {
 
     }
 
-
+    private User convertToEntity(UserDTO userDTO) {
+        User user = modelMapper.map(userDTO, User.class);
+        return user;
+    }
 }

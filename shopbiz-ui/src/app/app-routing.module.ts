@@ -6,9 +6,11 @@ import { ProductsComponent } from './products/products.component';
 import { ProductDetailComponent } from './products/product-detail/product-detail.component';
 import { AddProductComponent } from './products/add-product/add-product.component';
 import { ProductEditComponent } from './products/product-edit/product-edit.component';
-import { AuthComponent } from './auth/auth.component';import { AuthGuard } from './auth/auth.guard';
+import { AuthGuard } from './auth/auth.guard';
 import { ShoppingCartComponent } from './shopping-cart/shopping-cart.component';
 import { OrdersComponent } from './orders/orders.component';
+import { SigninComponent } from './auth/signin/signin.component';
+import { SignupComponent } from './auth/signup/signup.component';
 
 
 const routes: Routes = [
@@ -34,7 +36,8 @@ const routes: Routes = [
     component: OrdersComponent,
     canActivate: [AuthGuard]
   },
-  { path: 'auth', component: AuthComponent }
+  { path: 'login', component: SigninComponent },
+  { path: 'register', component: SignupComponent }
 ];
 
 @NgModule({
