@@ -1,0 +1,74 @@
+<br>
+<div class="row" *ngIf="error">
+  <div class="col-xs-12 col-sm-10 col-md-6 cold-sm-offset-1 col-md-offset-3 text-center">
+    <div class="alert alert-danger">{{ error }}</div>
+  </div>
+</div>
+<div class="row justify-content-center">
+  <div class="col-xs-12 col-sm-10 col-md-6 cold-sm-offset-1 col-md-offset-3">
+    <div class="card">
+      <div class="card-block">
+        <form class="text-center jumbotron" (ngSubmit)="onSubmit(authForm)" #authForm="ngForm">
+          <div class="form-group">
+            <label 
+              for="username">Username</label>
+            <input 
+              type="text" 
+              id="username"
+              name="username"
+              ngModel
+              class="form-control text-center"
+              autocomplete="username"/>
+          </div>
+          <div class="form-group">
+            <label
+              for="email"
+              class="control-label">E-Mail</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              ngModel
+              class="form-control text-center"
+              required
+              email 
+              autocomplete="email"/>
+          </div>
+          <div class="form-group">
+            <label
+              for="password"
+              class="control-label">Password</label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              ngModel
+              class="form-control text-center"
+              required 
+              autocomplete="new-password"/>
+          </div>
+          <div class="form-group">
+            <label
+              for="confirmPassword"
+              class="control-label">Confirm Password</label>
+            <input
+              type="password"
+              id="confirmPassword"
+              name="confirmPassword"
+              ngModel
+              class="form-control text-center"
+              autocomplete="new-password"
+              required />
+          </div>
+          <div *ngIf="authForm.value.password !== authForm.value.confirmPassword">Passwords do not match!</div>
+          <button class="btn btn-primary" type="submit"
+                  [disabled]="(authForm.value.password !== authForm.value.confirmPassword) || authForm.invalid">Register
+          </button>
+          <a routerLink="/login" class="btn btn-link">Cancel</a>
+        </form>      
+      <div class="loader" *ngIf="isLoading"></div>
+    </div>
+  </div>
+  </div>
+</div>
+

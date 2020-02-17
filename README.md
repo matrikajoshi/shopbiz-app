@@ -7,7 +7,7 @@
 - Docker
 
 ### Features:
-1. User authentication  and access control with Json Web Token 
+1. User authentication and access control using Spring Security with Json Web Token 
 2. Spring actuator to monitor API usage including /health endpoint
 3. Swagger for API documentation
 4. Spring Boot based Restful API including HATEOAS, Validation, Exception Handling
@@ -15,6 +15,7 @@
 6. Adding product to shopping cart without logging into application
 7. CRUD operations on product, shopping cart, shopping list and creating order
 8. Admin role can add/update/delete products
+9. Hibernate Level 2 caching
 
 ## Build and Deploy
 ### To run the backend application with maven installed:
@@ -34,8 +35,6 @@ Run as spring-boot application
 Swagger documentation available at - http://localhost:8080/shopbiz/swagger-ui.html#/
 
 In browser navigate to http://localhost:8080/shopbiz/
-
-HAL browser will list available REST API endpoints.
 
 ### To run frontend with Angular CLI and NodeJS
 - navigate to shopbiz-ui
