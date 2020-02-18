@@ -93,7 +93,7 @@ export class ShoppingCartComponent
 
   checkout() {
     if (!this.currentUser) {
-      this.router.navigate(['/auth'], {queryParams: {returnUrl: 'order'}});
+      this.router.navigate(['/login'], {queryParams: {returnUrl: 'order'}});
     } else {
       this.shoppingCartService.checkout();
     }

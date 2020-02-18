@@ -6,20 +6,24 @@ services:
     ports:
       - "80:80"
     depends_on:
-      - shopbiz
-  shopbiz:
-    container_name: shopbiz-api
-    restart: always
-    build: ./shopbiz-api
-    working_dir: /shopbiz-api
-    volumes:
-      - ./shopbiz-api:/shopbiz-api
-      - ~/.m2:/root/.m2
+      - shopbiz-api
+    networks:
+      - shopbiz-network
+
+  shopbiz-api:
+    container_name: shopbiz-api    
+    build:
+      context: shopbiz-api
+      dockerfile: Dockerfile
     ports:
       - "8080:8080"
-    command: mvn clean spring-boot:run -Dspring-boot.run.profiles=docker
+    restart: always
+    # command: mvn clean spring-boot:run -Dspring-boot.run.profiles=docker
     depends_on:
       - mp-mysql
+    networks:
+      - shopbiz-network
+
   mp-mysql:
     container_name: mp-mysql
     image: mysql/mysql-server:5.7
@@ -32,6 +36,10 @@ services:
     # ports:
     #   - "3306:3306"
     restart: always
+    networks:
+      - shopbiz-network
 
 volumes:
   db-data:
+networks:
+  shopbiz-network:

@@ -10,7 +10,7 @@ import { HeaderComponent } from './header/header.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ProductsComponent } from './products/products.component';
 import { ShoppingListComponent } from './shopping-list/shopping-list.component';
-import { AuthComponent } from './auth/auth.component';
+import { SigninComponent } from './auth/signin/signin.component';
 import { LoadingSpinnerComponent } from './shared/loading-spinner/loading-spinner.component';
 import { ProductDetailComponent } from './products/product-detail/product-detail.component';
 import { AddProductComponent } from './products/add-product/add-product.component';
@@ -44,6 +44,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { SignupComponent } from './auth/signup/signup.component';
 
 
 
@@ -58,7 +59,8 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     AddProductComponent,
     ProductEditComponent,
     ShoppingListComponent,
-    AuthComponent,
+    SigninComponent,
+    SignupComponent,
     LoadingSpinnerComponent,
     ShoppingCartComponent,
     OrdersComponent,

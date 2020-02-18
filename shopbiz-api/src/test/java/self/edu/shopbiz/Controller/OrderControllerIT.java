@@ -15,6 +15,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -83,6 +84,7 @@ public class OrderControllerIT {
     }
 
     @Test
+    //@WithMockUser
     public void whenValidInput_thenCreateOrder() throws Exception {
         List<OrderItemDTO> orderItems = getOrderItems();
         mvc.perform(post(apiUrl).contentType(MediaType.APPLICATION_JSON).content(JsonUtil.toJson(orderItems)))
@@ -97,6 +99,7 @@ public class OrderControllerIT {
     }
 
     @Test
+    //@WithMockUser
     public void givenOrderExists_whenGetOrders_thenStatus200() throws Exception {
         createOrder();
 
@@ -133,6 +136,14 @@ public class OrderControllerIT {
         return orderItems;
     }
 
+    private Order createOrder() {
+        List<OrderItemDTO> orderItemDTOs = getOrderItems();
+        List<OrderItem> orderItems = orderItemDTOs.stream().map((orderItemDTO -> modelMapper.map(orderItemDTO, OrderItem.class))).collect(Collectors.toList());
+        Order order = orderService.createOrder(orderItems);
+        return order;
+    }
+
+
     public void addProductToShoppingCart(Product product){
         CartItem cartItem = new CartItem();
         cartItem.setProduct(product);
@@ -145,12 +156,6 @@ public class OrderControllerIT {
         shoppingCartRepository.save(shoppingCart);
     }
 
-    private Order createOrder() {
-        List<OrderItemDTO> orderItemDTOs = getOrderItems();
-        List<OrderItem> orderItems = orderItemDTOs.stream().map((orderItemDTO -> modelMapper.map(orderItemDTO, OrderItem.class))).collect(Collectors.toList());
-        Order order = orderService.createOrder(orderItems);
-        return order;
-    }
 
 
 

@@ -1,5 +1,5 @@
 import {Injectable, Inject} from "@angular/core";
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {HttpErrorResponse} from "@angular/common/http";
 import {Router} from "@angular/router";
 import {BehaviorSubject, throwError, Observable} from "rxjs";
@@ -29,13 +29,19 @@ export class AuthService {
     private router: Router,
     @Inject("BaseURL") private baseURL) {}
 
-  signup(email: string, password: string) {
+  signup(userName: string, email: string, password: string) {
     const signupUrl = `${this.baseURL}users/signup`;
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type':  'application/json'
+      })
+    };
     return this.http
       .post<AuthResponseData>(signupUrl, {
+        userName: userName,
         email: email,
         password: password
-      })
+      }, httpOptions)
       .pipe(
         catchError(this.handleError),
         tap(resData => {
@@ -104,7 +110,7 @@ export class AuthService {
   logout() {
     this.user.next(null);
     this.loggedInUser = null;
-    this.router.navigate(["/auth"]);
+    this.router.navigate(["/login"]);
     localStorage.removeItem("userData");
     if (this.tokenExpirationTimer) {
       clearTimeout(this.tokenExpirationTimer);

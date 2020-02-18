@@ -38,25 +38,25 @@ public class CategoryControllerTest {
 
     private final static String TEST_USER_ID = "user-id-123";
 
-//    @MockBean
-//    CategoryRepository categoryRepository;
+    @MockBean
+    CategoryRepository categoryRepository;
 
     @Autowired
     MockMvc mockMvc;
 
-//    Category validCategory;
-//
-//    @BeforeEach
-//    void setUp() {
-//        validCategory = new Category(1,"CatName", "CatDesc");
-//    }
+    Category validCategory;
+
+    @BeforeEach
+    void setUp() {
+        validCategory = new Category(1,"CatName", "CatDesc");
+    }
 
     @Test
     @WithMockUser
     void testGetCategoryById() throws Exception {
 
-//        Optional<Category> category = null;
-//        given(categoryRepository.findById(any())).willReturn(Optional.ofNullable(validCategory));
+        Optional<Category> category = null;
+        given(categoryRepository.findById(any())).willReturn(Optional.ofNullable(validCategory));
 
         MvcResult result= mockMvc.perform(MockMvcRequestBuilders.get("/categories/1"))
                 .andDo(print())

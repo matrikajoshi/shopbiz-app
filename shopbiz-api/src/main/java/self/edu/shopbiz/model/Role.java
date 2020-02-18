@@ -37,7 +37,7 @@ public class Role {
                     name = "role_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(
                     name = "permission_id", referencedColumnName = "id"))
-    //@JsonManagedReference(value = "permissions")
+    @JsonManagedReference(value = "permissions")
     private Set<Permission> permissions;
 
 
