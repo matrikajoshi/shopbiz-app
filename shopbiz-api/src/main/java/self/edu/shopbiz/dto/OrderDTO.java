@@ -1,5 +1,6 @@
 package self.edu.shopbiz.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import self.edu.shopbiz.enums.OrderStatus;
 import self.edu.shopbiz.model.OrderItem;
@@ -12,10 +13,11 @@ public class OrderDTO {
 
     private Long id;
 
-    private String customerEmail;
+    private String userUserName;
 
-    private Set<OrderItem> orderItems;
+    private Set<OrderItemDTO> orderItems;
 
+    @JsonFormat(shape= JsonFormat.Shape.STRING)
     private BigDecimal totalAmount;
 
     private OrderStatus orderStatus;

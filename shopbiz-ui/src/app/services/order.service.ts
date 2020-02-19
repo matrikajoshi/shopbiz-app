@@ -7,6 +7,7 @@ import { OrderItem } from '../models/OrderItem';
 import { MessageService } from './message.service';
 import { Order } from '../models/Order';
 import { baseURL } from 'src/environments/environment';
+import {ShoppingCartService} from "./shopping-cart.service";
 
 
 @Injectable({
@@ -18,12 +19,14 @@ export class OrderService {
 
   constructor(private http: HttpClient,
     private messageService: MessageService,
+    private shoppingCartService: ShoppingCartService,
     private router: Router) { }
 
   saveOrder(orderItems: OrderItem[]): Observable<Order>  {
     return this.http.post<Order>(this.url, orderItems).pipe(
       tap(order => {
         this.log("Order created with id: " + order.id);
+        this.shoppingCartService.navbarCartCount = 0;
       }),
       catchError(_ => of(null))
     );
