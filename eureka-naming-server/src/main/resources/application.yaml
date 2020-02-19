@@ -1,0 +1,8 @@
+server:
+  port: 8761
+
+# single instance of eureka, no need to register with other servers
+eureka:
+  client:
+    register-with-eureka: false
+    fetch-registry: false
