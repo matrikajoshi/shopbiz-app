@@ -1,0 +1,26 @@
+
+spring:
+    application:
+        name: coupon-service
+    data:
+      mongodb:
+        host: localhost
+        port: 27017
+        database: coupondb
+    zipkin:
+      base-url: http://localhost:9411/
+    sleuth:
+      sampler:
+        probability: 1
+
+server:
+  port: 8081
+#  servlet:
+#    context-path: /coupon-service
+
+
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/

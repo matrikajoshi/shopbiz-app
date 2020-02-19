@@ -1,5 +1,53 @@
 version: '3'
 services:
+  naming-server:
+    build:
+      context: eureka-naming-server
+      dockerfile: Dockerfile
+    ports:
+      - "8761:8761"
+    restart: always
+    networks:
+      - shopbiz-network
+
+  zipkin-server:
+    image: openzipkin/zipkin
+    container_name: zipkin
+    environment:
+      STORAGE_TYPE: mem
+    ports:
+      - "9411:9411"
+    restart: always
+    networks:
+      - shopbiz-network
+
+  zuul-api-gateway:
+    build:
+      context: zuul-proxy
+      dockerfile: Dockerfile
+    ports:
+      - "8765:8765"
+    restart: always
+    depends_on:
+      - naming-server
+      - zipkin-server
+    networks:
+      - shopbiz-network
+
+  coupon-service:
+    build:
+      context: coupon-service
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8081"
+    restart: always
+    depends_on:
+      - naming-server
+      - zipkin-server
+      - mp-mongodb
+    networks:
+      - shopbiz-network
+
   shopbiz-ui:
     container_name: shopbiz-ui
     build: ./shopbiz-ui
@@ -24,6 +72,21 @@ services:
     networks:
       - shopbiz-network
 
+  mp-mongodb:
+    container_name: mp-mongodb
+    image: mongo:3.6
+    restart: always
+    environment:
+      MONGO_DATA_DIR: /data/db
+      MONGO_LOG_DIR: /dev/null
+    volumes:
+      - mongo-data:/data/db
+    ports:
+      - "27017:27017"
+    command: mongod --smallfiles --logpath=/dev/null # --quiet
+    networks:
+      - shopbiz-network
+
   mp-mysql:
     container_name: mp-mysql
     image: mysql/mysql-server:5.7
@@ -32,7 +95,7 @@ services:
       MYSQL_ROOT_PASSWORD: taco
       MYSQL_ROOT_HOST: '%'
     volumes:
-      - db-data:/var/lib/mysql
+      - mysql-data:/var/lib/mysql
     # ports:
     #   - "3306:3306"
     restart: always
@@ -40,6 +103,7 @@ services:
       - shopbiz-network
 
 volumes:
-  db-data:
+  mongo-data:
+  mysql-data:
 networks:
   shopbiz-network:

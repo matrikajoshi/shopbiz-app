@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: coupon-service
+  data:
+    mongodb:
+      host: mp-mongodb
+      port: 27017
+      database: coupondb
+  zipkin:
+    base-url: http://zipkin-server:9411/
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://naming-server:8761/eureka/
