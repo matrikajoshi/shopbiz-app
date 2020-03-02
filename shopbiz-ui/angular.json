@@ -24,11 +24,7 @@
               "src/assets"
             ],
             "styles": [
-              "node_modules/bootstrap/dist/css/bootstrap.min.css",
-              "node_modules/font-awesome/css/font-awesome.css",
-
-              "node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
-              "src/styles.css"
+              "src/scss/styles.scss"
             ],
             "scripts": []
           },
@@ -124,6 +120,18 @@
           }
         }
       }
-    }},
-  "defaultProject": "shopbiz-UI-App"
+    }
+  },
+  "defaultProject": "shopbiz-UI-App",
+  "schematics": {
+    "@schematics/angular:component": {
+      "prefix": "app",
+      "styleext": "scss"
+    },
+    "@schematics/angular": {
+      "component": {
+        "styleext": "scss"
+      }
+    }
+  }
 }

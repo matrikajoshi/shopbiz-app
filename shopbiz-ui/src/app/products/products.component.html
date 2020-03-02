@@ -1,40 +1,26 @@
-<div class="container-fluid">
-<div fxFlex fxLayout="column" fxLayoutGap="10px" *ngIf="products">
-  <mat-grid-list cols="2" class="myGridList"   rowHeight="fit" [gutterSize]="'10px'">
-    <mat-grid-tile  *ngFor="let product of products; let i = index">
-        <a
-        [routerLink]="['/products', product.id]"
-        href="#"
-        fragment="loading"
-        >
-        <mat-card class="product-card" fxFlex="100">
-              <mat-card-header>
-
-                <mat-card-title>{{product.name | uppercase}}</mat-card-title>
-                <!-- <mat-card-subtitle>By Seller</mat-card-subtitle> -->
-              </mat-card-header>
-              <!-- <img mat-card-image src="{{ baseURL }}images/{{ product.imageUrl }}" alt="{{product.name}}"> -->
-              <mat-card-content>
-                <!-- <img mat-card-image src="{{ baseURL }}images/{{ product.imageUrl }}" alt="{{product.name}}"> -->
-                <img height="200px" src="{{ baseURL }}images/{{ product.imageUrl }}" alt={{product.name}}>
-              </mat-card-content>
-              <mat-card-actions>
-                <span class="card-text"><strong>Price: </strong>{{product.price | currency}}</span>
-                <!-- <button mat-button>LIKE</button>
-                <button mat-button>SHARE</button> -->
-                <div fxFlex></div>
-                <a
-                mat-flat-button color="primary"
-                [routerLink]="['/products', product.id]">
-                View Details
-                </a>
-              </mat-card-actions>
-
-            </mat-card>
-          </a>
-      </mat-grid-tile>
-    </mat-grid-list>
+<app-page-title title="Products" [children]="[{title: 'Products'}]"></app-page-title>
+<div class="container  padding-bottom-3x mb-1">
+  <div fxLayout="row wrap" *ngIf="products">
+    <div  *ngFor="let product of products; let i = index" class="col-12 col-sm-12 col-md-4 col-lg-3" >
+      <div class="product-card">
+        <a class="product-thumb" routerLink="/products/{{product.id}}">
+          <img src="{{ baseURL }}images/{{ product.imageUrl }}" alt="{{product.name}}"/>
+        </a>
+        <div class="product-info">
+          <h3 class="product-title">
+            <a routerLink="/products/{{product.id}}">{{product.name}}</a>
+            <h4 class="product-price">
+              <del *ngIf="product.price < product.priceNormal" class="text-muted text-normal">{{product.priceNormal | currency }}</del>{{product.price | currency }}
+            </h4>
+          </h3>
+          <div class="product-buttons">
+            <button class="btn btn-outline-primary btn-sm" [routerLink]="['/products', product.id]"> View Details</button> 
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
+  <app-pagination [pageableProducts]="pageableProducts" (getProductsByPage)="getProductsByPage($event)"></app-pagination>
   <div [hidden]="products">
     <mat-spinner></mat-spinner><h4>Loading . . . Please Wait</h4>
   </div>

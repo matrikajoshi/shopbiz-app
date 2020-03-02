@@ -1,6 +1,5 @@
 package self.edu.shopbiz.service.impl;
 
-import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,11 +10,9 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import self.edu.shopbiz.exceptionUtil.ResourceNotFoundException;
 import self.edu.shopbiz.model.Category;
-import self.edu.shopbiz.dto.Coupon;
 import self.edu.shopbiz.model.Product;
 import self.edu.shopbiz.repository.CategoryRepository;
 import self.edu.shopbiz.repository.ProductRepository;
-import self.edu.shopbiz.restclients.CouponClient;
 import self.edu.shopbiz.service.ProductService;
 
 import javax.transaction.Transactional;
@@ -23,11 +20,7 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Created by mpjoshi on 10/11/19.
@@ -45,51 +38,23 @@ public class ProductServiceImpl implements ProductService{
 
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
-    private final CouponClient couponClient;
 
-    public ProductServiceImpl(ProductRepository productRepository, CategoryRepository categoryRepository, CouponClient couponClient){
+    public ProductServiceImpl(ProductRepository productRepository,
+                              CategoryRepository categoryRepository) {
         this.categoryRepository = categoryRepository;
         this.productRepository = productRepository;
-        this.couponClient = couponClient;
     }
 
     @Override
     public Page<Product> findAllProductsPageable(Pageable pageable) {
-        Page<Product> productPage = productRepository.findAll(pageable);
-        List<Coupon> allCoupons = couponClient.getAllCoupons();
-        Map<String, Coupon> skuCouponMap = new HashMap<>();
-        allCoupons.forEach(coupon ->
-            skuCouponMap.put(coupon.getSku(), coupon)
-        );
-        productPage.getContent().forEach(product -> {
-            if (skuCouponMap.containsKey(product.getSku())) {
-                BigDecimal discount = skuCouponMap.get(product.getSku()).getDiscount();
-                product.setPrice(product.getPrice().subtract(discount));
-            }
-        });
-        return productPage;
+        return productRepository.findAll(pageable);
     }
 
-    @HystrixCommand(fallbackMethod = "sendErrorResponse")
     @Override
     public Product findProductById(Long id){
-        Product product = productRepository
+        return productRepository
                 .findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
-        Coupon couponBySku = couponClient.getCouponBySku(product.getSku());
-        if (null != couponBySku) {
-            BigDecimal discount = couponBySku.getDiscount();
-            product.setPrice(product.getPrice().subtract(discount));
-        }
-        return product;
-    }
-
-    // same signature as original method
-    public Product sendErrorResponse(Long id) {
-        Product product = productRepository
-                .findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
-        return product;
     }
 
     @Override

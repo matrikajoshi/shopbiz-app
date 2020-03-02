@@ -1,60 +1,93 @@
-<h1 align="center" class="display-4 mb-5">My Cart</h1>
+<app-page-title title=" My Cart" [children]="[{title: 'Cart'}]"></app-page-title>
 <!--Cart Detail Table-->
-<table *ngIf="shoppingCart" class="table table-striped text-center">
-    <thead>
-    <tr>
-        <th scope="col">Photo</th>
-        <th scope="col">Name</th>
-        <th scope="col">Price</th>
-        <th scope="col">Quantity</th>
-        <th scope="col">Subtotal</th>
-        <th scope="col">Action</th>
-    </tr>
-    </thead>
-    <tbody>
+<div class="container padding-bottom-3x mb-1">
+    <div class="table-responsive shopping-cart">
+        <table *ngIf="shoppingCart" class="table">
+            <thead>
+                <tr>
+                    <th class="text-center" scope="col">Photo</th>
+                    <th class="text-center" scope="col">Name</th>
+                    <th class="text-center" scope="col">Price</th>
+                    <th class="text-center" scope="col">Quantity</th>
+                    <th class="text-center" scope="col">Subtotal</th>
+                    <th class="text-right" scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let cartItem of shoppingCart.cartItems">
+                    <td class="align-middle" scope="row">
+                        <div class="product-item">
+                            <a class="product-thumb" routerLink="/products/{{cartItem.product.id}}"><!-- <img height="100px" -->
+                            <img 
+                                src="{{ baseURL }}images/{{cartItem.product.imageUrl}}"
+                                alt="{{cartItem.product.name}}">
+                            </a>
+                        </div>
+                    </td>
+                    <td class="align-middle"><a
+                            routerLink="/products/{{cartItem.product.id}}">{{cartItem.product.name}}</a></td>
+                    <td class="align-middle">{{cartItem.product.price | currency}}</td>
 
-    <tr *ngFor="let cartItem of shoppingCart.cartItems">
-        <th class="align-middle" scope="row">
-            <a routerLink="/products/{{cartItem.product.id}}">
-              <img height="100px"
-                  src="{{ baseURL }}images/{{cartItem.product.imageUrl}}"
-                  alt="{{cartItem.product.name}}">
-            </a>
-        </th>
-        <td class="align-middle"><a
-                routerLink="/products/{{cartItem.product.id}}">{{cartItem.product.name}}</a></td>
-        <td class="align-middle">{{cartItem.product.price | currency}}</td>
+                    <td class="text-center">
+                        <div class="count-input">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <button class="btn btn-outline-secondary" type="button" (click)="minusOne(cartItem)">-</button>
+                                </div>
+                                <input 
+                                    type="text"
+                                    class="form-control text-center" 
+                                    min="1"
+                                    id="{{cartItem.product.id}}"
+                                    [(ngModel)]="cartItem.quantity"                        
+                                    (change)="onChange(cartItem)"                          
+                                    required
+                                    name='count'>
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-secondary" type="button" (click)="addOne(cartItem)">+</button>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
 
-        <td class="align-middle">
-            <a (click)="minusOne(cartItem)"><i class="fa fa-minus"></i></a>
-            <input min="1" id="{{cartItem.product.id}}"
-                   [max]=10
-                   [(ngModel)]="cartItem.quantity"
-                   (change)="onChange(cartItem)"
-                   size="5"
-                   type="number"
-                   required
-                   name='count'>
-            <a (click)="addOne(cartItem)"> <i class="fa fa-plus"></i></a>
-        </td>
-
-        <td class="align-middle">{{cartItem.product.price * cartItem.quantity|currency}}</td>
-        <td class="align-middle">
-            <a (click)="remove(cartItem)" routerLink="./">Remove</a>
-        </td>
-
-    </tr>
-
-    </tbody>
-</table>
-<!-- length of 0 is false, to check -->
-<div class="row" *ngIf="shoppingCart?.cartItems?.length > 0">
-    <h5 style="display: inline;">Total: {{total | currency}}</h5>
-    <button (click)="checkout()" mat-raised-button color="primary">Checkout</button>
+                    <td class="align-middle">{{cartItem.product.price * cartItem.quantity|currency}}</td>
+                    <td class="text-right">
+                        <a class="remove-from-cart" (click)="remove(cartItem)" routerLink="./"
+                         data-toggle="tooltip" title="Remove item">
+                            <i class="icon-cross"></i>
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <!-- length of 0 is false, to check -->
+    <div class="shopping-cart-footer" *ngIf="shoppingCart?.cartItems?.length > 0">
+        <div class="column" >
+            <!-- <form class="coupon-form" method="post">
+              <input class="form-control form-control-sm" type="text" placeholder="Coupon code" required>
+              <button class="btn btn-outline-primary btn-sm" type="submit">Apply Coupon</button>
+            </form> -->
+        </div>
+        <div class="column text-lg">Total:
+            <span class="text-medium">{{ total | currency }}</span>
+        </div>
+    </div>
+    <div class="shopping-cart-footer">
+        <div class="column">
+          <a class="btn btn-outline-secondary" routerLink="/products">
+            <i class="icon-arrow-left"></i>&nbsp;Back to Shopping</a>
+        </div>
+        <div class="column">
+            <!-- <button (click)="checkout()" class="btn btn-warning float-right">Checkout</button> -->
+          <a class="btn btn-success" (click)="checkout()">Checkout</a>
+        </div>
+    </div>
+    <div class="row" *ngIf="shoppingCart?.cartItems?.length == 0">
+        <h4 class="text-muted text-center">You do not have any items in shopping cart</h4>
+    </div>
 </div>
-<div class="row" *ngIf="shoppingCart?.cartItems?.length == 0">
-  <h4 class="text-muted text-center">You do not have any items in shopping cart</h4>
-</div>
+
 <div [hidden]="shoppingCart">
   <mat-spinner></mat-spinner><h4>Loading . . . Please Wait</h4>
 </div>

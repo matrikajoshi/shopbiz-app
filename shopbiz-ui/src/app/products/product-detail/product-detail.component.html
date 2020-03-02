@@ -1,67 +1,65 @@
-<link href="https://fonts.googleapis.com/css?family=Poiret+One&display=swap" rel="stylesheet">
-<div class="container"
-     fxLayout="row wrap"
-     fxLayout.sm="column"
-     fxLayout.xs="column"
-     fxLayoutAlign.gt-md="space-around center"
-     fxLayoutGap="10px"
-     fxLayoutGap.xs="0">
-
-  <div *ngIf="product" class="row text-center justify-content-center">
-    <div class="card mb-4">
-
-      <h4 class="productLabel">{{product.name | uppercase}}</h4>
-      <div>
-        <img src="{{ baseURL }}images/{{ product.imageUrl }}" alt="{{product.name}}">
-      </div>
-
-      <div class="card-text">
-        <p class="card-desc">
-          <strong>Description: </strong>{{product.description}}
-        </p>
-      </div>
-      <div class="text-left">
-        <p class="card-text">
-          <strong><span>SKU: </span>{{product.sku}}</strong>
-        </p>
-        <p class="card-text">
-          <strong><span>Price:  </span></strong>
-          <label id="price"> {{product.price | currency}}</label>
-        </p>
-        <label class="card-text">
-          <strong>Quantity: </strong>
-          <span class="padding-5"></span>
-          <input [(ngModel)]=quantity
-            type="number"
-            name="quantity"
-            required
-            min="1"
-          >
-        </label>
-
-        <!-- <p class="card-text">
-          <label for="quantity">Quantity</label>
-          <span class="padding-5">
-            <input name="quantity" type="number" min="1" [(ngModel)]=quantity required>
+<div class="product-detail">
+  <div *ngIf="product" >
+    <app-page-title title="{{ product.name }}" [children]="[{title: 'Products', link: '/products'}, {title: product.name}]"></app-page-title>
+    <div class="container padding-bottom-3x mb-1">
+      <div class="row">
+        <!-- Poduct Gallery-->
+        <div class="col-md-6">
+          <div class="product-gallery">
+            <span *ngIf="product.reduction" class="product-badge text-danger">{{product.reduction}}% Off</span>
+            <div class="product-gallery-image">
+              <img class="img-fluid" 
+                src="{{ baseURL }}images/{{ product.imageUrl }}" 
+                alt="{{product.name}}" >
+            </div>
+          </div>
+        </div>
+        <!-- Product Info-->
+        <div class="col-md-6">                     
+          <h2 class="padding-top-1x text-normal">{{ product.name }}</h2>          
+          <div class="pt-1 mb-2">
+            <span class="text-medium">SKU:</span> {{ product.sku }}
+          </div>
+          <span class="h2 d-block">
+            <app-price [product]="product"></app-price>
           </span>
-        </p> -->
-        <p class="card-text"><strong>Subtotal: </strong>
-          <label id="subtotal">{{quantity * product?.price | currency}}</label>
-        </p>
-      </div>
-      <div class="button-row card-footer">
-        <button mat-stroked-button color="accent" (click)="goBack()">Go Back</button>
-        <button mat-raised-button color="primary" (click)="onAddToShoppingCart()">Add to cart</button>
-
-        <a placement="top" mdbTooltip="Add to Wishlist" container="body" (click)="onAddToShoppingList()">
-            <i class="fa fa-heart fa-2x"></i>
-        </a>
-
-        <a *ngIf="authService.isAdmin()"
-          mat-flat-button color="success"
-          [routerLink]="['/product-edit', product.id]">Edit
-        </a>
-      </div>
+          <p>{{ product.description }}</p>
+          <div class="col-sm-3">
+            <label class="card-text">
+              Quantity: 
+              <span class="padding-5"></span>
+              <input [(ngModel)]=quantity
+                type="number"
+                name="quantity"
+                required
+                min="1"
+              >
+            </label>
+          </div>
+          <p class="card-text"><strong>Subtotal: </strong>
+            <label id="subtotal"> {{quantity * product?.price | currency}}</label>
+          </p>
+          <div class="sp-buttons mt-2 mb-2">
+            <a class="btn btn-outline-secondary" routerLink="/products">
+              <i class="icon-arrow-left"></i>&nbsp;Go Back</a>
+            <button class="btn btn-primary" (click)="onAddToShoppingCart()">
+              <i class="icon-bag"></i> Add to Cart
+            </button>
+            <button class="btn btn-outline-secondary btn-sm btn-wishlist" data-toggle="tooltip" title="Whishlist" (click)="onAddToShoppingList()">
+                <i class="icon-heart"></i>
+            </button>
+            <a placement="top" mdbTooltip="Add to Wishlist" container="body" (click)="onAddToShoppingList()">
+                <i class="fa fa-heart fa-2x"></i>
+            </a>    
+            <a *ngIf="authService.isAdmin()"
+              mat-flat-button color="success"
+              [routerLink]="['/product-edit', product.id]">Edit
+            </a>
+          </div>
+        </div>
+        <!-- End Product Info-->
+      </div>      
+    </div>
   </div>
 </div>
 

@@ -1,13 +1,31 @@
 <div class="container">
   <h3>Top Products</h3>
-  <div class="grid grid-pad">
-    <a *ngFor="let product of products" class="col-1-4"
-        routerLink="/products/{{product.id}}">
-      <div class="module hero">
-        <h4>{{product.id}}-{{product.name}}</h4>
-      </div>
-    </a>
-  </div>
+  <!-- fxLayoutAlign="space-around center"  fxFlex.md="70" fxLayoutWrap class="card-deck-container  mat-elevation-z4" fxFlex -->
+    <div fxLayout="row wrap" >
+      <div  *ngFor="let product of products" class="col-12 col-sm-12 col-md-4 col-lg-3" >
+        <div class="product-card">
+        <a class="product-thumb" routerLink="/products/{{product.id}}">
+          <img src="{{ baseURL }}images/{{ product.imageUrl }}" alt="{{product.name}}"/>
+        </a>
+        <div class="product-info">
+          <h3 class="product-title">
+            <a routerLink="/products/{{product.id}}">{{product.name}}</a>
+            <h4 class="product-price">
+              <del *ngIf="product.price < product.priceNormal" class="text-muted text-normal">{{product.priceNormal | currency }}</del>{{product.price | currency }}
+            </h4>
+          </h3>
+          <div class="product-buttons">
+            <button class="btn btn-outline-primary btn-sm" >Add to Cart</button> 
+            <button class="btn btn-outline-secondary btn-sm btn-wishlist"   data-toggle="tooltip"     title="Whishlist">
+              <i class="icon-heart"></i>
+            </button> 
+          </div>
+        </div>
+        </div>
+      </div>      
+    </div>
+  <!-- </div> -->
+  
   <div class="row">
     <button
       *ngIf="authService.isAdmin()"

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 
 import { Product } from '../models/product';
 import { ProductService, PageableProducts } from '../services/product.service';
@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.css']
+  styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
 
@@ -16,7 +16,8 @@ export class DashboardComponent implements OnInit {
 
   constructor(
     private productService: ProductService,
-    public authService: AuthService) {}
+    public authService: AuthService,
+    @Inject('BaseURL') public baseURL) {}
 
   ngOnInit() {
     this.getProducts();
@@ -27,7 +28,7 @@ export class DashboardComponent implements OnInit {
     pageProdObs = this.productService.getProducts();
 
     pageProdObs.subscribe(
-        (resData: PageableProducts) => this.products = resData.content.slice(0, 4));
+        (resData: PageableProducts) => this.products = resData.content.slice(0, 5));
   }
 
 }

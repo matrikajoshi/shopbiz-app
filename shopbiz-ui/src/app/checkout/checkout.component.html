@@ -1,0 +1,103 @@
+<app-page-title title="Checkout" [children]="[{title: 'Checkout'}]"></app-page-title>
+<div class="container padding-bottom-3x mb-2">
+  <div class="row">
+    <div class="col-xl-9 col-lg-8">
+    <h4>Review Your Order</h4>
+    <hr class="padding-bottom-1x">
+    <div class="table-responsive shopping-cart">
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Product Name</th>
+            <th class="text-center">Subtotal</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let item of orderItems; let i = index">
+            <td>
+            <div class="product-item">
+                <a class="product-thumb" routerLink="/products/{{item.product.id}}">
+                <img src="{{ baseURL }}images/{{item.product.imageUrl}}" alt="{{item.product.name}}">
+                </a>
+                <div class="product-info">
+                <h4 class="product-title">
+                    <a routerLink="/products/{{item.product.id}}">{{item.product.name}}
+                    <small>x {{item.orderedQuantities}}</small>
+                    </a>
+                </h4>
+                </div>
+            </div>
+            </td>
+            <td class="text-center text-lg text-medium">{{ (item.product.price * item.orderedQuantities) | currency }}</td>
+            <td class="text-center">
+            <a class="btn btn-outline-primary btn-sm" routerLink="/cart">Edit</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    </div>
+    <div class="shopping-cart-footer">
+        <div class="column"></div>
+            <div class="column text-lg">Subtotal:
+                <span class="text-medium">{{ total | currency }}</span>
+            </div>
+        </div>
+        <div class="row padding-top-1x mt-3">
+            <div class="col-sm-6">
+                <h5>Shipping to:</h5>
+                <ul class="list-unstyled">
+                <li>
+                    <span class="text-muted">Client:</span>{{customer.firstname}} {{customer.lastname}}</li>
+                <li>
+                    <span class="text-muted">Address:</span>To be added</li>
+                <li>
+                    <span class="text-muted">Phone:</span>To be added</li>
+                </ul>
+            </div>
+            <div class="col-sm-6">
+                <h5>Payment method:</h5>
+                <ul class="list-unstyled">
+                <li>
+                    <span class="text-muted">To be added</span></li>
+                </ul>
+            </div>
+        </div>
+        <div class="checkout-footer">
+            <div class="column">
+                <button class="btn btn-outline-secondary" routerLink="/cart">
+                <i class="icon-arrow-left"></i><span class="hidden-xs-down">&nbsp;Back To Cart</span>
+                </button>
+            </div>
+            <div class="column">
+                <button class="btn btn-primary" href="" (click)="onCompleteOrder($event)">
+                <span class="hidden-xs-down">Complete Order</span><span class="d-sm-none">Complete</span>
+                </button>
+            </div>
+        </div>          
+    </div>
+    <div class="col-xl-3 col-lg-4">
+        <aside class="sidebar">
+            <div class="padding-top-2x hidden-lg-up"></div>
+            <!-- Order Summary Widget-->
+            <section class="widget widget-order-summary">
+              <h3 class="widget-title">Order Summary</h3>
+              <table class="table">
+                <tr>
+                  <td>Cart Subtotal:</td>
+                  <td class="text-medium">{{total | currency}}</td>
+                </tr>
+                <tr>
+                  <td>Shipping:</td>
+                  <td class="text-medium">{{0 | currency}}</td>
+                </tr>
+                <tr>
+                  <td>Order Total:</td>
+                  <td class="text-lg text-medium">{{total | currency}}</td>
+                </tr>
+              </table>
+            </section>
+        </aside>
+    </div>
+  </div>
+</div>

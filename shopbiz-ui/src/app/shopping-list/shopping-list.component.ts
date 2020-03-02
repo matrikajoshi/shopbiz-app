@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-shopping-list',
   templateUrl: './shopping-list.component.html',
-  styleUrls: ['./shopping-list.component.css']
+  styleUrls: ['./shopping-list.component.scss']
 })
 export class ShoppingListComponent implements OnInit, OnDestroy {
   subscription: Subscription;
@@ -43,7 +43,7 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
 
   private setTitle() {
     if (this.shoppingList) {
-      this.title = this.shoppingList.customerName + '\'s Shopping List';
+      this.title = this.shoppingList.customerUserName + '\'s Shopping List';
     } else {
       this.title = 'You don\'t have any products in Shopping List';
     }

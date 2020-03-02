@@ -1,3 +1,5 @@
+<app-page-title title="Shopping List" [children]="[{title: 'Shopping List'}]"></app-page-title>
+<div class="container  padding-bottom-3x mb-1">
 <h3 align="center" class="display-4 mb-5">{{title}}</h3>
 <div *ngIf="shoppingList?.products?.length > 0; else empty" class="row card-deck text-center">
   <div *ngFor="let product of shoppingList.products" class="col-lg-4 ">
@@ -13,12 +15,12 @@
         <div class="button-row">
           <button
             type="submit"
-            mat-raised-button color="accent"
+            class="btn btn-outline-primary btn-sm" 
             (click)="addToCart(product)"
             >Add to Cart
           </button>
           <button
-              mat-flat-button color="success"
+              class="btn btn-outline-secondary btn-sm" 
               type="button"
               (click)="removeFromList(product)"
               >Delete
@@ -33,4 +35,5 @@
 </ng-template>
 <div [hidden]="shoppingList">
   <mat-spinner></mat-spinner><h4>Loading . . . Please Wait</h4>
+</div>
 </div>

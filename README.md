@@ -16,7 +16,7 @@
 6. Adding product to shopping cart without logging into application
 7. CRUD operations on product, shopping cart, shopping list and creating order
 8. Admin role can add/update/delete products
-9. Hibernate Level 2 caching
+9. Hibernate Level 2 caching with EhCache
 
 ### Spring Cloud components
 1. Eureka for Microservice Registration and Discovery and Dynamic scaling

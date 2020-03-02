@@ -1,0 +1,128 @@
+@import '../../../scss/helpers/mixins';
+@import '../../../scss/helpers/variables';
+/**
+.productLabel {
+  font-family: 'Open Sans Condensed';
+  margin-bottom: 3px;
+}
+
+.padding-5 {
+    padding-right: 0;
+    padding-left: 10px;
+}
+
+.button-row button,
+.button-row a {
+  margin-right: 8px;
+}
+
+.card-desc {
+  font-family: 'Poiret One', cursive;
+  font-size: 180%;
+  font-style: italic;
+  line-height: 40px;
+}
+
+.card-footer a .fa-heart {
+  margin-left: 10px;
+  color: var(--navBackground) !important;
+}
+*/
+
+// Buttons
+.sp-buttons {
+  .btn {
+    margin: 0;
+    margin-left: 8px;
+
+    &.btn-wishlist {
+      width: $btn-sm-height;
+      padding: 0;
+      padding-left: 1px;
+      border-radius: 50%;
+
+      > i {
+        font-size: 1.2em;
+      }
+
+      &.active {
+        color: $brand-danger;
+      }
+    }
+  }
+}
+
+// Product Gallery
+.product-gallery {
+  position: relative;
+
+  padding: {
+    top: 15px;
+    right: 15px;
+    bottom: 15px;
+    left: 15px;
+  }
+
+  border: 1px solid $border-color;
+  border-radius: $border-radius-lg;
+
+  .product-badge {
+    top: 25px;
+    left: 15px;
+  }
+  .product-thumbnails {
+    display: block;
+    margin: 0;
+    margin-top: $grid-vertical-step; //~24px
+    padding: 0;
+    list-style: none;
+    text-align: center;
+
+    > li {
+      display: inline-block;
+      margin: 0 3px 10px;
+
+      > a {
+        display: block;
+        width: 94px;
+        transition: border-color .25s;
+        border: 1px solid $border-color;
+        border-radius: $border-radius-base;
+        overflow: hidden;
+      }
+
+      &.active > a {
+        border-color: $brand-primary;
+        cursor: default;
+      }
+    }
+  }
+
+  .product-thumbnail-image {
+    &.loading {
+      min-height: 80px;
+      background: url('../../../img/loading.gif') center center no-repeat;
+    }
+  }
+}
+
+.product-gallery-image {
+
+  img {
+    min-width: 100%;
+  }
+
+  &.loading {
+    min-height: 200px;
+    background: url('../../../img/loading.gif') center center no-repeat;
+  }
+}
+
+.product-detail {
+
+  &.loading {
+      min-height: 200px;
+      background: url('../../../img/loading.gif') center center no-repeat;
+  }
+}
+

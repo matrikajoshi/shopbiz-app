@@ -3,6 +3,10 @@ import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FileUploadModule } from 'ng2-file-upload';
+import { CookieService } from 'ngx-cookie-service';
+import { MDBBootstrapModule } from 'angular-bootstrap-md';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -24,6 +28,10 @@ import { AuthInterceptorService } from './auth/auth.interceptor.service';
 import { MessagesComponent } from './messages/messages.component';
 import { baseURL } from 'src/environments/environment';
 import { DropdownDirective } from './shared/dropdown.directive';
+import { PageTitleComponent } from './page-title/page-title.component';
+import { PriceComponent } from './price/price.component';
+import { CheckoutComponent } from './checkout/checkout.component';
+import { PaginationComponent } from './shared/pagination/pagination.component';
 
 import {
   MatToolbarModule,
@@ -40,12 +48,6 @@ import {
   MatProgressSpinnerModule,
   MatIconModule
 } from '@angular/material';
-import { CookieService } from 'ngx-cookie-service';
-
-import { MDBBootstrapModule } from 'angular-bootstrap-md';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { FlexLayoutModule } from '@angular/flex-layout';
-
 
 
 @NgModule({
@@ -65,7 +67,11 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     ShoppingCartComponent,
     OrdersComponent,
     CartModalComponent,
-    DropdownDirective
+    DropdownDirective,
+    PageTitleComponent,
+    PriceComponent,
+    CheckoutComponent,
+    PaginationComponent
   ],
   imports: [
     BrowserModule,

@@ -1,17 +1,21 @@
-<h3 class="text-center">ORDER</h3>
-
-<ul>
-  <li *ngFor="let orderItem of orderItems">
-    {{ orderItem.product.name }} - ${{ orderItem.product.price }} x {{ orderItem.orderedQuantities}} pcs.
-  </li>
-  <li>
-    <h5>Total amount: ${{ total }}</h5>
-  </li>
-</ul>
+<app-page-title title="Order" [children]="[{title: 'Order'}]"></app-page-title>
 
 
-<button mat-raised-button color="primary" (click)="pay()" *ngIf="!paid">Pay</button>
-
-<div class="alert alert-success" role="alert" *ngIf="paid">
-    <strong>Congratulation!</strong> You successfully made the order.
+<div class="container padding-bottom-3x mb-2">
+  <div class="card text-center">
+    <div class="card-body padding-top-2x">
+      <h3 class="card-title">Thank you for your order!</h3>
+      <p class="card-text">Your order has been placed and will be processed as soon as possible.</p>
+      <p class="card-text">You will be receiving an email shortly with confirmation of your order.
+      </p>
+      <div class="padding-top-1x padding-bottom-1x">
+        <a class="btn btn-outline-secondary" routerLink="/dashboard">Go Back Shopping</a>
+      </div>
+    </div>
+  </div>
 </div>
+
+
+
+
+

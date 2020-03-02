@@ -4,7 +4,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 @Component({
   selector: 'app-cart-modal',
   templateUrl: './cart-modal.component.html',
-  styleUrls: ['./cart-modal.component.css']
+  styleUrls: ['./cart-modal.component.scss']
 })
 export class CartModalComponent implements OnInit {
 

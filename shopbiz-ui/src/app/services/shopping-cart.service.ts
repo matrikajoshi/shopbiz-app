@@ -162,7 +162,7 @@ export class ShoppingCartService {
     this.shoppingCartInOrder.emit(this.localCart);
     // const url = `${this.url}/checkout`;
     // return this.http.post(url, null).pipe();
-    this.router.navigate(['/order']);
+    this.router.navigate(['/checkout']);
   }
 
   getTotal() {

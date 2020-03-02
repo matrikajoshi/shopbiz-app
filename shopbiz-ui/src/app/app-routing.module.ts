@@ -11,6 +11,7 @@ import { ShoppingCartComponent } from './shopping-cart/shopping-cart.component';
 import { OrdersComponent } from './orders/orders.component';
 import { SigninComponent } from './auth/signin/signin.component';
 import { SignupComponent } from './auth/signup/signup.component';
+import { CheckoutComponent } from './checkout/checkout.component';
 
 
 const routes: Routes = [
@@ -30,6 +31,11 @@ const routes: Routes = [
     path: 'shopping-list',
     canActivate: [AuthGuard],
     component: ShoppingListComponent
+  },
+  {
+    path: 'checkout',
+    component: CheckoutComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'order',

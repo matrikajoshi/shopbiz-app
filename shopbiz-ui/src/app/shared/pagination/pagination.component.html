@@ -1,0 +1,31 @@
+<nav *ngIf="pageable" class="pagination">
+    <div class="column text-left hidden-xs-down">
+        <a class="btn btn-outline-secondary btn-sm"
+            [ngClass]="{disabled:pageable.pageNumber === 0}"
+            (click)="setPage(pageable.pageNumber)" >
+                <i class="icon-arrow-left"></i>&nbsp;Previous
+        </a>
+    </div>
+    <div class="column text-center">
+        <ul class="pages">
+            <li *ngFor="let item of counter(totalPages); let i = index"
+                [ngClass]="{active: pageable.pageNumber === i}">
+                <a
+                    (click)="setPage(i + 1)">                   
+                    {{ i + 1 }}
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="column text-right hidden-xs-down">
+        <a 
+            class="btn btn-outline-secondary btn-sm" 
+            (click)="setPage(pageable.pageNumber + 2)" 
+            [ngClass]="{disabled:pageable.pageNumber === totalPages}" >
+            Next&nbsp;
+            <i class="icon-arrow-right"></i>
+        </a>
+    </div>
+</nav>
+
+

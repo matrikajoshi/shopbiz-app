@@ -9,11 +9,10 @@ import { AuthService } from '../services/auth.service';
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.css']
+  styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit, OnDestroy {
 
-  @Output() featureSelected = new EventEmitter<string>();
   isAuthenticated = false;
   private userSub: Subscription;
   title = 'Shop-n-Top';
@@ -27,8 +26,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.userSub = this.authService.user.subscribe(user => {
       this.isAuthenticated = !!user;
-      console.log("user1", !user);
-      console.log("user2", !!user);
+      // console.log("user1", !user);
+      // console.log("user2", !!user);
     });
   }
 

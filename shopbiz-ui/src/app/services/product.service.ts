@@ -9,7 +9,14 @@ import { baseURL } from 'src/environments/environment';
 
 export interface PageableProducts {
   content: Product[];
-  kind: string;
+  pageable: {
+    pageNumber: number,
+    pageSize: number,
+    offset: number,
+    sort: any
+  };
+  totalPages: number;
+  size: number;
 }
 
 @Injectable({
@@ -34,8 +41,8 @@ export class ProductService implements Resolve<Product> {
   }
 
   /** GET products from the server */
-  getProducts(): Observable<PageableProducts> {
-    const productsUrl = `${baseURL}products`;
+  getProducts(pageNum: number = 0): Observable<PageableProducts> {
+    const productsUrl = `${baseURL}products?page=${pageNum}`;
     return this.http.get<PageableProducts>(productsUrl)
         .pipe(
           tap(res => {

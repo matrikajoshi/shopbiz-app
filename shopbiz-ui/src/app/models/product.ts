@@ -8,6 +8,7 @@ export class Product {
   featured: boolean;
   description: string;
   imageUrl: string;
+  priceNormal: number;
   price: number;
   active: boolean;
   lastUpdated: string;
