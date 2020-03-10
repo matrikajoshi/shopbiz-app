@@ -45,13 +45,15 @@ export class AuthService {
       .pipe(
         catchError(this.handleError),
         tap(resData => {
-          this.handleAuthentication(
-            resData.email,
-            resData.id,
-            resData.token,
-            resData.roles,
-            +resData.expiresIn
-          );
+          if (resData) {
+            this.handleAuthentication(
+              resData.email,
+              resData.id,
+              resData.token,
+              resData.roles,
+              +resData.expiresIn
+            );
+          }
         })
       );
   }
