@@ -13,6 +13,7 @@ import self.edu.shopbiz.exceptionUtil.EmailNotUniqueException;
 import self.edu.shopbiz.exceptionUtil.ResourceNotFoundException;
 import self.edu.shopbiz.model.User;
 import self.edu.shopbiz.repository.UserRepository;
+import self.edu.shopbiz.service.UserService;
 
 import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
@@ -33,34 +34,38 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @Tag(name="Users")
 public class UserController {
 
+    private final UserService userService;
     private UserRepository userRepository;
     private BCryptPasswordEncoder bCryptPasswordEncoder;
     private final ModelMapper modelMapper;
 
     public UserController(UserRepository applicationUserRepository,
+                          UserService userService,
                           BCryptPasswordEncoder bCryptPasswordEncoder,
                           ModelMapper modelMapper) {
         this.userRepository = applicationUserRepository;
+        this.userService = userService;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.modelMapper = modelMapper;
     }
 
     @CrossOrigin(origins = "*")
     @PostMapping("/signup")
-    @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Object> signUp(@Valid @RequestBody UserDTO userDTO) throws Exception {
+    //@ResponseStatus(HttpStatus.CREATED)
+    public ResponseEntity<Object> signUp(@Valid @RequestBody UserDTO userDTO) {
         Optional<User> userOptional = this.userRepository.findByEmail(userDTO.getEmail());
         if (userOptional.isPresent()) {
             throw new EmailNotUniqueException("User with this Email already exists");
         }
         User user = convertToEntity(userDTO);
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        User savedUser = userRepository.save(user);
+        User savedUser = userService.createNewUser(user);
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
                 .buildAndExpand(savedUser.getId()).toUri();
         return ResponseEntity.created(location).build();
+        //return new ResponseEntity<>(location, HttpStatus.CREATED);
     }
 
     @GetMapping

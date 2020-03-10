@@ -21,6 +21,15 @@ services:
     networks:
       - shopbiz-network
 
+  rabbitmq:
+    image: rabbitmq:management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    restart: always
+    networks:
+      - shopbiz-network
+
   zuul-api-gateway:
     build:
       context: zuul-proxy
@@ -68,7 +77,22 @@ services:
       - "8080:8080"
     #command: mvn clean spring-boot:run -Dspring-boot.run.profiles=docker
     depends_on:
+      - coupon-service
+      - naming-server
+      - zipkin-server
       - mp-mysql
+      - rabbitmq
+    networks:
+      - shopbiz-network
+
+  order-service:
+    container_name: order-service
+    restart: always
+    build:
+      context: order-service
+      dockerfile: Dockerfile
+    depends_on:
+      - rabbitmq
     networks:
       - shopbiz-network
 
@@ -96,8 +120,8 @@ services:
       MYSQL_ROOT_HOST: '%'
     volumes:
       - mysql-data:/var/lib/mysql
-    # ports:
-    #   - "3306:3306"
+    ports:
+      - "3306:3306"
     restart: always
     networks:
       - shopbiz-network

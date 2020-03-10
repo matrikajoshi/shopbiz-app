@@ -2,5 +2,5 @@ package self.edu.shopbiz.enums;
 
 public enum OrderStatus {
 
-    CONFIRMED, DELIVERED, CANCELED
+    CONFIRMED, IN_PROCESS, DELIVERED, CANCELED
 }

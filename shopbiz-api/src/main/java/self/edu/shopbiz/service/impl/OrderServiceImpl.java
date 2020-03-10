@@ -1,6 +1,5 @@
 package self.edu.shopbiz.service.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -30,17 +29,17 @@ import java.util.Map;
 @Service
 public class OrderServiceImpl implements OrderService {
 
-    @Autowired
-    private OrderRepository orderRepository;
+    private final OrderRepository orderRepository;
+    private final ShoppingCartRepository shoppingCartRepository;
+    private final ProductRepository productRepository;
+    private final OrderItemRepository orderIemRepository;
 
-    @Autowired
-    private ShoppingCartRepository shoppingCartRepository;
-
-    @Autowired
-    private ProductRepository productRepository;
-
-    @Autowired
-    private OrderItemRepository orderIemRepository;
+    public OrderServiceImpl(OrderRepository orderRepository, ShoppingCartRepository shoppingCartRepository, ProductRepository productRepository, OrderItemRepository orderIemRepository) {
+        this.orderRepository = orderRepository;
+        this.shoppingCartRepository = shoppingCartRepository;
+        this.productRepository = productRepository;
+        this.orderIemRepository = orderIemRepository;
+    }
 
 
     @Override
@@ -71,7 +70,6 @@ public class OrderServiceImpl implements OrderService {
         order.setUser(loggedInUser.getUser());
         Order save = orderRepository.save(order);
         productRepository.saveAll(productsById.values());
-
 
         ShoppingCart shoppingCart = shoppingCartRepository.findByUserId(loggedInUser.getUser().getId()).get();
         shoppingCartRepository.delete(shoppingCart);
@@ -144,4 +142,6 @@ public class OrderServiceImpl implements OrderService {
         inventories.forEach(product -> productsById.put(product.getId(), product));
         return productsById;
     }
+
+
 }

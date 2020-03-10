@@ -6,6 +6,7 @@ import self.edu.shopbiz.enums.OrderStatus;
 import self.edu.shopbiz.model.OrderItem;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 @Data
@@ -15,10 +16,14 @@ public class OrderDTO {
 
     private String userUserName;
 
+    private String userEmail;
+
     private Set<OrderItemDTO> orderItems;
 
     @JsonFormat(shape= JsonFormat.Shape.STRING)
     private BigDecimal totalAmount;
 
     private OrderStatus orderStatus;
+
+    private LocalDateTime orderDate;
 }

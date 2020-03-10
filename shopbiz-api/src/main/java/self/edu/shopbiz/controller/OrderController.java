@@ -1,7 +1,9 @@
 package self.edu.shopbiz.controller;
 
+import com.google.gson.Gson;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -14,6 +16,7 @@ import self.edu.shopbiz.model.Order;
 import self.edu.shopbiz.model.OrderItem;
 import self.edu.shopbiz.security.MyUserPrincipal;
 import self.edu.shopbiz.service.OrderService;
+import self.edu.shopbiz.util.AppConstants;
 
 import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
@@ -30,13 +33,14 @@ import java.util.stream.Collectors;
 public class OrderController {
 
     private final OrderService orderService;
-
+    private final RabbitTemplate rabbitTemplate;
     private final ModelMapper modelMapper;
 
-    public OrderController(OrderService orderService, ModelMapper modelMapper) {
+    public OrderController(OrderService orderService, ModelMapper modelMapper, RabbitTemplate rabbitTemplate) {
         this.orderService = orderService;
         this.modelMapper = modelMapper;
         this.modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.LOOSE);
+        this.rabbitTemplate = rabbitTemplate;
     }
 
 
@@ -69,7 +73,9 @@ public class OrderController {
     public OrderDTO createOrder(@Valid @RequestBody List<OrderItemDTO> orderItemDTOs) {
         List<OrderItem> orderItems = getOrderItems(orderItemDTOs);
         Order order = orderService.createOrder(orderItems);
-        return convertToDTO(order);
+        OrderDTO orderDTO = convertToDTO(order);
+        sendOrderConfirmation(orderDTO);
+        return orderDTO;
     }
 
     @PutMapping(path="/{id}")
@@ -115,5 +121,13 @@ public class OrderController {
         orderItem.setOrderedQuantities(cartItem.getQuantity());
         orderItem.setExtPrice(cartItem.getTotalPrice());
         return orderItem;
+    }
+
+    private void sendOrderConfirmation(OrderDTO orderDTO) {
+        System.out.println("Sending message...");
+        String message = new Gson().toJson(orderDTO);
+        rabbitTemplate.convertAndSend(AppConstants.TOPIC_EXCHANGE_NAME,
+                AppConstants.SHOPBIZ_MESSAGE_QUEUE,
+                message);
     }
 }

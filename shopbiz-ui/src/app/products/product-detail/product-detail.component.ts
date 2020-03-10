@@ -3,6 +3,7 @@ import {ActivatedRoute, Router, Data, Params} from '@angular/router';
 import {Location} from '@angular/common';
 import {FormGroup, FormBuilder} from '@angular/forms';
 import {Observable, Subscription} from 'rxjs';
+import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 
 import {Product} from '../../models/product';
 import {ProductService} from '../../services/product.service';
@@ -34,6 +35,7 @@ export class ProductDetailComponent implements OnInit {
   productCopy: Product;
   fileToUpload: File = null;
   quantity: number;
+  closeResult: string;
 
   constructor(private route: ActivatedRoute,
               private router: Router,
@@ -45,6 +47,7 @@ export class ProductDetailComponent implements OnInit {
               private shoppingCartService: ShoppingCartService,
               private messageService: MessageService,
               public authService: AuthService,
+              private modalService: NgbModal,
               @Inject('BaseURL') public baseURL) {
     this.createForm();
   }
@@ -148,18 +151,16 @@ export class ProductDetailComponent implements OnInit {
     },
     _ => console.log('Add cart failed')
     );
+    // subscribe vs async await
   }
 
   private log(message: string) {
     this.messageService.add(`ProductService: ${message}`);
   }
 
-  openDialog(): void {
-    const dialogRef = this.dialog.open
-      (CartModalComponent, {
-        width: '35vw',
-        maxWidth: '50vw'
-      });
+
+  openDialog() {
+    this.modalService.open(CartModalComponent, {ariaLabelledBy: 'modal-basic-title'});
   }
 
 }

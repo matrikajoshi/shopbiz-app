@@ -14,7 +14,7 @@
 4. Spring Boot based Restful API including HATEOAS, Validation, Exception Handling
 5. App uses h2 in memory database for testing and mysql database while app is running
 6. Adding product to shopping cart without logging into application
-7. CRUD operations on product, shopping cart, shopping list and creating order
+7. Interacting with RabbitMQ server to pubish and subscribe messages containing order details using Spring AMQP's RabbitTemplate.
 8. Admin role can add/update/delete products
 9. Hibernate Level 2 caching with EhCache
 

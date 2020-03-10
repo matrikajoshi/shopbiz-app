@@ -10,6 +10,7 @@ export class Product {
   imageUrl: string;
   priceNormal: number;
   price: number;
+  reduction: string;
   active: boolean;
   lastUpdated: string;
   comments: Comment[];

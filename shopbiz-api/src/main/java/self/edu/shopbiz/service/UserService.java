@@ -11,5 +11,7 @@ import java.util.Optional;
 
 public interface UserService {
 
+    User createNewUser(User user);
+
     Optional<User> getByid(Integer id);
 }

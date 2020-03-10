@@ -7,6 +7,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -30,8 +31,8 @@ import { baseURL } from 'src/environments/environment';
 import { DropdownDirective } from './shared/dropdown.directive';
 import { PageTitleComponent } from './page-title/page-title.component';
 import { PriceComponent } from './price/price.component';
-import { CheckoutComponent } from './checkout/checkout.component';
 import { PaginationComponent } from './shared/pagination/pagination.component';
+import { CheckoutComponent } from './checkout/checkout.component';
 
 import {
   MatToolbarModule,
@@ -70,8 +71,8 @@ import {
     DropdownDirective,
     PageTitleComponent,
     PriceComponent,
-    CheckoutComponent,
-    PaginationComponent
+    PaginationComponent,
+    CheckoutComponent
   ],
   imports: [
     BrowserModule,
@@ -95,7 +96,8 @@ import {
     MDBBootstrapModule.forRoot(),
     BrowserAnimationsModule,
     FlexLayoutModule,
-    HttpClientModule
+    HttpClientModule,
+    NgbModule
   ],
   providers: [
     // same service instance for all D.I.

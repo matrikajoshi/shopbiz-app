@@ -44,6 +44,7 @@ public class TokenUtil {
         User user = new User();
         user.setEmail(claims.getSubject());
         user.setId((Integer) claims.get("userId"));
+        user.setUserName((String) claims.get("userName"));
         MyUserPrincipal myUserPrincipal = new MyUserPrincipal(user);
         Set<SimpleGrantedAuthority> roles = getRolesFromString((String) claims.get("roles"));
         myUserPrincipal.setAuthorities(roles);
@@ -73,6 +74,7 @@ public class TokenUtil {
         .setExpiration(new Date(System.currentTimeMillis() + VALIDITY_TIME_MS))
         .setSubject(user.getEmail())
         .claim("userId", user.getId())
+        .claim("userName", user.getUserName())
         .claim("roles", getRolesStr(authorities))
         .signWith(SignatureAlgorithm.HS256, SECRET)
         .compact();

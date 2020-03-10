@@ -31,12 +31,17 @@ public class OrderProcessingServiceImpl {
         msg.setTo(receiver);
 
         msg.setSubject("Order Confirmation");
-        String totalAmount = new DecimalFormat("#0.##").format(orderDTO.getTotalAmount());
-        String body = String.format("Hello %s, Your order is on the way, Total amount is %02f", customerName, totalAmount);
 
-        msg.setText(body);
+        msg.setText(getEmailBody(customerName, orderDTO.getTotalAmount()));
 
         javaMailSender.send(msg);
 
     }
+
+    private String getEmailBody(String customerName, BigDecimal orderAmount) {
+        String totalAmount = new DecimalFormat("#0.##").format(orderAmount);
+        String body = String.format("Hello %s, Your order is on the way, Total amount is %s", customerName, totalAmount);
+        return body;
+    }
+
 }

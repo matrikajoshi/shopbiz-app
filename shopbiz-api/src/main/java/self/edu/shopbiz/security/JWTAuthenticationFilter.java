@@ -86,6 +86,7 @@ public class JWTAuthenticationFilter extends AbstractAuthenticationProcessingFil
 
             JSONObject jsonResp = new JSONObject();
             jsonResp.put("email", user.getEmail());
+            jsonResp.put("userName", user.getUserName());
             jsonResp.put("userId", user.getId());
             jsonResp.put("token", tokenString);
             jsonResp.put("roles", authorities.stream().map(perm -> perm.getAuthority()).collect(Collectors.toList()));

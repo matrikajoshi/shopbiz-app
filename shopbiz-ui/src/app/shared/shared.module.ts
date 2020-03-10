@@ -5,13 +5,10 @@ import { AppRoutingModule } from '../app-routing.module';
 import { FormsModule } from '@angular/forms';
 
 import { PriceComponent } from './price/price.component';
-import { PaginationComponent } from './pagination/pagination.component';
-
 
 @NgModule({
     declarations: [
-        PriceComponent,
-        PaginationComponent
+        PriceComponent
      
     ],
     imports: [
@@ -21,7 +18,6 @@ import { PaginationComponent } from './pagination/pagination.component';
     ],
     exports: [
         PriceComponent,
-        
         CommonModule,
         AppRoutingModule,
         FormsModule

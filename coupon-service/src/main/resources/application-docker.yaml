@@ -8,6 +8,8 @@ spring:
       database: coupondb
   zipkin:
     base-url: http://zipkin-server:9411/
+  rabbitmq:
+      host: rabbitmq
 
 eureka:
   client:

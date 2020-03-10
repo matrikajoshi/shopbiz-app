@@ -1,4 +1,4 @@
-package self.edu.shopbiz.enums;
+package edu.self.shopbiz.enums;
 
 public enum OrderStatus {
 

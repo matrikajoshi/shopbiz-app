@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Component, OnInit, Input } from '@angular/core';
+import { RouterModule } from '@angular/router';
+import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-cart-modal',
@@ -8,15 +9,13 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 })
 export class CartModalComponent implements OnInit {
 
+  @Input() modal_title;
+
   constructor(
-    public dialogRef: MatDialogRef<CartModalComponent>
+    public activeModal: NgbActiveModal
   ) { }
 
   ngOnInit() {
-  }
-
-  onNoClick(): void {
-    this.dialogRef.close();
   }
 
 }
