@@ -53,6 +53,7 @@ public class ProductServiceImpl implements ProductService{
         this.couponClient = couponClient;
     }
 
+    @HystrixCommand(fallbackMethod = "sendProductsWithoutDiscount")
     @Override
     public Page<Product> findAllProductsPageable(Pageable pageable) {
         Page<Product> productPage = productRepository.findAll(pageable);
@@ -68,6 +69,10 @@ public class ProductServiceImpl implements ProductService{
             }
         });
         return productPage;
+    }
+
+    public Page<Product> sendProductsWithoutDiscount(Pageable pageable) {
+        return productRepository.findAll(pageable);
     }
 
     @HystrixCommand(fallbackMethod = "sendErrorResponse")

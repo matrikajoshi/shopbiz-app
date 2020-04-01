@@ -41,6 +41,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = ShopbizApplication.class)
 @AutoConfigureMockMvc
@@ -84,7 +85,7 @@ public class OrderControllerIT {
     }
 
     @Test
-    //@WithMockUser
+    @WithMockUser
     public void whenValidInput_thenCreateOrder() throws Exception {
         List<OrderItemDTO> orderItems = getOrderItems();
         mvc.perform(post(apiUrl).contentType(MediaType.APPLICATION_JSON).content(JsonUtil.toJson(orderItems)))
@@ -99,7 +100,7 @@ public class OrderControllerIT {
     }
 
     @Test
-    //@WithMockUser
+    @WithMockUser
     public void givenOrderExists_whenGetOrders_thenStatus200() throws Exception {
         createOrder();
 

@@ -45,19 +45,24 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @Transactional(isolation = Isolation.READ_COMMITTED)
     public Order createOrder(List<OrderItem> orderItems) {
+        MyUserPrincipal loggedInUser = SecurityUtil.getLoggedInUser();
+        User user = loggedInUser.getUser();
+        Order save = createOrder(orderItems, user);
+        deleteShoppingCartForOrder(user);
+        return save;
+    }
+
+    private Order createOrder(List<OrderItem> orderItems, User user) {
         Order order = new Order();
         final BigDecimal[] totalPrice = {BigDecimal.ZERO};
         // get product list with map from order items, get total price from products
         Map<Long, Product> productsById = getProductsMapById(orderItems);
-
-        MyUserPrincipal loggedInUser = SecurityUtil.getLoggedInUser();
-
         orderItems.forEach((orderItem -> {
             Product product = productsById.get(orderItem.getProduct().getId());
             if (orderItem.getOrderedQuantities() > product.getAvailableQuantities()) {
                 throw new InventoryNotAvailableException("Inventory not sufficient for id: " + product.getId());
             } else {
-                product.setAvailableQuantities(product.getAvailableQuantities() - orderItem.getOrderedQuantities());
+                updateProductInventory(product, orderItem.getOrderedQuantities());
                 BigDecimal itemCost = product.getPrice().multiply(new BigDecimal(orderItem.getOrderedQuantities()));
                 totalPrice[0] = totalPrice[0].add(itemCost);
                 order.getOrderItems().add(orderItem);
@@ -67,14 +72,20 @@ public class OrderServiceImpl implements OrderService {
 
         order.setTotalAmount(totalPrice[0]);
         order.setOrderStatus(OrderStatus.CONFIRMED);
-        order.setUser(loggedInUser.getUser());
+        order.setUser(user);
         Order save = orderRepository.save(order);
         productRepository.saveAll(productsById.values());
-
-        ShoppingCart shoppingCart = shoppingCartRepository.findByUserId(loggedInUser.getUser().getId()).get();
-        shoppingCartRepository.delete(shoppingCart);
-
         return save;
+    }
+
+    private synchronized void updateProductInventory(Product product, Integer orderQuantity) {
+        product.setAvailableQuantities(product.getAvailableQuantities() - orderQuantity);
+    }
+
+    // delete shopping cart after creating order
+    private void deleteShoppingCartForOrder(User user) {
+        ShoppingCart shoppingCart = shoppingCartRepository.findByUserId(user.getId()).get();
+        shoppingCartRepository.delete(shoppingCart);
     }
 
     @Override
@@ -104,13 +115,15 @@ public class OrderServiceImpl implements OrderService {
             OrderItem orderItemDB = orderItemsDB.stream().filter(itemDB -> itemDB.getId().equals(orderItem.getId())).findFirst().get();
             int diff = orderItem.getOrderedQuantities() - orderItemDB.getOrderedQuantities();
             Product product = productsById.get(orderItem.getProduct().getId());
-            if (diff > 0) {
-                if (diff > product.getAvailableQuantities()) {
-                    throw new InventoryNotAvailableException("Inventory not sufficient for id: " + orderItem.getProduct().getId());
+            synchronized (product) {
+                if (diff > 0) {
+                    if (diff > product.getAvailableQuantities()) {
+                        throw new InventoryNotAvailableException("Inventory not sufficient for id: " + orderItem.getProduct().getId());
+                    }
+                    product.setAvailableQuantities(product.getAvailableQuantities() - diff);
+                } else {
+                    product.setAvailableQuantities(product.getAvailableQuantities() + Math.abs(diff));
                 }
-                product.setAvailableQuantities(product.getAvailableQuantities() - diff);
-            } else {
-                product.setAvailableQuantities(product.getAvailableQuantities() + Math.abs(diff));
             }
             orderItemDB.setOrderedQuantities(orderItem.getOrderedQuantities());
         });

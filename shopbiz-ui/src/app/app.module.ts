@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
 import { FileUploadModule } from 'ng2-file-upload';
 import { CookieService } from 'ngx-cookie-service';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
@@ -49,6 +49,8 @@ import {
   MatProgressSpinnerModule,
   MatIconModule
 } from '@angular/material';
+import { StarComponent } from './products/comments/star/star.component';
+import { CommentsComponent } from './products/comments/comments.component';
 
 
 @NgModule({
@@ -72,7 +74,9 @@ import {
     PageTitleComponent,
     PriceComponent,
     PaginationComponent,
-    CheckoutComponent
+    CheckoutComponent,
+    StarComponent,
+    CommentsComponent
   ],
   imports: [
     BrowserModule,

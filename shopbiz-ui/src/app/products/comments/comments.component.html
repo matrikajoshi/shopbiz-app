@@ -1,0 +1,23 @@
+<div class="container padding-bottom-3x mb-1">
+    <div class="row">
+      <h3>Comments</h3>
+    </div>
+    <div style="width: 400px; margin: 2em;">
+      <label for="comment">Comment : </label>
+      <textarea #commentText name="comment" class="form-control"></textarea>
+      <button (click)="addcomment()" style="margin: 1em" class="btn btn-primary">Add Comment</button>
+  </div>
+  <div style="width: 400px; margin: 2em;" *ngIf=" comments != null" >
+      <div *ngFor="let c of comments">
+          <p style="clear: both;">{{c.comment}}</p> 
+          <div style="float: left;">
+              <app-star [rating] = "c.rating"></app-star>
+          </div>
+
+         
+          <hr>
+          <br>
+      </div>        
+  </div>
+  </div> 
+

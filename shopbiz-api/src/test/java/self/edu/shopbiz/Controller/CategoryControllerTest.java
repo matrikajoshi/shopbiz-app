@@ -33,7 +33,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ContextConfiguration(classes = { CategoryController.class,
         CategoryRepository.class})
 @WebMvcTest(CategoryController.class)
-
 public class CategoryControllerTest {
 
     private final static String TEST_USER_ID = "user-id-123";

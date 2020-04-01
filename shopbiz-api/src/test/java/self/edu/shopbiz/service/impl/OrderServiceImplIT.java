@@ -31,7 +31,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-public class OrderServiceImplIntTest {
+public class OrderServiceImplIT {
 
     @Autowired
     OrderService orderService;
