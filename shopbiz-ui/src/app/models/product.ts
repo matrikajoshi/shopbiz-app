@@ -1,10 +1,11 @@
 import { Comment } from './comment';
+import { Category } from './category';
 
 export class Product {
   id: number;
   name: string;
   sku: string;
-  category: string;
+  category: Category;
   featured: boolean;
   description: string;
   imageUrl: string;

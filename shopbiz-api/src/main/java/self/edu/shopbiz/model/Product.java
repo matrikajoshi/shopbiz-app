@@ -8,6 +8,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
@@ -19,7 +20,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Product {
+public class Product implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,6 +41,9 @@ public class Product {
 
     private Boolean featured;
 
+    @Column(name="is_active")
+    private Boolean active;
+
     @Positive
     private BigDecimal price;
 
@@ -48,11 +52,11 @@ public class Product {
     @Column(name="image_path")
     private String imageUrl;
 
-    @Column(name="is_active")
-    private Boolean active;
-
     private Integer availableQuantities;
 
+    //TODO optimistic locking
+//    @Version
+//    private Long version;
 
     @CreationTimestamp
     private LocalDateTime createdAt;

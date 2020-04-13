@@ -5,8 +5,12 @@ spring:
 server:
   port: 8761
 
-# single instance of eureka, no need to register with other servers
+# single instance of eureka, no need to register with other servers, no cluster for now
 eureka:
   client:
     register-with-eureka: false
+    # no need to fetch local copy
     fetch-registry: false
+  # sample values used for AWS, here can be anything
+  datacenter: seattle
+  environment: dev

@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
@@ -47,8 +48,10 @@ public class ProductController {
     @Operation(description = "List all products", responses = {
             @ApiResponse(content = @Content(array = @ArraySchema(schema = @Schema(implementation = Product.class))), responseCode = "200")})
     public Page<Product> findAllProductsPageable(
-            @Parameter(description = "The size of products in page to be returned") @RequestParam(value = "size", defaultValue = "4", required = false) Integer size,
-            @Parameter(description = "Zero-based page index") @RequestParam(value = "page", required = false) Optional<Integer> page) {
+            @Parameter(description = "The size of products in page to be returned")
+            @RequestParam(value = "size", defaultValue = "4", required = false) Integer size,
+            @Parameter(description = "Zero-based page index")
+            @RequestParam(value = "page", required = false) Optional<Integer> page) {
         int evalPage = (page.orElse(0) < 1) ? INITIAL_PAGE : page.get() - 1;
 
 

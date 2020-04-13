@@ -14,9 +14,9 @@ public class ShopbizApplicationTests {
 //	//@LocalServerPort
 	private int port = 8080;
 
-	@Test
-	public void contextLoads() {
-	}
+//	@Test
+//	public void contextLoads() {
+//	}
 
 
 

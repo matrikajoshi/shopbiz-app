@@ -45,7 +45,12 @@ public class CouponController {
         log.debug("***Running in port: " + environment.getProperty("local.server.port"));
         log.debug("Getting coupon for sku {}", sku);
         List<Coupon> couponList = couponRepository.findBySku(sku);
-        Optional<Coupon> couponOptional = couponList.stream().filter(coupon -> coupon.getExpDate().isAfter(LocalDate.now())).findFirst();
+        Optional<Coupon> couponOptional = couponList
+                .stream()
+                .filter(coupon ->
+                            coupon.getExpDate()
+                                    .isAfter(LocalDate.now()))
+                .findFirst();
         return couponOptional.orElseThrow(() -> new ResourceNotFoundException("Product not found"));
     }
 

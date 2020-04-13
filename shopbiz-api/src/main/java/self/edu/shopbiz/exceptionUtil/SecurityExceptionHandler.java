@@ -18,7 +18,7 @@ import java.util.HashMap;
 
 
 @ControllerAdvice
-@Order(0) // Middle-of-the-road ordering
+@Order(0)
 public class SecurityExceptionHandler {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());

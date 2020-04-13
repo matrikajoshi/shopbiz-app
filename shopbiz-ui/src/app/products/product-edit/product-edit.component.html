@@ -59,17 +59,21 @@
             >
         </div>
         <input type="hidden" formControlName="id">
-        <button
-          type="submit"
-          class="btn btn-primary"
-          [disabled]="productForm.invalid">
-          Submit
-        </button>
+        <div *ngIf="product" class="sp-buttons mt-2 mb-2">
+          <a class="btn btn-outline-secondary" routerLink="/products/{{ product.id }}">
+            <i class="icon-arrow-left"></i>&nbsp;Go Back</a>
+          <button
+            type="submit"
+            class="btn btn-primary"
+            [disabled]="productForm.invalid">
+            Submit
+          </button>
+        </div>
       </form>
     </div>
   </div>
 </div>
-<div *ngIf="product">
+<!-- <div *ngIf="product">
   <p>{{ productForm.value | json }} {{ productForm.status | json }}</p>
-</div>
+</div> -->
 

@@ -24,17 +24,17 @@
             <app-price [product]="product"></app-price>
           </span>
           <p>{{ product.description }}</p>
-          <div class="col-sm-3">
-            <label class="card-text">
-              Quantity: 
-              <span class="padding-5"></span>
+          <div class="pt-1 mb-2">
+            <div class="row card-text">   
+              <span class="card-text" style="margin-right: 10px;">Quantity: </span>           
               <input [(ngModel)]=quantity
                 type="number"
                 name="quantity"
                 required
                 min="1"
+                class="form-control col-sm-2"
               >
-            </label>
+            </div>
           </div>
           <p class="card-text"><strong>Subtotal: </strong>
             <label id="subtotal"> {{quantity * product?.price | currency}}</label>

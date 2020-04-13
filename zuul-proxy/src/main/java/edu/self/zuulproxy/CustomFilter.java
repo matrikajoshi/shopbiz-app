@@ -7,11 +7,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
+import java.time.Instant;
 
 public class CustomFilter extends ZuulFilter {
 
     private static Logger logger = LoggerFactory.getLogger(CustomFilter.class);
 
+    // pre, routing, post and error filters type
     @Override
     public String filterType() {
         // before request is sent to microservice
@@ -34,6 +36,8 @@ public class CustomFilter extends ZuulFilter {
         RequestContext context = RequestContext.getCurrentContext();
         HttpServletRequest request = context.getRequest();
         logger.info(String.format("%s request to %s", request.getMethod(), request.getRequestURL()));
+        System.out.println(Instant.now());
+        context.set("starttime", Instant.now());
         return null;
     }
 }

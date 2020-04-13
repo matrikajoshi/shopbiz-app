@@ -1,18 +1,21 @@
 package self.edu.shopbiz.controller;
 
 
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-import self.edu.shopbiz.dto.CustomerReviewForm;
+import self.edu.shopbiz.dto.ProductReviewDTO;
 import self.edu.shopbiz.exceptionUtil.ProductNotFoundException;
 import self.edu.shopbiz.exceptionUtil.UserNotFoundException;
-import self.edu.shopbiz.model.ProductReview;
 import self.edu.shopbiz.model.Product;
+import self.edu.shopbiz.model.ProductReview;
 import self.edu.shopbiz.model.User;
 import self.edu.shopbiz.repository.ProductRepository;
 import self.edu.shopbiz.repository.UserRepository;
+import self.edu.shopbiz.security.MyUserPrincipal;
 import self.edu.shopbiz.service.ProductReviewService;
 
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class ProductReviewController {
@@ -50,8 +53,9 @@ public class ProductReviewController {
     }
 
     @PostMapping({ "products/{productId:\\d+}/users/{userId:\\d+}/reviews" })
-    public ProductReview createReview(@PathVariable final Integer userId, @PathVariable final Long productId,
-                                      @RequestBody final CustomerReviewForm customerReviewForm)
+    public ProductReview createReview(@PathVariable final Integer userId,
+                                      @PathVariable final Long productId,
+                                      @RequestBody final ProductReviewDTO productReviewDTO)
     {
         final Product product = productRepository.getOne(productId);
         if (product == null)
@@ -66,8 +70,8 @@ public class ProductReviewController {
         }
 
         return productReviewService
-                .createCustomerReviewWithValidations(customerReviewForm.getRating(), customerReviewForm.getHeadline(),
-                        customerReviewForm.getComment(), product, user);
+                .createCustomerReviewWithValidations(productReviewDTO.getRating(), productReviewDTO.getHeadline(),
+                        productReviewDTO.getComment(), product, user);
     }
 
 

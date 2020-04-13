@@ -1,6 +1,7 @@
 version: '3'
 services:
   naming-server:
+    container_name: naming-server
     build:
       context: eureka-naming-server
       dockerfile: Dockerfile
@@ -21,16 +22,8 @@ services:
     networks:
       - shopbiz-network
 
-  rabbitmq:
-    image: rabbitmq:management
-    ports:
-      - "5672:5672"
-      - "15672:15672"
-    restart: always
-    networks:
-      - shopbiz-network
-
   zuul-api-gateway:
+    container_name: zuul-api-gateway
     build:
       context: zuul-proxy
       dockerfile: Dockerfile
@@ -44,6 +37,7 @@ services:
       - shopbiz-network
 
   coupon-service:
+    container_name: coupon-service
     build:
       context: coupon-service
       dockerfile: Dockerfile
@@ -82,6 +76,7 @@ services:
       - zipkin-server
       - mp-mysql
       - rabbitmq
+      - mp-redis
     networks:
       - shopbiz-network
 
@@ -93,6 +88,25 @@ services:
       dockerfile: Dockerfile
     depends_on:
       - rabbitmq
+    networks:
+      - shopbiz-network
+
+  rabbitmq:
+    container_name: rabbitmq
+    image: rabbitmq:management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    restart: always
+    networks:
+      - shopbiz-network
+
+  mp-redis:
+    container_name: mp-redis
+    image: redis:5
+    ports:
+      - "6379:6379"
+    restart: always
     networks:
       - shopbiz-network
 

@@ -4,6 +4,10 @@ import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -34,6 +38,7 @@ import java.util.Map;
  */
 
 @Service
+@CacheConfig(cacheNames = "product")
 public class ProductServiceImpl implements ProductService{
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ProductServiceImpl.class);
@@ -54,6 +59,7 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @HystrixCommand(fallbackMethod = "sendProductsWithoutDiscount")
+    @Cacheable(key = "T(java.lang.String).format('%s-%s-%s', #root.methodName, #pageable.pageNumber, #pageable.pageSize)")
     @Override
     public Page<Product> findAllProductsPageable(Pageable pageable) {
         Page<Product> productPage = productRepository.findAll(pageable);
@@ -72,10 +78,12 @@ public class ProductServiceImpl implements ProductService{
     }
 
     public Page<Product> sendProductsWithoutDiscount(Pageable pageable) {
+        LOGGER.info("Hystrix fallback method called");
         return productRepository.findAll(pageable);
     }
 
     @HystrixCommand(fallbackMethod = "sendErrorResponse")
+    @Cacheable(key = "#id")
     @Override
     public Product findProductById(Long id){
         Product product = productRepository
@@ -91,6 +99,7 @@ public class ProductServiceImpl implements ProductService{
 
     // same signature as original method
     public Product sendErrorResponse(Long id) {
+        LOGGER.info("Hystrix fallback method :- sendErrorResponse called");
         Product product = productRepository
                 .findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
@@ -123,6 +132,7 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
+    @CachePut(key = "T(java.lang.String).format('%s-%s-%s', #root.target.Class.simpleName, #root.methodName, #product.id)")
     public Product save(Product product) {
         Product dbProduct = productRepository.getOne(product.getId());
         //keep image path
@@ -138,6 +148,7 @@ public class ProductServiceImpl implements ProductService{
 
     @Override
     @Transactional
+    @CacheEvict(key = "#id")
     public void deleteProduct(Long productId) {
         Product productById = this.findProductById(productId);
         productRepository.delete(productById);

@@ -14,7 +14,7 @@ import java.util.List;
 //@RibbonClient("COUPON-SERVICE")
 public interface CouponClient {
 
-    // TO DO - cover with integration test, no unit testing
+    // TODO - cover with integration test, no unit testing
     @GetMapping("/coupon-service/coupons/{sku}")
     Coupon getCouponBySku(@PathVariable("sku") String sku);
 

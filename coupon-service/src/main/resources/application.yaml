@@ -15,7 +15,7 @@ spring:
 
 
 server:
-  port: 8081
+  port: 0 #8081
 #  servlet:
 #    context-path: /coupon-service
 
@@ -25,3 +25,8 @@ eureka:
   client:
     service-url:
       defaultZone: http://localhost:8761/eureka/
+    register-with-eureka: true
+    fetch-registry: true
+  instance.instance-id: ${spring.application.name}:${random.int}
+  instance:
+    hostname: localhost

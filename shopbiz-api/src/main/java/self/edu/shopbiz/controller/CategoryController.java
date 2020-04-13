@@ -18,7 +18,7 @@ import java.util.List;
  * Created by mpjoshi on 10/31/19.
  */
 
-//(origins = "http://localhost:4200")
+
 @RestController
 @RequestMapping("/categories")
 public class CategoryController {

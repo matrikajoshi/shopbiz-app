@@ -13,7 +13,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import self.edu.shopbiz.controller.ProductReviewController;
-import self.edu.shopbiz.dto.CustomerReviewForm;
+import self.edu.shopbiz.dto.ProductReviewDTO;
 import self.edu.shopbiz.model.Product;
 import self.edu.shopbiz.model.ProductReview;
 import self.edu.shopbiz.model.User;
@@ -56,6 +56,7 @@ class ProductReviewControllerTest {
     @MockBean
     UserRepository userRepository;
 
+
     @Test
     @WithMockUser
     void getReviews() throws Exception {
@@ -96,9 +97,9 @@ class ProductReviewControllerTest {
 
 
     @Test
-    @WithMockUser
+    @WithMockUser(roles = {"ORDER_CREATE"})
     public void createReview() throws Exception {
-        CustomerReviewForm customerReviewForm = new CustomerReviewForm();
+        ProductReviewDTO productReviewDTO = new ProductReviewDTO();
         Product product = new Product();
         when(productRepository.getOne(Long.valueOf(1l))).thenReturn(product);
         final User user = new User();
@@ -108,7 +109,7 @@ class ProductReviewControllerTest {
 
         //invoke test method
         String apiUrl = "/products/1/users/1/reviews";
-        mockMvc.perform(post(apiUrl).contentType(MediaType.APPLICATION_JSON).content(JsonUtil.toJson(customerReviewForm)))
+        mockMvc.perform(post(apiUrl).contentType(MediaType.APPLICATION_JSON).content(JsonUtil.toJson(productReviewDTO)))
                 .andDo(print())
                 .andExpect(status().isOk());
     }

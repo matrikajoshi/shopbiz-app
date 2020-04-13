@@ -43,16 +43,15 @@ public class OrderServiceImpl implements OrderService {
 
 
     @Override
-    @Transactional(isolation = Isolation.READ_COMMITTED)
     public Order createOrder(List<OrderItem> orderItems) {
         MyUserPrincipal loggedInUser = SecurityUtil.getLoggedInUser();
         User user = loggedInUser.getUser();
         Order save = createOrder(orderItems, user);
-        deleteShoppingCartForOrder(user);
         return save;
     }
 
-    private Order createOrder(List<OrderItem> orderItems, User user) {
+    @Transactional(isolation = Isolation.READ_COMMITTED)
+    Order createOrder(List<OrderItem> orderItems, User user) {
         Order order = new Order();
         final BigDecimal[] totalPrice = {BigDecimal.ZERO};
         // get product list with map from order items, get total price from products
@@ -75,6 +74,7 @@ public class OrderServiceImpl implements OrderService {
         order.setUser(user);
         Order save = orderRepository.save(order);
         productRepository.saveAll(productsById.values());
+        deleteShoppingCartForOrder(user);
         return save;
     }
 

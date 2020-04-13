@@ -3,6 +3,7 @@ import {FormGroup, FormBuilder, Validators, FormControl} from "@angular/forms";
 import {Router, ActivatedRoute} from "@angular/router";
 import {ProductService} from "../../services/product.service";
 import {Product} from "../../models/product";
+import { Category } from '../../models/category';
 import {ShoppingListService} from "../../services/shopping-list.service";
 
 @Component({
@@ -34,7 +35,7 @@ export class ProductEditComponent implements OnInit {
           id: product.id,
           name: product.name,
           sku: product.sku,
-          category: product.category,
+          category: product.category.name,
           featured: product.featured,
           description: product.description,
           active: product.active,
