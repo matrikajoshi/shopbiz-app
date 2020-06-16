@@ -1,21 +1,31 @@
-<app-page-title title="Order" [children]="[{title: 'Order'}]"></app-page-title>
-
-
-<div class="container padding-bottom-3x mb-2">
-  <div class="card text-center">
-    <div class="card-body padding-top-2x">
-      <h3 class="card-title">Thank you for your order!</h3>
-      <p class="card-text">Your order has been placed and will be processed as soon as possible.</p>
-      <p class="card-text">You will be receiving an email shortly with confirmation of your order.
-      </p>
-      <div class="padding-top-1x padding-bottom-1x">
-        <a class="btn btn-outline-secondary" routerLink="/dashboard">Go Back Shopping</a>
-      </div>
-    </div>
-  </div>
+<div class="padding-top-2x mt-2 hidden-lg-up">
 </div>
+<div class="table-responsive">
+  <table class="table table-hover margin-bottom-none">
+    <thead>
+      <tr>
+        <th>Order #</th>
+        <th>Date Purchased</th>
+        <th>Status</th>
+        <th>Total</th>
+      </tr>
+    </thead>
+    <tbody>
 
+      <tr *ngFor="let order of orders">
+        <td>
+          <a class="text-medium navi-link" href="#" data-toggle="modal" data-target="#orderDetails">{{order.id}}</a>
+        </td>
+        <td>{{order.orderDate | date:'mediumDate'}}</td>
+        <td>
+          <span class="text-info">{{order.orderStatus || 'In Progress'}}</span>
+        </td>
+        <td>
+          <span class="text-medium">{{order.totalAmount | currency}}</span>
+        </td>
+      </tr>
 
-
-
-
+    </tbody>
+  </table>
+</div>
+<hr>

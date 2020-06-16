@@ -62,14 +62,16 @@ public class ShoppingCartController {
                 .orElseGet(() -> new ShoppingCart());
         CartItem cartItem = convertToEntity(cartItemDto);
         ShoppingCart cartItemToShoppingCart = shoppingCartService.addCartItemToShoppingCart(myUserPrincipal, cartItem, shoppingCart);
-        return convertToDTO(shoppingCart);
+        ShoppingCartDTO shoppingCartDTO = convertToDTO(cartItemToShoppingCart);
+        return shoppingCartDTO;
     }
 
     @PutMapping(path = "/shoppingCart/{cartItemId}")
-    public CartItem updateCartItemQuantity(@PathVariable("cartItemId") Integer cartItemId,
+    public ShoppingCartDTO updateCartItemQuantity(@PathVariable("cartItemId") Integer cartItemId,
                                                @RequestBody Integer itemCount) {
-        CartItem cartItem = shoppingCartService.updateCartItem(cartItemId, itemCount);
-        return cartItem;
+        ShoppingCart cart = shoppingCartService.updateCartItem(cartItemId, itemCount);
+        ShoppingCartDTO shoppingCartDTO = convertToDTO(cart);
+        return shoppingCartDTO;
     }
 
     @DeleteMapping(path="/shoppingCart/{cartItemId}")
@@ -89,6 +91,13 @@ public class ShoppingCartController {
         ShoppingCartDTO shoppingCartDTO = modelMapper.map(shoppingCart, ShoppingCartDTO.class);
         return shoppingCartDTO;
     }
+
+
+    private CartItemDTO convertCartItemToDTO(ShoppingCart cartItem) {
+        CartItemDTO itemDTO = modelMapper.map(cartItem, CartItemDTO.class);
+        return itemDTO;
+    }
+
 
 
 

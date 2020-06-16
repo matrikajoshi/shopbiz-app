@@ -20,5 +20,5 @@ public interface ShoppingCartService {
 
     ShoppingCart addCartItemToShoppingCart(MyUserPrincipal myUserPrincipal, CartItem cartItem, ShoppingCart shoppingCart);
 
-    CartItem updateCartItem(Integer cartItemId, Integer itemCount);
+    ShoppingCart updateCartItem(Integer cartItemId, Integer itemCount);
 }

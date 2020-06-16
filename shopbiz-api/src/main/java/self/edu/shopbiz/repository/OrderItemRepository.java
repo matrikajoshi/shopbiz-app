@@ -11,7 +11,7 @@ import java.util.List;
  * Created by mpjoshi on 10/10/19.
  */
 
-@Repository("orderItemRepository")
+@Repository
 public interface OrderItemRepository extends JpaRepository<OrderItem, Long> {
 
     List<OrderItem> findByOrder(Order order);

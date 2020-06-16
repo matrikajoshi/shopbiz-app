@@ -11,6 +11,7 @@ import self.edu.shopbiz.model.Product;
 
 
 public interface ProductService {
+
     Page<Product> findAllProductsPageable(Pageable pageable);
 
     Product findProductById(Long id);
@@ -20,4 +21,6 @@ public interface ProductService {
     Product save(Product product);
 
     void deleteProduct(Long productId);
+
+    Page<Product> searchProductsByName(String name, Pageable pageable);
 }

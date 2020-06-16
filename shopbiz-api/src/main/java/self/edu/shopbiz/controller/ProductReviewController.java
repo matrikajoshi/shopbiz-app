@@ -1,7 +1,7 @@
 package self.edu.shopbiz.controller;
 
 
-import org.springframework.security.core.Authentication;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import self.edu.shopbiz.dto.ProductReviewDTO;
 import self.edu.shopbiz.exceptionUtil.ProductNotFoundException;
@@ -11,9 +11,9 @@ import self.edu.shopbiz.model.ProductReview;
 import self.edu.shopbiz.model.User;
 import self.edu.shopbiz.repository.ProductRepository;
 import self.edu.shopbiz.repository.UserRepository;
-import self.edu.shopbiz.security.MyUserPrincipal;
 import self.edu.shopbiz.service.ProductReviewService;
 
+import javax.annotation.security.RolesAllowed;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,7 +33,7 @@ public class ProductReviewController {
 
 
     @GetMapping({ "products/{productId:\\d+}/reviews" })
-    public List<ProductReview> getReviews(@PathVariable final Long productId,
+    public List<ProductReviewDTO> getReviews(@PathVariable final Long productId,
                                           @RequestParam(required = false) final Optional<Double> ratingFrom,
                                           @RequestParam(required = false) final Optional<Double> ratingTo)
     {
@@ -43,12 +43,14 @@ public class ProductReviewController {
         {
             throw new ProductNotFoundException(productId);
         }
-
+        List<ProductReview> reviewsForProduct;
         if (!ratingFrom.isPresent() && !ratingTo.isPresent()) {
-            return productReviewService.getReviewsForProduct(product);
+            reviewsForProduct = productReviewService.getReviewsForProduct(product);
         } else {
-            return productReviewService.getReviewsForProductWithRatings(product, ratingFrom, ratingTo);
+            reviewsForProduct = productReviewService.getReviewsForProductWithRatings(product, ratingFrom, ratingTo);
         }
+
+        return null;
 
     }
 
@@ -75,12 +77,25 @@ public class ProductReviewController {
     }
 
 
+//        Todo
+//    @PutMapping({ "products/{productId:\\d+}/users/{userId:\\d+}/reviews/{reviewId}" })
+//    public ProductReview createReview(@PathVariable final Integer userId,
+//                                      @PathVariable final Long productId,
+//                                      @PathVariable final Integer reviewId,
+//                                      @RequestBody final ProductReviewDTO productReviewDTO)
+//    {
+//
+//    }
 
-    @DeleteMapping({ "reviews/{reviewId:\\d+}" })
-    public void deleteReview(@PathVariable final Long reviewId)
-    {
-        productReviewService.deleteCustomerReview(reviewId);
-    }
+
+//
+//    @DeleteMapping({ "reviews/{reviewId:\\d+}" })
+//    @ResponseStatus(HttpStatus.NO_CONTENT)
+//    @RolesAllowed("ORDER_CREATE")
+//    public void deleteReview(@PathVariable final Long reviewId)
+//    {
+//        productReviewService.deleteCustomerReview(reviewId);
+//    }
 
 
 }

@@ -10,7 +10,7 @@ import java.util.Optional;
  * Created by mpjoshi on 10/10/19.
  */
 
-@Repository("shoppingCartRepository")
+@Repository
 public interface ShoppingCartRepository extends JpaRepository<ShoppingCart, Long>{
 
     Optional<ShoppingCart> findByUserId(Integer customerId);

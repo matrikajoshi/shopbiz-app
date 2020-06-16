@@ -6,9 +6,6 @@
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent" >
     <ul class="navbar-nav mr-auto">
-      <li class="nav-item" routerLinkActive="active" *ngIf="!isAuthenticated">
-        <a class="nav-link" routerLink="/login">Sign in</a>
-      </li>
       <li class="nav-item" routerLinkActive="active" *ngIf="isAuthenticated">
         <a class="nav-link" routerLink="/shopping-list">Wish List</a>
       </li>
@@ -16,12 +13,28 @@
         <a class="nav-link" [routerLink]="['/dashboard']" routerLinkActive="router-link-active" >Offers</a>
       </li>
     </ul>
+    
     <ul class="nav navbar-nav navbar-right">
+      <li class="nav-item" routerLinkActive="active" *ngIf="!isAuthenticated; else whenLoggedIn">
+        <a class="nav-link" routerLink="/login">Sign in</a>
+      </li>
+    <!-- <nav class="list-group"> -->
+    <ng-template #whenLoggedIn>
+      <a class="list-group-item" routerLinkActive="active" routerLink="/account/profile">
+        <i class="icon-head"></i>Profile
+      </a>
+
+      <a class="list-group-item with-badge" routerLinkActive="active" 
+        routerLink="/orders" href="">
+        <i class="icon-bag"></i>Orders
+      </a>
+    </ng-template>
+    <!-- </nav> -->
       <li >
         <a class="nav-item nav-link cart-icon" routerLink="/cart">
             <img class='shopping-icon' src="assets/shopping-bag.svg">
-            <span *ngIf="shoppingCartService.navbarCartCount > 0"
-            class='item-count'>{{shoppingCartService.navbarCartCount}}</span>
+            <span *ngIf="totalQuantity > 0"
+            class='item-count'>{{ totalQuantity }}</span>
         </a>
       </li>
 

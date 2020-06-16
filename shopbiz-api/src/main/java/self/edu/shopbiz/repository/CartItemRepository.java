@@ -8,7 +8,7 @@ import self.edu.shopbiz.model.CartItem;
  * Created by mpjoshi on 10/10/19.
  */
 
-@Repository("cartItemRepository")
+@Repository
 public interface CartItemRepository extends JpaRepository<CartItem, Long>{
 
 }

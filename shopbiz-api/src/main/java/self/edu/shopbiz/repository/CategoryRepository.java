@@ -8,6 +8,6 @@ import self.edu.shopbiz.model.Category;
  * Created by mpjoshi on 10/31/19.
  */
 
-@Repository("categoryRepository")
+@Repository
 public interface CategoryRepository extends JpaRepository<Category, Integer>{
 }

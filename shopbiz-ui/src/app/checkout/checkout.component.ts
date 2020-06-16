@@ -65,7 +65,7 @@ export class CheckoutComponent implements OnInit {
             this.order = order;
             this.paid = true;
             this.log("Order created with id: " + this.order.id);
-            this.router.navigate(['/order']);
+            this.router.navigate(['/order-confirmation']);
           });
     }
 

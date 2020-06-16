@@ -1,14 +1,10 @@
 package self.edu.shopbiz.actuator.endpoints;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.HealthIndicator;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestClientException;
-//import org.springframework.web.client.RestTemplate;
 
-import java.util.Random;
+//import org.springframework.web.client.RestTemplate;
 
 /**
  * Created by mpjoshi on 12/23/19.

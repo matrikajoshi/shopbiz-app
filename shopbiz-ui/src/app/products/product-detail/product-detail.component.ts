@@ -16,6 +16,7 @@ import { ShoppingCart } from 'src/app/models/shopping-cart';
 import { MatDialog } from '@angular/material';
 import { CartModalComponent } from 'src/app/shopping-cart/cart-modal/cart-modal.component';
 import { AuthService } from 'src/app/services/auth.service';
+// import { CartService } from 'src/app/services/cart.service';
 
 @Component({
   selector: 'app-product-detail',
@@ -41,7 +42,6 @@ export class ProductDetailComponent implements OnInit {
               private router: Router,
               private location: Location,
               private formBuilder: FormBuilder,
-              private dialog: MatDialog,
               private productService: ProductService,
               private shoppingListService: ShoppingListService,
               private shoppingCartService: ShoppingCartService,
@@ -141,7 +141,7 @@ export class ProductDetailComponent implements OnInit {
   }
 
   onAddToShoppingCart() {
-    console.log('Adding product to shopping car: ', this.product.id, this.quantity);
+    console.log('Adding product to shopping cart: ', this.product.id, this.quantity);
     const cartItem: CartItem = new CartItem(this.product, this.quantity);
     this.shoppingCartService.addItemToShoppingCart(cartItem)
     .subscribe((shoppingCart) => {

@@ -10,7 +10,7 @@ import self.edu.shopbiz.model.Product;
 import javax.transaction.Transactional;
 import java.util.List;
 
-public interface ProductReviewRepository extends JpaRepository<ProductReview, Integer> {
+public interface ProductReviewRepository extends JpaRepository<ProductReview, Long> {
 
     @Query("select reviews from ProductReview reviews where reviews.product = ?1")
     List<ProductReview> getAllReviews(Product product);
@@ -33,9 +33,9 @@ public interface ProductReviewRepository extends JpaRepository<ProductReview, In
     @Query("select reviews from ProductReview reviews where reviews.product = ?1 and reviews.language = ?2")
     List<ProductReview> getReviewsForProductAndLanguage(Product product, LanguageModel language);
 
-    @Transactional
-    @Modifying
-    @Query("delete from ProductReview reviews where reviews.id = ?1")
-    void deleteReview(Long id);
+//    @Transactional
+//    @Modifying
+//    @Query("delete from ProductReview reviews where reviews.id = ?1")
+//    void deleteReview(Long id);
 
 }

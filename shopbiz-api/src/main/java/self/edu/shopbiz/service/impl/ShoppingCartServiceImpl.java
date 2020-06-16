@@ -33,12 +33,13 @@ public class ShoppingCartServiceImpl  implements ShoppingCartService {
 
     @Override
     @Transactional
-    public CartItem updateCartItem(Integer cartItemId, Integer itemCount) {
+    public ShoppingCart updateCartItem(Integer cartItemId, Integer itemCount) {
         CartItem cartItem = cartItemRepository.findById(Long.valueOf(cartItemId))
                 .orElseThrow(() -> new EntityNotFoundException("No cartItem with id: " + cartItemId));
         cartItem.setQuantity(itemCount);
         CartItem save = cartItemRepository.save(cartItem);
-        return save;
+        ShoppingCart shoppingCart = save.getShoppingCart();
+        return shoppingCart;
     }
 
     @Override

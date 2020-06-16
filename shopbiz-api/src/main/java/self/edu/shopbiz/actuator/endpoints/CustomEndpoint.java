@@ -26,7 +26,6 @@ public class CustomEndpoint {
 
     @ReadOperation
     public Map<String,String> envProps() {
-        props.put("test", "value");
         props.put("hostName", hostName);
         return props;
     }

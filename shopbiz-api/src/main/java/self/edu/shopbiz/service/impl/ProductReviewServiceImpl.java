@@ -2,6 +2,7 @@ package self.edu.shopbiz.service.impl;
 
 import org.springframework.stereotype.Service;
 import self.edu.shopbiz.enums.CurseWords;
+import self.edu.shopbiz.exceptionUtil.ResourceNotFoundException;
 import self.edu.shopbiz.exceptionUtil.ReviewNotValidException;
 import self.edu.shopbiz.model.ProductReview;
 import self.edu.shopbiz.model.LanguageModel;
@@ -98,7 +99,8 @@ public class ProductReviewServiceImpl implements ProductReviewService {
 
     @Override
     public void deleteCustomerReview(Long id) {
-
+        productReviewRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Review with id: " + id + " not found"));
+        productReviewRepository.deleteById(id);
     }
 
     private ProductReview getCustomerReviewModel(Double rating, String headline, String comment, Product product, User user) {

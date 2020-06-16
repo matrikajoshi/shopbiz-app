@@ -14,7 +14,7 @@ import java.util.Optional;
  * Created by mpjoshi on 9/29/19.
  */
 
-@Repository("shoppingListRepository")
+@Repository
 public interface ShoppingListRepository extends JpaRepository<ShoppingList, Integer>{
 
     Optional<ShoppingList> findByCustomer(User user);

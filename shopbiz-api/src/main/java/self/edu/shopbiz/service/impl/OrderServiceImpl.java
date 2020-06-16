@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.HttpClientErrorException;
 import self.edu.shopbiz.enums.OrderStatus;
 import self.edu.shopbiz.exceptionUtil.InventoryNotAvailableException;
+import self.edu.shopbiz.exceptionUtil.ResourceNotFoundException;
 import self.edu.shopbiz.model.*;
 import self.edu.shopbiz.repository.OrderItemRepository;
 import self.edu.shopbiz.repository.OrderRepository;
@@ -17,10 +18,7 @@ import self.edu.shopbiz.service.OrderService;
 import self.edu.shopbiz.util.SecurityUtil;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by mpjoshi on 10/10/19.
@@ -84,8 +82,11 @@ public class OrderServiceImpl implements OrderService {
 
     // delete shopping cart after creating order
     private void deleteShoppingCartForOrder(User user) {
-        ShoppingCart shoppingCart = shoppingCartRepository.findByUserId(user.getId()).get();
-        shoppingCartRepository.delete(shoppingCart);
+        Optional<ShoppingCart> shoppingCart = shoppingCartRepository.findByUserId(user.getId());
+        if (shoppingCart.isPresent()) {
+            shoppingCartRepository.delete(shoppingCart.get());
+        }
+
     }
 
     @Override
@@ -135,7 +136,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @Transactional
     public void cancelOrder(Long orderId) {
-        Order order = orderRepository.findById(orderId).get();
+        Order order = orderRepository.findById(orderId).orElseThrow(() -> new HttpClientErrorException(HttpStatus.NOT_FOUND, "Order id " + orderId + " doesn't exist"));
         Map<Long, Product> productsById = getProductsMapById(new ArrayList<>(order.getOrderItems()));
         order.getOrderItems().forEach(orderItem -> {
             Product product = productsById.get(orderItem.getProduct().getId());

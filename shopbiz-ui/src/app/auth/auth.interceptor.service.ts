@@ -17,13 +17,16 @@ export class AuthInterceptorService implements HttpInterceptor {
   intercept(req: HttpRequest<any>, next: HttpHandler) {
     return this.authService.user.pipe(
       take(1), // take only once and unsubscribe
+      // for ignoring new Observables while the current one is still ongoing
+      // map to inner observable, ignore other
+      // values until that observable completes
       exhaustMap(user => {
         if (!user) {
           //console.log("user not defined in auth interceptor");
           return next.handle(req);
         }
         const modifiedReq = req.clone({
-          headers: new HttpHeaders().append("Authorization", "Bearer " + user.token),
+          headers: new HttpHeaders().append('Authorization', 'Bearer ' + user.token),
           //params: new HttpParams().set('auth', user.token)
         });
         return next.handle(modifiedReq);

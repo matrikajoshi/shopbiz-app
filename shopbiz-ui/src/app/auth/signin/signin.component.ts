@@ -16,6 +16,7 @@ export class SigninComponent implements OnInit {
   @ViewChild('authForm', {static: false}) form: NgForm;
   isLoading = false;
   error: string = null;
+  public redirectUrl: string;
 
   constructor(
     private authService: AuthService,
@@ -42,7 +43,13 @@ export class SigninComponent implements OnInit {
       resData => {
         console.log(resData);
         this.isLoading = false;
-        this.router.navigate(['/products']);
+        // initialize user experience
+        if (this.redirectUrl) {
+          this.router.navigate([this.redirectUrl]);
+          this.redirectUrl = null;
+        } else {
+          this.router.navigate(['/products']);
+        }
       },
       errorMessage => {
         console.log(errorMessage);

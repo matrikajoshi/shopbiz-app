@@ -3,6 +3,7 @@ package self.edu.shopbiz.service.impl;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
@@ -10,6 +11,7 @@ import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -47,6 +49,9 @@ public class ProductServiceImpl implements ProductService{
 
     @Value("${upload-path}")
     String uploadPath;
+
+    @Autowired
+    private JpaRepository<Product, Long> jpaRepository;
 
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
@@ -152,6 +157,11 @@ public class ProductServiceImpl implements ProductService{
     public void deleteProduct(Long productId) {
         Product productById = this.findProductById(productId);
         productRepository.delete(productById);
+    }
+
+    @Override
+    public Page<Product> searchProductsByName(String name, Pageable pageable) {
+        return productRepository.findByNameContaining(name, pageable);
     }
 
 }

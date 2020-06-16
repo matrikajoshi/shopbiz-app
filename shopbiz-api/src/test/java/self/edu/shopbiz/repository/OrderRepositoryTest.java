@@ -59,7 +59,9 @@ public class OrderRepositoryTest {
             orderItem.setProduct(cartItem.getProduct());
             orderItem.setOrderedQuantities(cartItem.getQuantity());
             orderItem.setOrder(order);
-            order.setTotalAmount(order.getTotalAmount().add(cartItem.getTotalPrice()));
+            order.setTotalAmount(order.getTotalAmount().add(
+                    cartItem.getProduct().getPrice()
+                            .multiply(BigDecimal.valueOf(cartItem.getQuantity()))));
             order.getOrderItems().add(orderItem);
         }));
         //orderItemRepository.saveAll(order.getOrderItems());

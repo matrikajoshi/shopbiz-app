@@ -31,8 +31,8 @@ public class CartItem {
 
     private int quantity;
 
-    @Transient
-    public BigDecimal getTotalPrice() {
-        return getProduct().getPrice().multiply(BigDecimal.valueOf(getQuantity()));
-    }
+//    @Transient
+//    public BigDecimal getTotalPrice() {
+//        return getProduct().getPrice().multiply(BigDecimal.valueOf(getQuantity()));
+//    }
 }

@@ -22,7 +22,7 @@ import { ProductDetailComponent } from './products/product-detail/product-detail
 import { AddProductComponent } from './products/add-product/add-product.component';
 import { ProductEditComponent } from './products/product-edit/product-edit.component';
 import { ShoppingCartComponent } from './shopping-cart/shopping-cart.component';
-import { OrdersComponent } from './orders/orders.component';
+import { OrderConfirmationComponent } from './orders/order-confirmation.component';
 import { CartModalComponent } from './shopping-cart/cart-modal/cart-modal.component';
 import { ShoppingListService } from './services/shopping-list.service';
 import { AuthInterceptorService } from './auth/auth.interceptor.service';
@@ -51,6 +51,8 @@ import {
 } from '@angular/material';
 import { StarComponent } from './products/comments/star/star.component';
 import { CommentsComponent } from './products/comments/comments.component';
+import { SearchComponent } from './components/search/search.component';
+import { OrdersComponent } from './orders/orders.component';
 
 
 @NgModule({
@@ -68,7 +70,7 @@ import { CommentsComponent } from './products/comments/comments.component';
     SignupComponent,
     LoadingSpinnerComponent,
     ShoppingCartComponent,
-    OrdersComponent,
+    OrderConfirmationComponent,
     CartModalComponent,
     DropdownDirective,
     PageTitleComponent,
@@ -76,7 +78,9 @@ import { CommentsComponent } from './products/comments/comments.component';
     PaginationComponent,
     CheckoutComponent,
     StarComponent,
-    CommentsComponent
+    CommentsComponent,
+    SearchComponent,
+    OrdersComponent
   ],
   imports: [
     BrowserModule,
@@ -105,6 +109,7 @@ import { CommentsComponent } from './products/comments/comments.component';
   ],
   providers: [
     // same service instance for all D.I.
+    // ang 6 style
     CookieService,
     {provide: 'BaseURL', useValue: baseURL},
     ShoppingListService,

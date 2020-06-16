@@ -1,9 +1,9 @@
-import {Injectable, Inject} from "@angular/core";
-import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {HttpErrorResponse} from "@angular/common/http";
-import {Router} from "@angular/router";
-import {BehaviorSubject, throwError, Observable} from "rxjs";
-import {catchError, tap} from "rxjs/internal/operators";
+import {Injectable, Inject} from '@angular/core';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpErrorResponse} from '@angular/common/http';
+import {Router} from '@angular/router';
+import {BehaviorSubject, throwError, Observable} from 'rxjs';
+import {catchError, tap} from 'rxjs/internal/operators';
 
 import { User } from '../models/user';
 
@@ -18,7 +18,7 @@ export interface AuthResponseData {
   registered?: boolean;
 }
 // service within another service
-@Injectable({ providedIn: "root" })
+@Injectable({ providedIn: 'root' })
 export class AuthService {
   user = new BehaviorSubject<User>(null);
   loggedInUser: User;
@@ -27,7 +27,7 @@ export class AuthService {
   constructor(
     private http: HttpClient,
     private router: Router,
-    @Inject("BaseURL") private baseURL) {}
+    @Inject('BaseURL') private baseURL) {}
 
   signup(userName: string, email: string, password: string) {
     const signupUrl = `${this.baseURL}users/signup`;
@@ -38,7 +38,7 @@ export class AuthService {
     };
     return this.http
       .post<AuthResponseData>(signupUrl, {
-        userName: userName,
+        userName,
         email: email,
         password: password
       }, httpOptions)
@@ -62,8 +62,8 @@ export class AuthService {
     const loginUrl = `${this.baseURL}login`;
     return this.http
       .post<AuthResponseData>(loginUrl, {
-        email: email,
-        password: password
+        email,
+        password
       })
       .pipe(
         catchError(this.handleError),
@@ -86,7 +86,7 @@ export class AuthService {
       _token: string;
       roles: string[];
       _tokenExpirationDate: string;
-    } = JSON.parse(localStorage.getItem("userData"));
+    } = JSON.parse(localStorage.getItem('userData'));
     if (!userData) {
       return;
     }
@@ -112,8 +112,8 @@ export class AuthService {
   logout() {
     this.user.next(null);
     this.loggedInUser = null;
-    this.router.navigate(["/login"]);
-    localStorage.removeItem("userData");
+    this.router.navigate(['/login']);
+    localStorage.removeItem('userData');
     if (this.tokenExpirationTimer) {
       clearTimeout(this.tokenExpirationTimer);
     }
@@ -121,7 +121,7 @@ export class AuthService {
   }
 
   autoLogout(expirationDuration: number) {
-    console.log("expiration duration: ", expirationDuration);
+    console.log('expiration duration: ', expirationDuration);
     this.tokenExpirationTimer = setTimeout(() => {
       this.logout();
     }, expirationDuration);
@@ -138,23 +138,23 @@ export class AuthService {
     this.loggedInUser = new User(email, userId, token, roles, expirationDate);
     this.user.next(this.loggedInUser);
     this.autoLogout(expiresIn);
-    localStorage.setItem("userData", JSON.stringify(this.loggedInUser));
+    localStorage.setItem('userData', JSON.stringify(this.loggedInUser));
   }
 
   private handleError(errorRes: HttpErrorResponse) {
-    let errorMessage = "An unknown error occurred!";
+    let errorMessage = 'An unknown error occurred!';
     if (!errorRes.error || !errorRes.error.error) {
       return throwError(errorMessage);
     }
     switch (errorRes.error.error.message) {
-      case "EMAIL_EXISTS":
-        errorMessage = "This email exists already";
+      case 'EMAIL_EXISTS':
+        errorMessage = 'This email exists already';
         break;
-      case "EMAIL_NOT_FOUND":
-        errorMessage = "This email does not exist.";
+      case 'EMAIL_NOT_FOUND':
+        errorMessage = 'This email does not exist.';
         break;
-      case "INVALID_PASSWORD":
-        errorMessage = "This password is not correct.";
+      case 'INVALID_PASSWORD':
+        errorMessage = 'This password is not correct.';
         break;
     }
     return throwError(errorMessage);
@@ -163,7 +163,7 @@ export class AuthService {
   isAdmin() {
     if (this.loggedInUser) {
       // console.log("roles: " + this.loggedInUser.roles);
-      return this.loggedInUser.roles.includes("ROLE_MANAGE_PRODUCT");
+      return this.loggedInUser.roles.includes('ROLE_MANAGE_PRODUCT');
     }
   }
 }

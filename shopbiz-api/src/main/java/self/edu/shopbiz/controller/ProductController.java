@@ -10,7 +10,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
@@ -36,6 +35,7 @@ public class ProductController {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private static final int INITIAL_PAGE = 0;
+    private static final int DEFAULT_SIZE = 10;
 
     private final ProductService productService;
 
@@ -67,6 +67,7 @@ public class ProductController {
         return productService.findProductById(id);
     }
 
+
     @Operation(description = "Add a new product", responses = {
             @ApiResponse(content = @Content(schema = @Schema(implementation = Product.class)), responseCode = "200")})
     @PostMapping
@@ -78,6 +79,7 @@ public class ProductController {
 
         return productService.save(multipartImage, product);
     }
+
 
     @Operation(description = "Update existing product", responses = {
             @ApiResponse(content = @Content(schema = @Schema(implementation = Product.class)), responseCode = "200")})
@@ -99,6 +101,7 @@ public class ProductController {
         }
     }
 
+
     @Operation(description = "Delete Product", responses = {
             @ApiResponse(content = @Content(schema = @Schema(implementation = Product.class)), responseCode = "200")})
     @DeleteMapping(path="/{id}")
@@ -106,6 +109,12 @@ public class ProductController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteProduct(@PathVariable("productId") Long productId) {
         productService.deleteProduct(productId);
+    }
+
+
+    @GetMapping(path="/search/byName")
+    public Page<Product> findAllProductsByNamePageable(@RequestParam String name) {
+        return productService.searchProductsByName(name, PageRequest.of(INITIAL_PAGE, DEFAULT_SIZE));
     }
 
 }

@@ -39,13 +39,24 @@ export class ShoppingCartComponent
       console.log('shoppig cart items: ' + this.shoppingCart.cartItems.length);
     });
 
-    this.sub = this.updatedCartItem.pipe(
-      debounceTime(300),
-      switchMap((cartItem: CartItem) => this.shoppingCartService.update(cartItem))
-    ).subscribe(prod => {
-      if (prod) { throw new Error(); }
-    },
-    _ => console.log('Updating Cart Item failed'));
+    this.sub = this.updatedCartItem
+      .pipe(
+        debounceTime(300),
+        // switch to new observable
+        switchMap((cartItem: CartItem) =>
+          // console.log(`updating quantity: ${cartItem.quantity}`);
+          this.shoppingCartService.update(cartItem)
+        )
+      )
+      .subscribe(
+        (cart) => {
+          if (cart) {
+            console.log(`updated: ${cart.id}`);
+            // throw new Error();
+          }
+        },
+        (error) => console.log('Updating Cart Item failed: ' + error)
+      );
   }
 
   ngOnDestroy(): void {
@@ -64,16 +75,12 @@ export class ShoppingCartComponent
 
   addOne(cartItem) {
     cartItem.quantity++;
-    if (this.currentUser) {
-      this.updatedCartItem.next(cartItem);
-    }
+    this.updatedCartItem.next(cartItem);
   }
 
   minusOne(cartItem) {
     cartItem.quantity--;
-    if (this.currentUser) {
-      this.updatedCartItem.next(cartItem);
-    }
+    this.updatedCartItem.next(cartItem);
   }
 
   onChange(cartItem) {

@@ -14,7 +14,10 @@
             </h4>
           </h3>
           <div class="product-buttons">
-            <button class="btn btn-outline-primary btn-sm" [routerLink]="['/products', product.id]"> View Details</button> 
+            <button class="btn btn-outline-primary btn-sm" (click)="onAddToShoppingCart(product)">Add to Cart  </button> 
+            <button class="btn btn-outline-secondary btn-sm btn-wishlist"   data-toggle="tooltip"     title="Whishlist">
+              <i class="icon-heart"></i>
+            </button> 
           </div>
         </div>
       </div>
