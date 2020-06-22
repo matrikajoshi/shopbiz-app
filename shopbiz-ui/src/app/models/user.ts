@@ -1,12 +1,14 @@
 export class User {
   roles: string[];
 
-  constructor(public email: string,
-              public id: string,
-              private _token: string,
-              roles: string[],
-              private _tokenExpirationDate: Date) {
-                this.roles = roles;
+  constructor(
+    public email: string,
+    public id: string,
+    private _token: string,
+    roles: string[],
+    private _tokenExpirationDate: Date
+  ) {
+    this.roles = roles;
   }
 
   get token() {

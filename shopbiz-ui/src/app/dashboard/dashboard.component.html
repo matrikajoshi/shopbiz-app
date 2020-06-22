@@ -28,7 +28,7 @@
   
   <div class="row">
     <button
-      *ngIf="authService.isAdmin()"
+      *ngIf="authService.userHasAdminRole()"
       class="btn btn-primary"
       routerLink="/products-add/">Add Product</button>
   </div>

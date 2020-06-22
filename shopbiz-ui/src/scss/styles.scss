@@ -41,6 +41,15 @@
 // Helpers: Variables, Mixins and Placeholders
 @import 'helpers/variables';
 @import 'helpers/mixins';
+@import 'helpers/placeholders';
+
+// Import third party lib styles
+@import "~ngx-toastr/toastr-bs4-alert";
+
+
+// Base
+@import 'base/scaffolding';
+@import 'base/utilities';
 
 // Components
 @import 'components/icons';
@@ -65,3 +74,7 @@
 @import 'components/widgets';
 @import 'components/steps';
 @import 'components/banners';
+
+@import 'layout/section';
+@import 'layout/header';
+@import 'layout/offcanvas-menu';

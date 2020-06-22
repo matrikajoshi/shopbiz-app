@@ -7,12 +7,7 @@ package self.edu.shopbiz.security;
 
 public class SecurityConstants {
 
-    //private static final long VALIDITY_TIME_MS = 10 * 24 * 60 * 60 * 1000;// 10 days Validity
-    public static final long VALIDITY_TIME_MS =  2 * 60 * 60 * 1000; // 2 hours  validity
-
-    public static final String SECRET = "SecretKeyToGenJWTs";
-
-    //public static final long EXPIRATION_TIME = 7200000; // 2 hours
+//    public static final long VALIDITY_TIME_MS =  2 * 60 * 60 * 1000; // 2 hours  validity
 
     public static final String TOKEN_PREFIX = "Bearer ";
 

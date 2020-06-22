@@ -41,8 +41,8 @@ public class ShoppingList {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
-    public void addProduct(Product product) {
-        this.products.add(product);
-    }
+//    public void addProduct(Product product) {
+//        this.products.add(product);
+//    }
 
 }

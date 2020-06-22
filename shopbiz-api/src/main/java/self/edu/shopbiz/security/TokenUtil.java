@@ -4,6 +4,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.micrometer.core.instrument.util.StringUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -18,6 +19,18 @@ import static self.edu.shopbiz.security.SecurityConstants.*;
 
 @Component
 public class TokenUtil {
+
+    @Value("${security.jwt.token.secret-key}")
+    private  String secretKey;
+
+    @Value("${security.jwt.token.expire-length}")
+    private long validityInSeconds;
+
+
+    public long getValidityInSeconds() {
+        return validityInSeconds;
+    }
+
 
     public Optional<Authentication> verifyToken(HttpServletRequest request) {
 
@@ -37,7 +50,7 @@ public class TokenUtil {
     public MyUserPrincipal parseUserFromToken(String token){
 
         Claims claims = Jwts.parser()
-            .setSigningKey(SECRET)
+            .setSigningKey(secretKey)
             .parseClaimsJws(token)
             .getBody();
 
@@ -59,7 +72,7 @@ public class TokenUtil {
     private Set<SimpleGrantedAuthority> getRolesFromString(String permissionStr) {
         Set<SimpleGrantedAuthority> authorities = new HashSet<>();
         System.out.println(permissionStr);
-        if(StringUtils.isNotEmpty(permissionStr)){
+        if (StringUtils.isNotEmpty(permissionStr)) {
             String[] rolesArr = permissionStr.split(",");
             authorities = Arrays.stream(rolesArr)
                     .map((permission) -> new SimpleGrantedAuthority(permission))
@@ -70,14 +83,15 @@ public class TokenUtil {
 
 
     public String createTokenForUser(User user, List<SimpleGrantedAuthority> authorities) {
-      return Jwts.builder()
-        .setExpiration(new Date(System.currentTimeMillis() + VALIDITY_TIME_MS))
-        .setSubject(user.getEmail())
-        .claim("userId", user.getId())
-        .claim("userName", user.getUserName())
-        .claim("roles", getRolesStr(authorities))
-        .signWith(SignatureAlgorithm.HS256, SECRET)
-        .compact();
+        Date validity = new Date(new Date().getTime() + validityInSeconds);
+        return Jwts.builder()
+                .setExpiration(validity)
+                .setSubject(user.getEmail())
+                .claim("userId", user.getId())
+                .claim("userName", user.getUserName())
+                .claim("roles", getRolesStr(authorities))
+                .signWith(SignatureAlgorithm.HS256, secretKey)
+                .compact();
     }
 
     private String getRolesStr(List<SimpleGrantedAuthority> authorities){

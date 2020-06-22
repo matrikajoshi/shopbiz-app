@@ -2,10 +2,7 @@ package self.edu.shopbiz.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.HttpClientErrorException;
 import self.edu.shopbiz.exceptionUtil.ResourceNotFoundException;
 import self.edu.shopbiz.model.Category;
 import self.edu.shopbiz.repository.CategoryRepository;
@@ -25,8 +22,11 @@ public class CategoryController {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    @Autowired
-    CategoryRepository categoryRepository;
+    private final CategoryRepository categoryRepository;
+
+    public CategoryController(CategoryRepository categoryRepository) {
+        this.categoryRepository = categoryRepository;
+    }
 
     @GetMapping
     public List<Category> getAllCategories() {

@@ -44,6 +44,7 @@ export class SigninComponent implements OnInit {
         console.log(resData);
         this.isLoading = false;
         // initialize user experience
+        // load shopping list, cart
         if (this.redirectUrl) {
           this.router.navigate([this.redirectUrl]);
           this.redirectUrl = null;

@@ -1,4 +1,8 @@
-INSERT INTO `category` VALUES (1,'other','Other'),(2,'clothing','Clothing'),(3,'sports','Sports'),(4,'Electronics','Electronics');
+INSERT INTO `category` (`id`, `name`, `description`, `created_at`, `updated_at` )VALUES
+    (1,'other','Other', now(), NULL),
+    (2,'clothing','Clothing', now(), NULL),
+    (3,'sports','Sports', now(), NULL),
+    (4,'Electronics','Electronics', now(), NULL);
 
 INSERT INTO `product` (`id`, `description`, `name`, `price`, `sku`, `image_path`, `is_active`, `featured`, `category_id`, `available_quantities`, `created_at`, `updated_at` ) VALUES
   (1,'LEGO Cup test','Coffee Cup',4.99,'1A2S3D4F','lego-cup.jpg',NULL,NULL,1,5,now(),NULL),
@@ -16,7 +20,10 @@ INSERT INTO `permission` VALUES
   (4,'ROLE_ADD_CATEGORY'),
   (5,'ROLE_ADMINISTRATOR');
 
-INSERT INTO `role` VALUES (1,'ADMIN'),(2,'CUSTOMER'),(3,'SELLER');
+INSERT INTO `role` VALUES
+    (1,'ADMIN'),
+    (2,'CUSTOMER'),
+    (3,'SELLER');
 
 INSERT INTO `roles_permissions` VALUES (1,4),(1,2),(3,1),(2,1),(1,1),(1,3),(3,3),(1,5);
 

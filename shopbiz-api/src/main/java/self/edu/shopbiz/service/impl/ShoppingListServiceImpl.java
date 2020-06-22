@@ -36,7 +36,7 @@ public class ShoppingListServiceImpl implements ShoppingListService {
     }
 
     @Override
-    public ShoppingList  getShoppingListByUserId(Integer userId){
+    public ShoppingList getShoppingListByUserId(Integer userId) {
         List<ShoppingList> shoppingList = shoppingListRepository.findByCustomerId(userId);
         return shoppingList.size() > 0 ? shoppingList.get(0) : null;
     }
@@ -66,17 +66,13 @@ public class ShoppingListServiceImpl implements ShoppingListService {
     public ShoppingList removeProductByUserId(Integer userId, Product product) {
         // take 1st one
         ShoppingList shoppingList = shoppingListRepository.findByCustomerId(userId).get(0);
-        Set<Product> productSet = shoppingList.getProducts()
-                .stream()
-                .filter(product1 -> !product1.getId().equals(product.getId()))
-                .collect(Collectors.toSet());
-        shoppingList.setProducts(productSet);
+        shoppingList.getProducts().remove(product);
         ShoppingList save = shoppingListRepository.save(shoppingList);
         return save;
     }
 
     @Override
-    public ShoppingList getShoppingList(Integer id){
+    public ShoppingList getShoppingList(Integer id) {
         Optional<ShoppingList> shoppingListOptional = shoppingListRepository.findById(id);
         return shoppingListOptional.get();
     }

@@ -3,10 +3,12 @@ package self.edu.shopbiz.config;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
 import org.springframework.cache.annotation.CachingConfigurerSupport;
 import org.springframework.cache.interceptor.KeyGenerator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.redis.connection.RedisPassword;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
@@ -27,13 +29,12 @@ import java.lang.reflect.Method;
 //@PropertySource("application.properties")
 public class RedisConfig extends CachingConfigurerSupport {
 
-    // @Value("${upload-path}")
-    @Value("${redis.host}")
-    private String host;
-    @Value("${redis.password}")
+//    @Value("${redis.host}")
+//    private String host;
+    @Value("${spring.redis.password}")
     private String password;
-    @Value("${redis.port}")
-    private int port;
+//    @Value("${redis.port}")
+//    private int port;
 
     @Value("${redis.jedis.pool.max-total}")
     private int maxTotal;
@@ -56,12 +57,13 @@ public class RedisConfig extends CachingConfigurerSupport {
 
     @Bean
     public JedisConnectionFactory getJedisConnectionFactory() {
+        RedisProperties properties = redisProperties();
         RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration();
-        redisStandaloneConfiguration.setHostName(host);
+        redisStandaloneConfiguration.setHostName(properties.getHost());
         if (!StringUtils.isEmpty(password)) {
             redisStandaloneConfiguration.setPassword(RedisPassword.of(password));
         }
-        redisStandaloneConfiguration.setPort(port);
+        redisStandaloneConfiguration.setPort(properties.getPort());
         return new JedisConnectionFactory(redisStandaloneConfiguration, getJedisClientConfiguration());
     }
 
@@ -80,6 +82,12 @@ public class RedisConfig extends CachingConfigurerSupport {
     @Override
     public KeyGenerator keyGenerator() {
         return new CustomKeyGenerator();
+    }
+
+    @Bean
+    @Primary
+    public RedisProperties redisProperties() {
+        return new RedisProperties();
     }
 
 

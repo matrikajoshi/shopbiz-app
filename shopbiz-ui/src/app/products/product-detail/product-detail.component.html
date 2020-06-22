@@ -51,10 +51,17 @@
             <a placement="top" mdbTooltip="Add to Wishlist" container="body" (click)="onAddToShoppingList()">
                 <i class="fa fa-heart fa-2x"></i>
             </a>    
-            <a *ngIf="authService.isAdmin()"
+            <a *ngIf="authService.userHasAdminRole()"
               mat-flat-button color="success"
               [routerLink]="['/product-edit', product.id]">Edit
             </a>
+          </div>
+          <!-- to add comments from logged in user -->
+           <div class="form-group" *ngIf="user">
+            <label for="review_rating">Your Rating</label>
+              <select class="form-control form-control-rounded" name="rating" [(ngModel)]="selectedRating" (change)="onRate()">
+                <option *ngFor="let value of ratingValues" [value]="value">{{ value }} Stars</option>
+              </select>
           </div>
         </div>
         <!-- End Product Info-->
@@ -63,5 +70,5 @@
   </div>  
 </div>
 <!-- comments-->   
-<app-comments></app-comments>
+<!-- <app-comments></app-comments> -->
 

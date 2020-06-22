@@ -95,14 +95,8 @@ public class ShoppingCartController {
 
     private CartItemDTO convertCartItemToDTO(ShoppingCart cartItem) {
         CartItemDTO itemDTO = modelMapper.map(cartItem, CartItemDTO.class);
+        itemDTO.hashCode();
         return itemDTO;
     }
-
-
-
-
-
-
-
 
 }

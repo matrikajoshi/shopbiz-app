@@ -2,9 +2,12 @@ package self.edu.shopbiz.model;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
@@ -24,15 +27,16 @@ public class CartItem {
     @ManyToOne
     private Product product;
 
-    //to do - fix back reference
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "shopping_cart_id")
     private ShoppingCart shoppingCart;
 
     private int quantity;
 
-//    @Transient
-//    public BigDecimal getTotalPrice() {
-//        return getProduct().getPrice().multiply(BigDecimal.valueOf(getQuantity()));
-//    }
+    @CreationTimestamp
+    private LocalDateTime createdAt;
+
+    @UpdateTimestamp
+    private LocalDateTime updatedAt;
+
 }

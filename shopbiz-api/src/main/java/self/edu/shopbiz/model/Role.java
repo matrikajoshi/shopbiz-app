@@ -3,10 +3,13 @@ package self.edu.shopbiz.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import self.edu.shopbiz.util.CustomListDeserializer;
 
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
@@ -39,7 +42,6 @@ public class Role {
                     name = "permission_id", referencedColumnName = "id"))
     @JsonManagedReference(value = "permissions")
     private Set<Permission> permissions;
-
 
     public Long getId() {
         return id;

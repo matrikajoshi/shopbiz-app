@@ -1,7 +1,8 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule, HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { ToastrModule } from 'ngx-toastr';
 import { FileUploadModule } from 'ng2-file-upload';
 import { CookieService } from 'ngx-cookie-service';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
@@ -33,6 +34,10 @@ import { PageTitleComponent } from './page-title/page-title.component';
 import { PriceComponent } from './price/price.component';
 import { PaginationComponent } from './shared/pagination/pagination.component';
 import { CheckoutComponent } from './checkout/checkout.component';
+import { StarComponent } from './products/comments/star/star.component';
+import { CommentsComponent } from './products/comments/comments.component';
+import { SearchComponent } from './components/search/search.component';
+import { OrdersComponent } from './orders/orders.component';
 
 import {
   MatToolbarModule,
@@ -49,10 +54,7 @@ import {
   MatProgressSpinnerModule,
   MatIconModule
 } from '@angular/material';
-import { StarComponent } from './products/comments/star/star.component';
-import { CommentsComponent } from './products/comments/comments.component';
-import { SearchComponent } from './components/search/search.component';
-import { OrdersComponent } from './orders/orders.component';
+
 
 
 @NgModule({
@@ -105,6 +107,7 @@ import { OrdersComponent } from './orders/orders.component';
     BrowserAnimationsModule,
     FlexLayoutModule,
     HttpClientModule,
+    ToastrModule.forRoot(),
     NgbModule
   ],
   providers: [

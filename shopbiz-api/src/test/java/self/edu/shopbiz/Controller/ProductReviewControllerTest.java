@@ -1,6 +1,7 @@
 package self.edu.shopbiz.Controller;
 
 import org.junit.jupiter.api.Test;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -40,7 +41,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 @AutoConfigureMockMvc(addFilters = false)
-@ContextConfiguration(classes = {ProductReviewController.class})
+@ContextConfiguration(classes = {ProductReviewController.class, ModelMapper.class})
 @WebMvcTest(ProductReviewController.class)
 class ProductReviewControllerTest {
 

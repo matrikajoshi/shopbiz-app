@@ -51,11 +51,16 @@ public class ProductController {
             @Parameter(description = "The size of products in page to be returned")
             @RequestParam(value = "size", defaultValue = "4", required = false) Integer size,
             @Parameter(description = "Zero-based page index")
-            @RequestParam(value = "page", required = false) Optional<Integer> page) {
+            @RequestParam(value = "page", required = false) Optional<Integer> page,
+            @Parameter(description = "Products by categoryId")
+            @RequestParam(value = "categoryId", required = false) Optional<Integer> categoryId) {
         int evalPage = (page.orElse(0) < 1) ? INITIAL_PAGE : page.get() - 1;
-
-
-        Page<Product> products = productService.findAllProductsPageable(PageRequest.of(evalPage, size));
+        Page<Product> products;
+        if (categoryId.isPresent()) {
+            products = productService.findAllProductsPageableByCategoryId(categoryId.get(), PageRequest.of(evalPage, size));
+        } else {
+            products = productService.findAllProductsPageable(PageRequest.of(evalPage, size));
+        }
         return products;
     }
 
@@ -88,6 +93,9 @@ public class ProductController {
     public Product editProduct(@RequestPart(value = "multipartImage", required = false) MultipartFile multipartImage,
                                @RequestPart(value = "info", required = false) Product product,
                                @PathVariable("id") Long productId) throws Exception {
+        logger.info("Updating product with id: {}, name: {}, quantity: {}",
+                productId, product.getName(), product.getAvailableQuantities());
+
         if(!productId.equals(product.getId())) {
            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST, "Product id mismatch");
         }

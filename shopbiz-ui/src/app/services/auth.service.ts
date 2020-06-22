@@ -68,6 +68,7 @@ export class AuthService {
       .pipe(
         catchError(this.handleError),
         tap(resData => {
+          // console.log('resData: ' + JSON.stringify(resData));
           this.handleAuthentication(
             resData.email,
             resData.id,
@@ -121,7 +122,7 @@ export class AuthService {
   }
 
   autoLogout(expirationDuration: number) {
-    console.log('expiration duration: ', expirationDuration);
+    // console.log('expiration duration: ', expirationDuration);
     this.tokenExpirationTimer = setTimeout(() => {
       this.logout();
     }, expirationDuration);
@@ -133,7 +134,7 @@ export class AuthService {
     token: string,
     roles: string[],
     expiresIn: number
-  ) {
+  ) {    
     const expirationDate = new Date(new Date().getTime() + expiresIn);
     this.loggedInUser = new User(email, userId, token, roles, expirationDate);
     this.user.next(this.loggedInUser);
@@ -160,7 +161,7 @@ export class AuthService {
     return throwError(errorMessage);
   }
 
-  isAdmin() {
+  userHasAdminRole() {
     if (this.loggedInUser) {
       // console.log("roles: " + this.loggedInUser.roles);
       return this.loggedInUser.roles.includes('ROLE_MANAGE_PRODUCT');

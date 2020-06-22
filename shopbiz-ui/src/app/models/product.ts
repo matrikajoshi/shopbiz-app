@@ -7,12 +7,13 @@ export class Product {
   sku: string;
   category: Category;
   featured: boolean;
+  active: boolean;
   description: string;
   imageUrl: string;
   priceNormal: number;
   price: number;
   reduction: string;
-  active: boolean;
+  availableQuantities: number;
   lastUpdated: string;
   comments: Comment[];
 }

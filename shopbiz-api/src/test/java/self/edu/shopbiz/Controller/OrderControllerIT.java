@@ -18,9 +18,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-import self.edu.shopbiz.ShopbizApplication;
 import self.edu.shopbiz.dto.OrderItemDTO;
 import self.edu.shopbiz.model.*;
 import self.edu.shopbiz.repository.*;
@@ -43,16 +41,17 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 @ExtendWith(SpringExtension.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = ShopbizApplication.class)
+@SpringBootTest
 @AutoConfigureMockMvc
 public class OrderControllerIT {
 
     private final String apiUrl = "/orders";
+    private final String shoppingCartUrl = "/shoppingCart";
 
     @Autowired
     private WebApplicationContext context;
     @Autowired
-    private MockMvc mvc;
+    private MockMvc mockMvc;
     @Autowired
     OrderRepository orderRepository;
     @Autowired
@@ -88,15 +87,24 @@ public class OrderControllerIT {
     @WithMockUser
     public void whenValidInput_thenCreateOrder() throws Exception {
         List<OrderItemDTO> orderItems = getOrderItems();
-        mvc.perform(post(apiUrl).contentType(MediaType.APPLICATION_JSON).content(JsonUtil.toJson(orderItems)))
+        mockMvc.perform(post(apiUrl).contentType(MediaType.APPLICATION_JSON).content(JsonUtil.toJson(orderItems)))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.orderItems", hasSize(greaterThanOrEqualTo(1))))
                 .andExpect(jsonPath("$.orderItems[0].product.name", is("Coffee Cup")));
 
+        // validate product quantity after order
         Product product1 = productRepository.findById(1L).get();
         assertEquals(3, product1.getAvailableQuantities());
+
+        //TODO Test shopping cart deletion
+        mockMvc.perform(get(shoppingCartUrl))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.cartItems", hasSize(0) ));
+
     }
 
     @Test
@@ -104,7 +112,7 @@ public class OrderControllerIT {
     public void givenOrderExists_whenGetOrders_thenStatus200() throws Exception {
         createOrder();
 
-        mvc.perform(get(apiUrl).contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(get(apiUrl).contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -118,7 +126,7 @@ public class OrderControllerIT {
         entityManager.detach(order);
         OrderItem orderItem = order.getOrderItems().iterator().next();
         orderItem.setOrderedQuantities(3);
-        mvc.perform(put(apiUrl+"/1").contentType(MediaType.APPLICATION_JSON).content(JsonUtil.toJson(order)))
+        mockMvc.perform(put(apiUrl+"/1").contentType(MediaType.APPLICATION_JSON).content(JsonUtil.toJson(order)))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -145,7 +153,7 @@ public class OrderControllerIT {
     }
 
 
-    public void addProductToShoppingCart(Product product){
+    public void addProductToShoppingCart(Product product) {
         CartItem cartItem = new CartItem();
         cartItem.setProduct(product);
         cartItem.setQuantity(1);

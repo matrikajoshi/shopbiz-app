@@ -1,21 +1,23 @@
 package self.edu.shopbiz.controller;
 
 
-import org.springframework.http.HttpStatus;
+import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.*;
 import self.edu.shopbiz.dto.ProductReviewDTO;
+import self.edu.shopbiz.dto.ShoppingCartDTO;
 import self.edu.shopbiz.exceptionUtil.ProductNotFoundException;
 import self.edu.shopbiz.exceptionUtil.UserNotFoundException;
 import self.edu.shopbiz.model.Product;
 import self.edu.shopbiz.model.ProductReview;
+import self.edu.shopbiz.model.ShoppingCart;
 import self.edu.shopbiz.model.User;
 import self.edu.shopbiz.repository.ProductRepository;
 import self.edu.shopbiz.repository.UserRepository;
 import self.edu.shopbiz.service.ProductReviewService;
 
-import javax.annotation.security.RolesAllowed;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 public class ProductReviewController {
@@ -24,11 +26,13 @@ public class ProductReviewController {
     private final ProductRepository productRepository;
     private final UserRepository userRepository;
     private final ProductReviewService productReviewService;
+    private final ModelMapper modelMapper;
 
-    public ProductReviewController(ProductRepository productRepository, UserRepository userRepository, ProductReviewService productReviewService) {
+    public ProductReviewController(ProductRepository productRepository, UserRepository userRepository, ProductReviewService productReviewService, ModelMapper modelMapper) {
         this.productRepository = productRepository;
         this.userRepository = userRepository;
         this.productReviewService = productReviewService;
+        this.modelMapper = modelMapper;
     }
 
 
@@ -50,8 +54,11 @@ public class ProductReviewController {
             reviewsForProduct = productReviewService.getReviewsForProductWithRatings(product, ratingFrom, ratingTo);
         }
 
-        return null;
+        List<ProductReviewDTO> productReviewDTOS = reviewsForProduct.stream()
+                .map(review -> convertToDTO(review))
+                .collect(Collectors.toList());
 
+        return productReviewDTOS;
     }
 
     @PostMapping({ "products/{productId:\\d+}/users/{userId:\\d+}/reviews" })
@@ -96,6 +103,11 @@ public class ProductReviewController {
 //    {
 //        productReviewService.deleteCustomerReview(reviewId);
 //    }
+
+    public ProductReviewDTO convertToDTO(ProductReview productReview) {
+        ProductReviewDTO productReviewDTO = modelMapper.map(productReview, ProductReviewDTO.class);
+        return productReviewDTO;
+    }
 
 
 }

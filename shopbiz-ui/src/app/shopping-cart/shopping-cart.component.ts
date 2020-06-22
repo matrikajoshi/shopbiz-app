@@ -23,7 +23,7 @@ export class ShoppingCartComponent
   total = 0;
 
   private updatedCartItem = new Subject<CartItem>();
-  sub: Subscription;
+  cartItemSub: Subscription;
 
   constructor(private messageService: MessageService,
               private router: Router,
@@ -39,14 +39,14 @@ export class ShoppingCartComponent
       console.log('shoppig cart items: ' + this.shoppingCart.cartItems.length);
     });
 
-    this.sub = this.updatedCartItem
+    this.cartItemSub = this.updatedCartItem
       .pipe(
         debounceTime(300),
         // switch to new observable
-        switchMap((cartItem: CartItem) =>
-          // console.log(`updating quantity: ${cartItem.quantity}`);
-          this.shoppingCartService.update(cartItem)
-        )
+        switchMap((cartItem: CartItem) => {
+          console.log(`updating quantity: ${cartItem.quantity}`);
+          return this.shoppingCartService.update(cartItem);
+        })
       )
       .subscribe(
         (cart) => {
@@ -68,8 +68,11 @@ export class ShoppingCartComponent
 
   ngAfterContentChecked() {
     if (this.shoppingCart) {
+      console.log(JSON.stringify(this.shoppingCart.cartItems));
       this.total = this.shoppingCart.cartItems.reduce(
-      (prev, cur) => prev + cur.quantity * cur.product.price, 0);
+        (prev, cur) => prev + cur.quantity * cur.product.price,
+        0
+      );
     }
   }
 
@@ -83,7 +86,7 @@ export class ShoppingCartComponent
     this.updatedCartItem.next(cartItem);
   }
 
-  onChange(cartItem) {
+  onChange(cartItem: CartItem) {
     if (this.currentUser) {
       this.updatedCartItem.next(cartItem);
     }

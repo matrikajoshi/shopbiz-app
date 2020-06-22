@@ -19,6 +19,7 @@ import self.edu.shopbiz.util.SecurityUtil;
 
 import java.math.BigDecimal;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by mpjoshi on 10/10/19.
@@ -149,11 +150,14 @@ public class OrderServiceImpl implements OrderService {
 
     private Map<Long, Product> getProductsMapById(List<OrderItem> orderItems) {
         // get list of inventories from db
-        List<Long> productIds = new ArrayList<>();
-        orderItems.forEach(orderItem -> productIds.add(orderItem.getProduct().getId()));
+        List<Long> productIds = orderItems.stream()
+                .map(orderItem -> orderItem.getProduct().getId())
+                .collect(Collectors.toList());
+
         List<Product> inventories = productRepository.findAllById(productIds);
-        Map<Long, Product> productsById = new HashMap<>();
-        inventories.forEach(product -> productsById.put(product.getId(), product));
+        Map<Long, Product> productsById = inventories.stream()
+                .collect(Collectors.toMap(product -> product.getId(), product -> product));
+
         return productsById;
     }
 

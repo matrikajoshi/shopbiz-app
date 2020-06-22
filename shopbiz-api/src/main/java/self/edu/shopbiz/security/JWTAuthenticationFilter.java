@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -21,6 +22,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -34,6 +36,9 @@ import static self.edu.shopbiz.security.SecurityConstants.*;
 
 
 public class JWTAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
+
+    @Value("${security.jwt.token.expire-length}")
+    private long validityInSeconds;
 
     private final TokenUtil tokenUtil;
     private final String EMAIL_FIELD = "email";
@@ -90,8 +95,7 @@ public class JWTAuthenticationFilter extends AbstractAuthenticationProcessingFil
             jsonResp.put("userId", user.getId());
             jsonResp.put("token", tokenString);
             jsonResp.put("roles", authorities.stream().map(perm -> perm.getAuthority()).collect(Collectors.toList()));
-            jsonResp.put("expiresIn", VALIDITY_TIME_MS);
-
+            jsonResp.put("expiresIn", this.tokenUtil.getValidityInSeconds());
             res.getWriter().write(jsonResp.toString());
             res.getWriter().flush();
             res.getWriter().close();

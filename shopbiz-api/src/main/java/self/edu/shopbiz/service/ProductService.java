@@ -23,4 +23,7 @@ public interface ProductService {
     void deleteProduct(Long productId);
 
     Page<Product> searchProductsByName(String name, Pageable pageable);
+
+    Page<Product> findAllProductsPageableByCategoryId(Integer categoryId, Pageable pageable);
+
 }

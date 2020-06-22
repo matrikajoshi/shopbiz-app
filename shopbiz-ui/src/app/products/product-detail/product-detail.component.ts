@@ -1,4 +1,4 @@
-import {Component, OnInit, Inject} from '@angular/core';
+import {Component, OnInit, Inject, OnDestroy} from '@angular/core';
 import {ActivatedRoute, Router, Data, Params} from '@angular/router';
 import {Location} from '@angular/common';
 import {FormGroup, FormBuilder} from '@angular/forms';
@@ -16,16 +16,15 @@ import { ShoppingCart } from 'src/app/models/shopping-cart';
 import { MatDialog } from '@angular/material';
 import { CartModalComponent } from 'src/app/shopping-cart/cart-modal/cart-modal.component';
 import { AuthService } from 'src/app/services/auth.service';
+import { User } from 'src/app/models/user';
 // import { CartService } from 'src/app/services/cart.service';
 
 @Component({
   selector: 'app-product-detail',
   templateUrl: './product-detail.component.html',
-  styleUrls: ['./product-detail.component.scss']
+  styleUrls: ['./product-detail.component.scss'],
 })
-
-export class ProductDetailComponent implements OnInit {
-
+export class ProductDetailComponent implements OnInit, OnDestroy {
   //@Input()
   product: Product;
   paramsSubscription: Subscription;
@@ -37,29 +36,35 @@ export class ProductDetailComponent implements OnInit {
   fileToUpload: File = null;
   quantity: number;
   closeResult: string;
+  user: User;
+  private userSub: Subscription;
 
-  constructor(private route: ActivatedRoute,
-              private router: Router,
-              private location: Location,
-              private formBuilder: FormBuilder,
-              private productService: ProductService,
-              private shoppingListService: ShoppingListService,
-              private shoppingCartService: ShoppingCartService,
-              private messageService: MessageService,
-              public authService: AuthService,
-              private modalService: NgbModal,
-              @Inject('BaseURL') public baseURL) {
+  public ratingValues: number[];
+  public selectedRating: any;
+
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private location: Location,
+    private formBuilder: FormBuilder,
+    private productService: ProductService,
+    private shoppingListService: ShoppingListService,
+    private shoppingCartService: ShoppingCartService,
+    private messageService: MessageService,
+    public authService: AuthService,
+    private modalService: NgbModal,
+    @Inject('BaseURL') public baseURL
+  ) {
+    this.userSub = this.authService.user.subscribe(
+      (user) => (this.user = user)
+    );
     this.createForm();
   }
 
   ngOnInit(): void {
-
-    this.paramsSubscription = this.route.params
-      .subscribe(
-        (params: Params) => {
-          this.productId = params['id'];
-        }
-      );
+    this.paramsSubscription = this.route.params.subscribe((params: Params) => {
+      this.productId = params.id;
+    });
 
     this.getProduct();
     this.quantity = 1;
@@ -67,11 +72,10 @@ export class ProductDetailComponent implements OnInit {
 
   getProduct(): void {
     // const id = +this.route.snapshot.paramMap.get('id');
-    this.productService.getProduct(this.productId)
-      .subscribe((product) => {
-        this.product = product;
-        this.productCopy = product;
-      });
+    this.productService.getProduct(this.productId).subscribe((product) => {
+      this.product = product;
+      this.productCopy = product;
+    });
   }
 
   goBack(): void {
@@ -82,25 +86,28 @@ export class ProductDetailComponent implements OnInit {
     this.productCopy = this.productForm.value;
     this.productCopy.id = this.product.id;
     const formData = new FormData();
-    formData.append('multipartImage'
-          , this.fileToUpload
-          , this.fileToUpload.name);
-    formData.append('info', new Blob([JSON.stringify(this.productCopy)],
-      {
-        type: 'application/json'
-      }));
-    this.productService.updateProduct(formData, this.productCopy)
-      .subscribe((product) => {
+    formData.append(
+      'multipartImage',
+      this.fileToUpload,
+      this.fileToUpload.name
+    );
+    formData.append(
+      'info',
+      new Blob([JSON.stringify(this.productCopy)], {
+        type: 'application/json',
+      })
+    );
+    this.productService.updateProduct(formData, this.productCopy).subscribe(
+      (product) => {
         this.product = product;
         this.productCopy = product;
         this.productForm.reset();
       },
-      error => {
+      (error) => {
         this.product = null;
         this.productCopy = null;
       }
     );
-
   }
 
   onFileChange(event) {
@@ -113,7 +120,7 @@ export class ProductDetailComponent implements OnInit {
     }
   }
 
-  deleteProduct (product: Product | number): Observable<Product> {
+  deleteProduct(product: Product | number): Observable<Product> {
     const id = typeof product === 'number' ? product : product.id;
     return this.productService.deleteProduct(id);
   }
@@ -127,29 +134,33 @@ export class ProductDetailComponent implements OnInit {
       description: '',
       image: '',
       price: '',
-      productImage: ''
+      productImage: '',
     });
   }
 
   onAddToShoppingList() {
-    this.shoppingListService.addProductToShoppingList(this.product)
-        .subscribe((sl) => {
-            console.log('Added product to list: ' + sl);
-        },
-        _ => console.log('Adding to list failed')
-        );
+    this.shoppingListService.addProductToShoppingList(this.product).subscribe(
+      (sl) => {
+        console.log('Added product to list: ' + sl);
+      },
+      (_) => console.log('Adding to list failed')
+    );
   }
 
   onAddToShoppingCart() {
-    console.log('Adding product to shopping cart: ', this.product.id, this.quantity);
+    console.log(
+      'Adding product to shopping cart: ',
+      this.product.id,
+      this.quantity
+    );
     const cartItem: CartItem = new CartItem(this.product, this.quantity);
-    this.shoppingCartService.addItemToShoppingCart(cartItem)
-    .subscribe((shoppingCart) => {
-      console.log('Shopping cart: ', shoppingCart);
-      this.shoppingCart = shoppingCart;
-      this.openDialog();
-    },
-    _ => console.log('Add cart failed')
+    this.shoppingCartService.addItemToShoppingCart(cartItem).subscribe(
+      (shoppingCart) => {
+        console.log('Shopping cart: ', shoppingCart);
+        this.shoppingCart = shoppingCart;
+        this.openDialog();
+      },
+      (_) => console.log('Add cart failed')
     );
     // subscribe vs async await
   }
@@ -158,10 +169,18 @@ export class ProductDetailComponent implements OnInit {
     this.messageService.add(`ProductService: ${message}`);
   }
 
-
   openDialog() {
-    this.modalService.open(CartModalComponent, {ariaLabelledBy: 'modal-basic-title'});
+    this.modalService.open(CartModalComponent, {
+      ariaLabelledBy: 'modal-basic-title',
+    });
   }
 
+  public onRate() {
+    // Todo
+  }
+
+  ngOnDestroy() {
+    this.userSub.unsubscribe();
+  }
 }
 

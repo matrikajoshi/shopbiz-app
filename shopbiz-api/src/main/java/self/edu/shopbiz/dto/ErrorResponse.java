@@ -1,11 +1,14 @@
 package self.edu.shopbiz.dto;
 
+import lombok.Data;
+
 import java.util.Date;
 
 /**
  * Created by mpjoshi on 11/23/19.
  */
 
+@Data
 public class ErrorResponse {
 
     private Date timestamp;
@@ -23,18 +26,5 @@ public class ErrorResponse {
         this.message = message;
         this.details = details;
     }
-
-    public Date getTimestamp() {
-        return timestamp;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public String getDetails() {
-        return details;
-    }
-
 
 }

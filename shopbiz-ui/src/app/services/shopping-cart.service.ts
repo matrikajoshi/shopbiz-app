@@ -57,18 +57,19 @@ export class ShoppingCartService {
     const localShoppingCart = this.getLocalShoppingCart();
     if (this.currentUser) {
       if (localShoppingCart.cartItems.length > 0) {
-        return this.http.post<ShoppingCart>(this.url, this.localCart).pipe(
-          tap((cart) => {
-            console.log('got items: ' + cart.cartItems.length);
-            const totalQuantity = cart.cartItems.reduce(
-              (accum, item) => accum + item.quantity,
-              0
-            );
-            this.totalSubject.next(totalQuantity);
-            this.clearLocalCart();
-          }),
-          catchError(this.handleError)
-        );
+        return this.http.post<ShoppingCart>(this.url, this.localCart)
+          .pipe(
+            tap((cart) => {
+              console.log('got items: ' + cart.cartItems.length);
+              const totalQuantity = cart.cartItems.reduce(
+                (accum, item) => accum + item.quantity,
+                0
+              );
+              this.totalSubject.next(totalQuantity);
+              this.clearLocalCart();
+            }),
+            catchError(this.handleError)
+          );
       } else {
         return this.http.get<ShoppingCart>(this.url).pipe(
           tap((cart) => {

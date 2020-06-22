@@ -2,7 +2,6 @@ package self.edu.shopbiz.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -42,13 +41,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-//        web.ignoring()
-//                .antMatchers(HttpMethod.GET, "/products/**")
-//                .antMatchers(HttpMethod.POST, "/products/**")
-//                .antMatchers("/images/**", "/error/**", "/error", SIGN_UP_URL, "/resources/**", "/static/**", "/public/**", "/webui/**", "/h2-console/**"
-//                , "/configuration/**", "/swagger-ui/**", "/swagger-resources/**", "/api-docs", "/api-docs/**", "/actuator/health"
-//                , "/*.html", "/**/*.html" ,"/**/*.css","/**/*.js","/**/*.png ","/**/*.jpg", "/**/*.gif ", "/**/*.svg", "/**/*.ico", "/**/*.ttf","/**/*.woff","/**/*.otf"
-//                );
 
         web.ignoring()
                 .antMatchers(HttpMethod.GET, "/products/**")

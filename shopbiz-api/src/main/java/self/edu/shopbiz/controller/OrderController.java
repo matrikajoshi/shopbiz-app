@@ -107,11 +107,9 @@ public class OrderController {
     }
 
     private List<OrderItem> getOrderItems(List<OrderItemDTO> orderItemDTOS) {
-        List<OrderItem> orderItems = new ArrayList<>();
-        orderItemDTOS.forEach((orderItemDTO -> {
-            OrderItem orderItem = convertToEntity(orderItemDTO);
-            orderItems.add(orderItem);
-        }));
+        List<OrderItem> orderItems = orderItemDTOS.stream()
+                .map(orderItemDTO -> convertToEntity(orderItemDTO))
+                .collect(Collectors.toList());
         return orderItems;
     }
 

@@ -1,5 +1,22 @@
 <app-page-title title="Products" [children]="[{title: 'Products'}]"></app-page-title>
 <div class="container  padding-bottom-3x mb-1">
+
+  <div class="cat-row">
+    <div class="row justify-content-between">
+        <div class="col-3">
+            <select class="form-control" (change)="onCategorySelected($event.target.value)">
+                <option value="0">Categories</option>
+                <option *ngFor="let category of categories$ | async" 
+                    [value]="category.id">{{ category.name }}
+                </option>
+            </select>
+        </div>
+        <div class="col-2">
+            <button *ngIf="authService.userHasAdminRole()" type="button" class="btn btn-primary" routerLink="/products-add/">Add Product</button>
+        </div>
+    </div>
+  </div>
+
   <div fxLayout="row wrap" *ngIf="products">
     <div  *ngFor="let product of products; let i = index" class="col-12 col-sm-12 col-md-4 col-lg-3" >
       <div class="product-card">
@@ -27,4 +44,7 @@
   <div [hidden]="products">
     <mat-spinner></mat-spinner><h4>Loading . . . Please Wait</h4>
   </div>
+  <div class="alert alert-danger" *ngIf="errorMessage$ | async as errorMessage">
+    {{ errorMessage }}
+</div>
 </div>

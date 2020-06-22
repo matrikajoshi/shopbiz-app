@@ -5,66 +5,71 @@
   </button>
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent" >
-    <ul class="navbar-nav mr-auto">
+    <!-- <ul class="navbar-nav mr-auto">
       <li class="nav-item" routerLinkActive="active" *ngIf="isAuthenticated">
         <a class="nav-link" routerLink="/shopping-list">Wish List</a>
       </li>
       <li class="nav-item" >
         <a class="nav-link" [routerLink]="['/dashboard']" routerLinkActive="router-link-active" >Offers</a>
       </li>
-    </ul>
+    </ul> -->
     
-    <ul class="nav navbar-nav navbar-right">
+    <!-- <ul class="nav navbar-nav navbar-right">
       <li class="nav-item" routerLinkActive="active" *ngIf="!isAuthenticated; else whenLoggedIn">
         <a class="nav-link" routerLink="/login">Sign in</a>
       </li>
-    <!-- <nav class="list-group"> -->
-    <ng-template #whenLoggedIn>
-      <a class="list-group-item" routerLinkActive="active" routerLink="/account/profile">
-        <i class="icon-head"></i>Profile
-      </a>
-
-      <a class="list-group-item with-badge" routerLinkActive="active" 
-        routerLink="/orders" href="">
-        <i class="icon-bag"></i>Orders
-      </a>
-    </ng-template>
-    <!-- </nav> -->
-      <li >
-        <a class="nav-item nav-link cart-icon" routerLink="/cart">
-            <img class='shopping-icon' src="assets/shopping-bag.svg">
-            <span *ngIf="totalQuantity > 0"
-            class='item-count'>{{ totalQuantity }}</span>
-        </a>
-      </li>
-
-       <!-- <li class="nav-item dropdown" *ngIf="isAuthenticated">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Manage</a>
-          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item" href="#">Your Orders</a>
-            <a class="dropdown-item" href="#">Your profile</a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">Something else here</a>
+    </ul> -->
+    <div class="toolbar">
+      <div class="inner">
+        <div class="tools">
+          <div class="account">
+            <a 
+              *ngIf="!isAuthenticated; else whenLoggedIn"               
+              routerLink="/login">              
+            </a>
+            <ng-template #whenLoggedIn>
+              <a routerLink="/orders"></a>
+            </ng-template>
+              
+            <i class="icon-head" style="font-size: 1.2rem;"></i>
+            <ul *ngIf="isAuthenticated" class="toolbar-dropdown">
+              <li class="sub-menu-user">
+                <div class="user-info">
+                  <h6 class="user-name">{{ user.email }}
+                    <span *ngIf="authService.userHasAdminRole()"> (Admin)</span>
+                  </h6>
+                </div>
+              </li>
+              <!-- <li>
+                <a routerLink="/account/profile" href="">My Profile</a>
+              </li> -->
+              <li>
+                <a routerLink="/shopping-list" href="">Wish List</a>
+              </li>
+              <li>
+                <a routerLink="/orders" href="">Orders List</a>
+              </li>
+              <li class="sub-menu-separator"></li>
+              <li>
+                <a href="" (click)="onLogout($event)">
+                  <i class="icon-unlock"></i>Logout</a>
+              </li>
+            </ul>
           </div>
-        </li> -->
-        <li class="nav-item" *ngIf="isAuthenticated">
-          <a class="nav-link" style="cursor: pointer;" (click)="onLogout()">Logout</a>
-        </li>
-
-      <!-- <li class="dropdown" *ngIf="isAuthenticated">
-        <div class="btn-group">
-          <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Manage
-          </button>
-          <div class="dropdown-menu">
-            <a class="dropdown-item" href="#">Your Orders</a>
-            <a class="dropdown-item" href="#">Your profile</a>
-            <a class="dropdown-item" href="#">Something else here</a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">Separated link</a>
+          <!-- cart -->
+          <div class="cart cart-bag">
+            
+              <a class="cart-icon" routerLink="/cart">
+                  <img class='shopping-icon' src="assets/shopping-bag.svg">
+                  <span *ngIf="totalQuantity > 0"
+                  class='item-count'>{{ totalQuantity }}</span>
+              </a>
+            
           </div>
+          <!-- cart end -->
         </div>
-      </li> -->
-    </ul>
+      </div>
+    </div>
+    
   </div>
 </nav>
